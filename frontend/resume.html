@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,234 +8,417 @@
   <meta name="description" content="AI resume parser + ATS-ready professional resume generator with HTML preview." />
   <link rel="stylesheet" href="assets/style.css" />
   <style>
-    .resume-preview { background:#fff;color:#1a1a2e;border-radius:16px;padding:36px 44px;max-width:720px;margin:0 auto;font-family:'Georgia',serif;line-height:1.6;box-shadow:0 20px 60px rgba(0,0,0,.35); }
-    .resume-preview h1 { font-size:1.75rem;font-weight:700;margin:0 0 2px;color:#1a1a2e;text-align:center; }
-    .resume-preview .rp-contact { text-align:center;font-size:.85rem;color:#555;margin-bottom:16px; }
-    .resume-preview .rp-divider { border:none;border-top:2px solid #4361ee;margin:10px 0; }
-    .resume-preview .rp-thin { border:none;border-top:1px solid #ddd;margin:4px 0 10px; }
-    .resume-preview .rp-section { font-size:.8rem;font-weight:700;letter-spacing:.1em;color:#4361ee;margin:14px 0 6px;text-transform:uppercase; }
-    .resume-preview .rp-body { font-size:.85rem;color:#374151;margin-bottom:6px; }
-    .resume-preview .rp-bullet { font-size:.85rem;color:#374151;padding-left:16px;margin-bottom:4px;position:relative; }
-    .resume-preview .rp-bullet::before { content:'•';position:absolute;left:4px; }
-    .resume-preview .rp-skill-row { display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px; }
-    .resume-preview .rp-skill-pill { background:#eef2ff;color:#4361ee;border-radius:20px;padding:3px 12px;font-size:.78rem;font-weight:600; }
-    .resume-preview .rp-tool-pill { background:#f3f4f6;color:#374151;border-radius:20px;padding:3px 12px;font-size:.78rem; }
-    .resume-preview .rp-job-title { font-weight:700;font-size:.9rem;color:#1a1a2e; }
-    .resume-preview .rp-job-meta { font-size:.8rem;color:#6b7280; }
-    .resume-preview .rp-proj-name { font-weight:700;font-size:.9rem;color:#1a1a2e; }
-    .resume-preview .rp-proj-tech { font-size:.78rem;color:#4361ee;margin-left:6px; }
-    .input-row { display:flex;gap:10px;align-items:start;margin-bottom:12px; }
-    .remove-btn { background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:#ef4444;border-radius:8px;padding:8px 12px;cursor:pointer;font-size:.8rem;white-space:nowrap;flex-shrink:0;margin-top:2px; }
-    .remove-btn:hover { background:rgba(239,68,68,.25); }
-    .add-btn { background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.3);color:var(--accent-primary);border-radius:8px;padding:8px 16px;cursor:pointer;font-size:.85rem;display:inline-flex;align-items:center;gap:6px; }
-    .step-badge { display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--accent-primary);color:#fff;font-weight:700;font-size:.85rem;flex-shrink:0; }
-    .section-header { display:flex;align-items:center;gap:10px;margin-bottom:16px; }
-    .ats-score-bar { height:8px;border-radius:4px;background:var(--border);overflow:hidden;margin-top:6px; }
-    .ats-score-fill { height:100%;border-radius:4px;background:linear-gradient(90deg,#10b981,#6366f1);transition:width .6s ease; }
+    .resume-preview {
+      background: #fff;
+      color: #1a1a2e;
+      border-radius: 16px;
+      padding: 36px 44px;
+      max-width: 720px;
+      margin: 0 auto;
+      font-family: 'Georgia', serif;
+      line-height: 1.6;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .35);
+    }
+
+    .resume-preview h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin: 0 0 2px;
+      color: #1a1a2e;
+      text-align: center;
+    }
+
+    .resume-preview .rp-contact {
+      text-align: center;
+      font-size: .85rem;
+      color: #555;
+      margin-bottom: 16px;
+    }
+
+    .resume-preview .rp-divider {
+      border: none;
+      border-top: 2px solid #4361ee;
+      margin: 10px 0;
+    }
+
+    .resume-preview .rp-thin {
+      border: none;
+      border-top: 1px solid #ddd;
+      margin: 4px 0 10px;
+    }
+
+    .resume-preview .rp-section {
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      color: #4361ee;
+      margin: 14px 0 6px;
+      text-transform: uppercase;
+    }
+
+    .resume-preview .rp-body {
+      font-size: .85rem;
+      color: #374151;
+      margin-bottom: 6px;
+    }
+
+    .resume-preview .rp-bullet {
+      font-size: .85rem;
+      color: #374151;
+      padding-left: 16px;
+      margin-bottom: 4px;
+      position: relative;
+    }
+
+    .resume-preview .rp-bullet::before {
+      content: '•';
+      position: absolute;
+      left: 4px;
+    }
+
+    .resume-preview .rp-skill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .resume-preview .rp-skill-pill {
+      background: #eef2ff;
+      color: #4361ee;
+      border-radius: 20px;
+      padding: 3px 12px;
+      font-size: .78rem;
+      font-weight: 600;
+    }
+
+    .resume-preview .rp-tool-pill {
+      background: #f3f4f6;
+      color: #374151;
+      border-radius: 20px;
+      padding: 3px 12px;
+      font-size: .78rem;
+    }
+
+    .resume-preview .rp-job-title {
+      font-weight: 700;
+      font-size: .9rem;
+      color: #1a1a2e;
+    }
+
+    .resume-preview .rp-job-meta {
+      font-size: .8rem;
+      color: #6b7280;
+    }
+
+    .resume-preview .rp-proj-name {
+      font-weight: 700;
+      font-size: .9rem;
+      color: #1a1a2e;
+    }
+
+    .resume-preview .rp-proj-tech {
+      font-size: .78rem;
+      color: #4361ee;
+      margin-left: 6px;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 10px;
+      align-items: start;
+      margin-bottom: 12px;
+    }
+
+    .remove-btn {
+      background: rgba(239, 68, 68, .15);
+      border: 1px solid rgba(239, 68, 68, .3);
+      color: #ef4444;
+      border-radius: 8px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: .8rem;
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .remove-btn:hover {
+      background: rgba(239, 68, 68, .25);
+    }
+
+    .add-btn {
+      background: rgba(99, 102, 241, .1);
+      border: 1px solid rgba(99, 102, 241, .3);
+      color: var(--accent-primary);
+      border-radius: 8px;
+      padding: 8px 16px;
+      cursor: pointer;
+      font-size: .85rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .step-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent-primary);
+      color: #fff;
+      font-weight: 700;
+      font-size: .85rem;
+      flex-shrink: 0;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .ats-score-bar {
+      height: 8px;
+      border-radius: 4px;
+      background: var(--border);
+      overflow: hidden;
+      margin-top: 6px;
+    }
+
+    .ats-score-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, #10b981, #6366f1);
+      transition: width .6s ease;
+    }
   </style>
 </head>
+
 <body>
-<div class="bg-orbs"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
-
-<nav class="navbar">
-  <div class="logo">⚡ SkillForge AI</div>
-  <div class="nav-links">
-    <a class="nav-link" href="/">Home</a>
-    <a class="nav-link" href="/dashboard">Dashboard</a>
-    <a class="nav-link" href="/assessment">Assessment</a>
-    <a class="nav-link" href="/roadmap">Roadmap</a>
-    <a class="nav-link active" href="/resume">Resume</a>
-  </div>
-  <button class="btn btn-secondary" onclick="logout()" style="padding:8px 16px;font-size:0.85rem">Sign Out</button>
-</nav>
-
-<div class="container" style="padding-top:36px;padding-bottom:60px;max-width:960px">
-  <div style="text-align:center;margin-bottom:40px">
-    <h1 style="font-size:2rem;font-weight:800;margin-bottom:8px">📄 Resume Intelligence</h1>
-    <p style="color:var(--text-secondary)">Parse your existing resume, add projects & experience, generate an ATS-optimised resume with HTML preview.</p>
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
   </div>
 
-  <div id="alert-area" style="margin-bottom:16px"></div>
-
-  <!-- STEP 1: Upload -->
-  <div class="card" style="margin-bottom:24px">
-    <div class="section-header">
-      <span class="step-badge">1</span>
-      <div>
-        <div class="card-title" style="margin-bottom:0">Upload Existing Resume <span style="color:var(--text-muted);font-size:.8rem">(optional)</span></div>
-        <p style="color:var(--text-secondary);font-size:.85rem;margin:0">PDF or DOCX • Max 5MB — we'll auto-extract your skills</p>
-      </div>
+  <nav class="navbar">
+    <div class="logo">⚡ SkillForge AI</div>
+    <div class="nav-links">
+      <a class="nav-link" href="/">Home</a>
+      <a class="nav-link" href="/dashboard">Dashboard</a>
+      <a class="nav-link" href="/assessment">Assessment</a>
+      <a class="nav-link" href="/roadmap">Roadmap</a>
+      <a class="nav-link active" href="/resume">Resume</a>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
-      <div>
-        <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()"
-          ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
-          <div class="upload-icon">📤</div>
-          <h3>Drag & Drop or Click</h3>
-          <p>PDF / DOCX • Max 5MB</p>
-          <input type="file" id="file-input" accept=".pdf,.docx,.doc" style="display:none" onchange="onFileSelect(event)" />
-        </div>
-        <div id="file-name" style="margin-top:8px;color:var(--text-secondary);font-size:.85rem;text-align:center"></div>
-        <button class="btn btn-primary" id="parse-btn" style="width:100%;margin-top:10px" onclick="parseResume()" disabled>
-          🔍 Parse Resume
-        </button>
-      </div>
-      <div>
-        <div class="card" id="parse-results" style="min-height:180px;background:rgba(255,255,255,.02)">
-          <p style="color:var(--text-secondary);text-align:center;padding:24px 0;font-size:.9rem">Upload a resume to see extracted skills</p>
+    <button class="btn btn-secondary" onclick="logout()" style="padding:8px 16px;font-size:0.85rem">Sign Out</button>
+  </nav>
+
+  <div class="container" style="padding-top:36px;padding-bottom:60px;max-width:960px">
+    <div style="text-align:center;margin-bottom:40px">
+      <h1 style="font-size:2rem;font-weight:800;margin-bottom:8px">📄 Resume Intelligence</h1>
+      <p style="color:var(--text-secondary)">Parse your existing resume, add projects & experience, generate an
+        ATS-optimised resume with HTML preview.</p>
+    </div>
+
+    <div id="alert-area" style="margin-bottom:16px"></div>
+
+    <!-- STEP 1: Upload -->
+    <div class="card" style="margin-bottom:24px">
+      <div class="section-header">
+        <span class="step-badge">1</span>
+        <div>
+          <div class="card-title" style="margin-bottom:0">Upload Existing Resume <span
+              style="color:var(--text-muted);font-size:.8rem">(optional)</span></div>
+          <p style="color:var(--text-secondary);font-size:.85rem;margin:0">PDF or DOCX • Max 5MB — we'll auto-extract
+            your skills</p>
         </div>
       </div>
-    </div>
-  </div>
-
-  <!-- STEP 2: Contact Info -->
-  <div class="card" style="margin-bottom:24px">
-    <div class="section-header">
-      <span class="step-badge">2</span>
-      <div class="card-title" style="margin-bottom:0">Contact Details</div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-      <div>
-        <label class="form-label">Phone Number</label>
-        <input class="form-input" id="phone-input" placeholder="+91 98765 43210" />
-      </div>
-      <div>
-        <label class="form-label">LinkedIn URL</label>
-        <input class="form-input" id="linkedin-input" placeholder="linkedin.com/in/yourname" />
-      </div>
-    </div>
-  </div>
-
-  <!-- STEP 3: Projects -->
-  <div class="card" style="margin-bottom:24px">
-    <div class="section-header">
-      <span class="step-badge">3</span>
-      <div>
-        <div class="card-title" style="margin-bottom:0">Projects</div>
-        <p style="color:var(--text-secondary);font-size:.85rem;margin:0">Weak titles are auto-enhanced into strong impact bullets</p>
-      </div>
-    </div>
-    <div id="projects-container"></div>
-    <button class="add-btn" onclick="addProject()">➕ Add Project</button>
-  </div>
-
-  <!-- STEP 4: Experience -->
-  <div class="card" style="margin-bottom:24px">
-    <div class="section-header">
-      <span class="step-badge">4</span>
-      <div class="card-title" style="margin-bottom:0">Work / Internship Experience <span style="color:var(--text-muted);font-size:.8rem">(optional)</span></div>
-    </div>
-    <div id="experience-container"></div>
-    <button class="add-btn" onclick="addExperience()">➕ Add Experience</button>
-  </div>
-
-  <!-- STEP 5: Generate + Preview -->
-  <div class="card" style="margin-bottom:24px">
-    <div class="section-header">
-      <span class="step-badge">5</span>
-      <div class="card-title" style="margin-bottom:0">Preview & Generate</div>
-    </div>
-    <p style="color:var(--text-secondary);font-size:.9rem;margin-bottom:20px">
-      Preview your resume first. If it looks good, download the PDF! Target role from your profile will be used.
-    </p>
-    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px">
-      <button class="btn btn-primary" onclick="previewResume()" id="preview-btn">👁️ Generate Preview</button>
-      <button class="btn btn-success" onclick="downloadResume()" id="gen-btn" style="display:none">📥 Download PDF</button>
-      <button class="btn btn-secondary" onclick="previewResume()" id="regen-btn" style="display:none">🔄 Regenerate</button>
-    </div>
-    <div id="gen-result"></div>
-  </div>
-
-  <!-- Resume Preview Panel -->
-  <div id="preview-panel" style="display:none;margin-bottom:40px">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px">
-      <h2 style="font-size:1.2rem;font-weight:700">📋 Resume Preview</h2>
-      <div style="display:flex;gap:10px;align-items:center">
-        <div style="font-size:.85rem;color:var(--text-secondary)">
-          ATS Score: <span id="ats-score-label" style="font-weight:700;color:var(--accent-primary)">—</span>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div>
+          <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()"
+            ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+            <div class="upload-icon">📤</div>
+            <h3>Drag & Drop or Click</h3>
+            <p>PDF / DOCX • Max 5MB</p>
+            <input type="file" id="file-input" accept=".pdf,.docx,.doc" style="display:none"
+              onchange="onFileSelect(event)" />
+          </div>
+          <div id="file-name" style="margin-top:8px;color:var(--text-secondary);font-size:.85rem;text-align:center">
+          </div>
+          <button class="btn btn-primary" id="parse-btn" style="width:100%;margin-top:10px" onclick="parseResume()"
+            disabled>
+            🔍 Parse Resume
+          </button>
         </div>
-        <div style="width:100px">
-          <div class="ats-score-bar"><div class="ats-score-fill" id="ats-score-bar" style="width:0%"></div></div>
+        <div>
+          <div class="card" id="parse-results" style="min-height:180px;background:rgba(255,255,255,.02)">
+            <p style="color:var(--text-secondary);text-align:center;padding:24px 0;font-size:.9rem">Upload a resume to
+              see extracted skills</p>
+          </div>
         </div>
       </div>
     </div>
-    <div id="resume-preview-content" class="resume-preview"></div>
-    <div style="text-align:center;margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-      <button class="btn btn-success" onclick="downloadResume()" id="gen-btn2">📥 Download PDF</button>
-      <button class="btn btn-secondary" onclick="previewResume()">🔄 Regenerate</button>
+
+    <!-- STEP 2: Contact Info -->
+    <div class="card" style="margin-bottom:24px">
+      <div class="section-header">
+        <span class="step-badge">2</span>
+        <div class="card-title" style="margin-bottom:0">Contact Details</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div>
+          <label class="form-label">Phone Number</label>
+          <input class="form-input" id="phone-input" placeholder="+91 98765 43210" />
+        </div>
+        <div>
+          <label class="form-label">LinkedIn URL</label>
+          <input class="form-input" id="linkedin-input" placeholder="linkedin.com/in/yourname" />
+        </div>
+      </div>
     </div>
+
+    <!-- STEP 3: Projects -->
+    <div class="card" style="margin-bottom:24px">
+      <div class="section-header">
+        <span class="step-badge">3</span>
+        <div>
+          <div class="card-title" style="margin-bottom:0">Projects</div>
+          <p style="color:var(--text-secondary);font-size:.85rem;margin:0">Weak titles are auto-enhanced into strong
+            impact bullets</p>
+        </div>
+      </div>
+      <div id="projects-container"></div>
+      <button class="add-btn" onclick="addProject()">➕ Add Project</button>
+    </div>
+
+    <!-- STEP 4: Experience -->
+    <div class="card" style="margin-bottom:24px">
+      <div class="section-header">
+        <span class="step-badge">4</span>
+        <div class="card-title" style="margin-bottom:0">Work / Internship Experience <span
+            style="color:var(--text-muted);font-size:.8rem">(optional)</span></div>
+      </div>
+      <div id="experience-container"></div>
+      <button class="add-btn" onclick="addExperience()">➕ Add Experience</button>
+    </div>
+
+    <!-- STEP 5: Generate + Preview -->
+    <div class="card" style="margin-bottom:24px">
+      <div class="section-header">
+        <span class="step-badge">5</span>
+        <div class="card-title" style="margin-bottom:0">Preview & Generate</div>
+      </div>
+      <p style="color:var(--text-secondary);font-size:.9rem;margin-bottom:20px">
+        Preview your resume first. If it looks good, download the PDF! Target role from your profile will be used.
+      </p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px">
+        <button class="btn btn-primary" onclick="previewResume()" id="preview-btn">👁️ Generate Preview</button>
+        <button class="btn btn-success" onclick="downloadResume()" id="gen-btn" style="display:none">📥 Download
+          PDF</button>
+        <button class="btn btn-secondary" onclick="previewResume()" id="regen-btn" style="display:none">🔄
+          Regenerate</button>
+      </div>
+      <div id="gen-result"></div>
+    </div>
+
+    <!-- Resume Preview Panel -->
+    <div id="preview-panel" style="display:none;margin-bottom:40px">
+      <div
+        style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px">
+        <h2 style="font-size:1.2rem;font-weight:700">📋 Resume Preview</h2>
+        <div style="display:flex;gap:10px;align-items:center">
+          <div style="font-size:.85rem;color:var(--text-secondary)">
+            ATS Score: <span id="ats-score-label" style="font-weight:700;color:var(--accent-primary)">—</span>
+          </div>
+          <div style="width:100px">
+            <div class="ats-score-bar">
+              <div class="ats-score-fill" id="ats-score-bar" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="resume-preview-content" class="resume-preview"></div>
+      <div style="text-align:center;margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <button class="btn btn-success" onclick="downloadResume()" id="gen-btn2">📥 Download PDF</button>
+        <button class="btn btn-secondary" onclick="previewResume()">🔄 Regenerate</button>
+      </div>
+    </div>
+
   </div>
 
-</div>
+  <footer>
+    <p>Made with love for Students of TEC</p>
+  </footer>
+  <script src="assets/app.js"></script>
+  <script>
+    let selectedFile = null;
+    let projectCount = 0;
+    let expCount = 0;
+    let lastResumeData = null;
 
-<footer><p>Made with love for Students of TEC</p></footer>
-<script src="assets/app.js"></script>
-<script>
-let selectedFile = null;
-let projectCount = 0;
-let expCount = 0;
-let lastResumeData = null;
+    // ── File Upload ────────────────────────────────────────────────────────────
+    function onDragOver(e) { e.preventDefault(); document.getElementById('upload-zone').classList.add('drag-over'); }
+    function onDragLeave(e) { document.getElementById('upload-zone').classList.remove('drag-over'); }
+    function onDrop(e) {
+      e.preventDefault();
+      document.getElementById('upload-zone').classList.remove('drag-over');
+      const f = e.dataTransfer.files[0]; if (f) setFile(f);
+    }
+    function onFileSelect(e) { const f = e.target.files[0]; if (f) setFile(f); }
+    function setFile(file) {
+      selectedFile = file;
+      document.getElementById('file-name').textContent = `📎 ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+      document.getElementById('parse-btn').disabled = false;
+    }
 
-// ── File Upload ────────────────────────────────────────────────────────────
-function onDragOver(e) { e.preventDefault(); document.getElementById('upload-zone').classList.add('drag-over'); }
-function onDragLeave(e) { document.getElementById('upload-zone').classList.remove('drag-over'); }
-function onDrop(e) {
-  e.preventDefault();
-  document.getElementById('upload-zone').classList.remove('drag-over');
-  const f = e.dataTransfer.files[0]; if (f) setFile(f);
-}
-function onFileSelect(e) { const f = e.target.files[0]; if (f) setFile(f); }
-function setFile(file) {
-  selectedFile = file;
-  document.getElementById('file-name').textContent = `📎 ${file.name} (${(file.size/1024).toFixed(1)} KB)`;
-  document.getElementById('parse-btn').disabled = false;
-}
+    async function parseResume() {
+      if (!selectedFile) return;
+      const btn = document.getElementById('parse-btn');
+      btn.disabled = true; btn.textContent = '⏳ Parsing...';
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+      try {
+        const token = localStorage.getItem('skillforge_token');
+        const resp = await fetch(`${API_BASE}/api/resume/parse`, {
+          method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: formData
+        });
+        const data = await resp.json();
+        if (!resp.ok) throw new Error(data.detail || 'Parse error');
+        renderParseResults(data);
+        showAlert('success', `✅ Found ${data.skill_count} skills in your resume!`);
+      } catch (e) { showAlert('error', '❌ ' + e.message); }
+      btn.disabled = false; btn.textContent = '🔍 Parse Resume';
+    }
 
-async function parseResume() {
-  if (!selectedFile) return;
-  const btn = document.getElementById('parse-btn');
-  btn.disabled = true; btn.textContent = '⏳ Parsing...';
-  const formData = new FormData();
-  formData.append('file', selectedFile);
-  try {
-    const token = localStorage.getItem('skillforge_token');
-    const resp = await fetch(`${API_BASE}/api/resume/parse`, {
-      method:'POST', headers:{ Authorization:`Bearer ${token}` }, body:formData
-    });
-    const data = await resp.json();
-    if (!resp.ok) throw new Error(data.detail || 'Parse error');
-    renderParseResults(data);
-    showAlert('success', `✅ Found ${data.skill_count} skills in your resume!`);
-  } catch(e) { showAlert('error', '❌ '+e.message); }
-  btn.disabled = false; btn.textContent = '🔍 Parse Resume';
-}
-
-function renderParseResults(data) {
-  document.getElementById('parse-results').innerHTML = `
+    function renderParseResults(data) {
+      document.getElementById('parse-results').innerHTML = `
     <div style="margin-bottom:12px">
       <div style="color:var(--text-muted);font-size:.75rem;margin-bottom:3px">NAME</div>
-      <div style="font-weight:600">${data.name||'—'}</div>
+      <div style="font-weight:600">${data.name || '—'}</div>
     </div>
     <div style="margin-bottom:12px">
       <div style="color:var(--text-muted);font-size:.75rem;margin-bottom:3px">EMAIL</div>
-      <div>${data.email||'—'}</div>
+      <div>${data.email || '—'}</div>
     </div>
     <div>
       <div style="color:var(--text-muted);font-size:.75rem;margin-bottom:6px">SKILLS (${data.skill_count})</div>
       <div class="skills-row">
-        ${(data.normalized_skills||[]).map(s=>`<span class="skill-tag">${s}</span>`).join('')||'—'}
+        ${(data.normalized_skills || []).map(s => `<span class="skill-tag">${s}</span>`).join('') || '—'}
       </div>
     </div>`;
-}
+    }
 
-// ── Projects ───────────────────────────────────────────────────────────────
-function addProject() {
-  const id = ++projectCount;
-  const container = document.getElementById('projects-container');
-  const div = document.createElement('div');
-  div.id = `proj-${id}`;
-  div.style.cssText = 'background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px';
-  div.innerHTML = `
+    // ── Projects ───────────────────────────────────────────────────────────────
+    function addProject() {
+      const id = ++projectCount;
+      const container = document.getElementById('projects-container');
+      const div = document.createElement('div');
+      div.id = `proj-${id}`;
+      div.style.cssText = 'background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px';
+      div.innerHTML = `
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
       <span style="font-weight:600;font-size:.9rem">Project ${id}</span>
       <button class="remove-btn" onclick="document.getElementById('proj-${id}').remove()">✕ Remove</button>
@@ -257,34 +441,34 @@ function addProject() {
       <label class="form-label">Project Link <span style="color:var(--text-muted)">(optional)</span></label>
       <input class="form-input" id="proj-link-${id}" placeholder="github.com/yourname/project" />
     </div>`;
-  container.appendChild(div);
-}
+      container.appendChild(div);
+    }
 
-function collectProjects() {
-  const projects = [];
-  document.querySelectorAll('[id^="proj-"]').forEach(el => {
-    const id = el.id.replace('proj-','');
-    const name = document.getElementById(`proj-name-${id}`)?.value?.trim();
-    if (!name) return;
-    const techStr = document.getElementById(`proj-tech-${id}`)?.value || '';
-    projects.push({
-      name,
-      description: document.getElementById(`proj-desc-${id}`)?.value?.trim() || '',
-      tech: techStr.split(',').map(t=>t.trim()).filter(Boolean),
-      link: document.getElementById(`proj-link-${id}`)?.value?.trim() || '',
-    });
-  });
-  return projects;
-}
+    function collectProjects() {
+      const projects = [];
+      document.querySelectorAll('[id^="proj-"]').forEach(el => {
+        const id = el.id.replace('proj-', '');
+        const name = document.getElementById(`proj-name-${id}`)?.value?.trim();
+        if (!name) return;
+        const techStr = document.getElementById(`proj-tech-${id}`)?.value || '';
+        projects.push({
+          name,
+          description: document.getElementById(`proj-desc-${id}`)?.value?.trim() || '',
+          tech: techStr.split(',').map(t => t.trim()).filter(Boolean),
+          link: document.getElementById(`proj-link-${id}`)?.value?.trim() || '',
+        });
+      });
+      return projects;
+    }
 
-// ── Experience ─────────────────────────────────────────────────────────────
-function addExperience() {
-  const id = ++expCount;
-  const container = document.getElementById('experience-container');
-  const div = document.createElement('div');
-  div.id = `exp-${id}`;
-  div.style.cssText = 'background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px';
-  div.innerHTML = `
+    // ── Experience ─────────────────────────────────────────────────────────────
+    function addExperience() {
+      const id = ++expCount;
+      const container = document.getElementById('experience-container');
+      const div = document.createElement('div');
+      div.id = `exp-${id}`;
+      div.style.cssText = 'background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px';
+      div.innerHTML = `
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
       <span style="font-weight:600;font-size:.9rem">Experience ${id}</span>
       <button class="remove-btn" onclick="document.getElementById('exp-${id}').remove()">✕ Remove</button>
@@ -307,74 +491,74 @@ function addExperience() {
       <label class="form-label">Key Achievements / Bullets <span style="color:var(--text-muted)">(one per line)</span></label>
       <textarea class="form-input" id="exp-bullets-${id}" rows="3" placeholder="Developed a sales forecasting model in Python...&#10;Reduced data pipeline latency by 40%..."></textarea>
     </div>`;
-  container.appendChild(div);
-}
+      container.appendChild(div);
+    }
 
-function collectExperience() {
-  const experience = [];
-  document.querySelectorAll('[id^="exp-"]').forEach(el => {
-    const id = el.id.replace('exp-','');
-    const company = document.getElementById(`exp-company-${id}`)?.value?.trim();
-    if (!company) return;
-    const bulletsText = document.getElementById(`exp-bullets-${id}`)?.value || '';
-    experience.push({
-      company,
-      role: document.getElementById(`exp-role-${id}`)?.value?.trim() || '',
-      duration: document.getElementById(`exp-duration-${id}`)?.value?.trim() || '',
-      bullets: bulletsText.split('\n').map(b=>b.trim()).filter(Boolean),
-    });
-  });
-  return experience;
-}
+    function collectExperience() {
+      const experience = [];
+      document.querySelectorAll('[id^="exp-"]').forEach(el => {
+        const id = el.id.replace('exp-', '');
+        const company = document.getElementById(`exp-company-${id}`)?.value?.trim();
+        if (!company) return;
+        const bulletsText = document.getElementById(`exp-bullets-${id}`)?.value || '';
+        experience.push({
+          company,
+          role: document.getElementById(`exp-role-${id}`)?.value?.trim() || '',
+          duration: document.getElementById(`exp-duration-${id}`)?.value?.trim() || '',
+          bullets: bulletsText.split('\n').map(b => b.trim()).filter(Boolean),
+        });
+      });
+      return experience;
+    }
 
-function buildPayload() {
-  return {
-    projects: collectProjects(),
-    experience: collectExperience(),
-    phone: document.getElementById('phone-input').value.trim(),
-    linkedin: document.getElementById('linkedin-input').value.trim(),
-  };
-}
+    function buildPayload() {
+      return {
+        projects: collectProjects(),
+        experience: collectExperience(),
+        phone: document.getElementById('phone-input').value.trim(),
+        linkedin: document.getElementById('linkedin-input').value.trim(),
+      };
+    }
 
-// ── Preview ────────────────────────────────────────────────────────────────
-async function previewResume() {
-  const btn = document.getElementById('preview-btn');
-  btn.disabled = true; btn.textContent = '⏳ Generating preview...';
-  document.getElementById('gen-result').innerHTML = '';
-  try {
-    const data = await apiFetch('/api/resume/preview', 'POST', buildPayload());
-    lastResumeData = data.resume;
-    renderHTMLPreview(data.resume);
-    document.getElementById('preview-panel').style.display = 'block';
-    document.getElementById('gen-btn').style.display = 'inline-flex';
-    document.getElementById('regen-btn').style.display = 'inline-flex';
-    document.getElementById('preview-panel').scrollIntoView({ behavior:'smooth', block:'start' });
-  } catch(e) {
-    document.getElementById('gen-result').innerHTML =
-      `<div class="alert alert-error">❌ ${e.message}</div>`;
-  }
-  btn.disabled = false; btn.textContent = '👁️ Generate Preview';
-}
+    // ── Preview ────────────────────────────────────────────────────────────────
+    async function previewResume() {
+      const btn = document.getElementById('preview-btn');
+      btn.disabled = true; btn.textContent = '⏳ Generating preview...';
+      document.getElementById('gen-result').innerHTML = '';
+      try {
+        const data = await apiFetch('/api/resume/preview', 'POST', buildPayload());
+        lastResumeData = data.resume;
+        renderHTMLPreview(data.resume);
+        document.getElementById('preview-panel').style.display = 'block';
+        document.getElementById('gen-btn').style.display = 'inline-flex';
+        document.getElementById('regen-btn').style.display = 'inline-flex';
+        document.getElementById('preview-panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } catch (e) {
+        document.getElementById('gen-result').innerHTML =
+          `<div class="alert alert-error">❌ ${e.message}</div>`;
+      }
+      btn.disabled = false; btn.textContent = '👁️ Generate Preview';
+    }
 
-function renderHTMLPreview(r) {
-  const skills = r.skills || [];
-  const tools = r.tools || [];
-  const education = r.education || [];
-  const projects = r.projects || [];
-  const experience = r.experience || [];
+    function renderHTMLPreview(r) {
+      const skills = r.skills || [];
+      const tools = r.tools || [];
+      const education = r.education || [];
+      const projects = r.projects || [];
+      const experience = r.experience || [];
 
-  // ATS score = % of required skills in resume
-  const atsTotal = (r.ats_keywords || []).length;
-  const atsMatched = skills.filter(s => (r.ats_keywords||[]).includes(s)).length;
-  const atsScore = atsTotal ? Math.min(100, Math.round((atsMatched / atsTotal) * 100) + 20) : 65;
-  document.getElementById('ats-score-label').textContent = atsScore + '%';
-  document.getElementById('ats-score-bar').style.width = atsScore + '%';
+      // ATS score = % of required skills in resume
+      const atsTotal = (r.ats_keywords || []).length;
+      const atsMatched = skills.filter(s => (r.ats_keywords || []).includes(s)).length;
+      const atsScore = atsTotal ? Math.min(100, Math.round((atsMatched / atsTotal) * 100) + 20) : 65;
+      document.getElementById('ats-score-label').textContent = atsScore + '%';
+      document.getElementById('ats-score-bar').style.width = atsScore + '%';
 
-  const contactParts = [r.email];
-  if (r.phone) contactParts.push(r.phone);
-  if (r.linkedin) contactParts.push(r.linkedin);
+      const contactParts = [r.email];
+      if (r.phone) contactParts.push(r.phone);
+      if (r.linkedin) contactParts.push(r.linkedin);
 
-  let html = `
+      let html = `
     <h1>${r.name || 'Your Name'}</h1>
     <div class="rp-contact">${contactParts.join(' &nbsp;|&nbsp; ')}</div>
     <hr class="rp-divider" />
@@ -383,73 +567,74 @@ function renderHTMLPreview(r) {
     <hr class="rp-thin" />
     <div class="rp-body">${r.summary || ''}</div>`;
 
-  if (skills.length) {
-    html += `<div class="rp-section">Technical Skills</div><hr class="rp-thin" />
-      <div class="rp-skill-row">${skills.map(s=>`<span class="rp-skill-pill">${s}</span>`).join('')}</div>`;
-  }
+      if (skills.length) {
+        html += `<div class="rp-section">Technical Skills</div><hr class="rp-thin" />
+      <div class="rp-skill-row">${skills.map(s => `<span class="rp-skill-pill">${s}</span>`).join('')}</div>`;
+      }
 
-  if (tools.length) {
-    html += `<div class="rp-section">Tools & Technologies</div><hr class="rp-thin" />
-      <div class="rp-skill-row">${tools.map(t=>`<span class="rp-tool-pill">${t}</span>`).join('')}</div>`;
-  }
+      if (tools.length) {
+        html += `<div class="rp-section">Tools & Technologies</div><hr class="rp-thin" />
+      <div class="rp-skill-row">${tools.map(t => `<span class="rp-tool-pill">${t}</span>`).join('')}</div>`;
+      }
 
-  if (experience.length) {
-    html += `<div class="rp-section">Experience</div><hr class="rp-thin" />`;
-    experience.forEach(exp => {
-      html += `<div class="rp-job-title">${exp.role || ''} <span class="rp-job-meta">| ${exp.company || ''}${exp.duration ? ' | '+exp.duration : ''}</span></div>`;
-      (exp.bullets||[]).forEach(b => { html += `<div class="rp-bullet">${b}</div>`; });
-      html += '<br/>';
-    });
-  }
+      if (experience.length) {
+        html += `<div class="rp-section">Experience</div><hr class="rp-thin" />`;
+        experience.forEach(exp => {
+          html += `<div class="rp-job-title">${exp.role || ''} <span class="rp-job-meta">| ${exp.company || ''}${exp.duration ? ' | ' + exp.duration : ''}</span></div>`;
+          (exp.bullets || []).forEach(b => { html += `<div class="rp-bullet">${b}</div>`; });
+          html += '<br/>';
+        });
+      }
 
-  if (projects.length) {
-    html += `<div class="rp-section">Projects</div><hr class="rp-thin" />`;
-    projects.forEach(p => {
-      const techStr = (p.tech||[]).join(', ');
-      html += `<div><span class="rp-proj-name">${p.name}</span>${techStr ? `<span class="rp-proj-tech">[${techStr}]</span>` : ''}</div>`;
-      if (p.description) html += `<div class="rp-bullet">${p.description}</div>`;
-      if (p.link) html += `<div class="rp-body" style="font-size:.78rem;color:#6b7280;margin-left:16px">🔗 ${p.link}</div>`;
-      html += '<div style="margin-bottom:8px"></div>';
-    });
-  }
+      if (projects.length) {
+        html += `<div class="rp-section">Projects</div><hr class="rp-thin" />`;
+        projects.forEach(p => {
+          const techStr = (p.tech || []).join(', ');
+          html += `<div><span class="rp-proj-name">${p.name}</span>${techStr ? `<span class="rp-proj-tech">[${techStr}]</span>` : ''}</div>`;
+          if (p.description) html += `<div class="rp-bullet">${p.description}</div>`;
+          if (p.link) html += `<div class="rp-body" style="font-size:.78rem;color:#6b7280;margin-left:16px">🔗 ${p.link}</div>`;
+          html += '<div style="margin-bottom:8px"></div>';
+        });
+      }
 
-  if (education.length) {
-    html += `<div class="rp-section">Education</div><hr class="rp-thin" />`;
-    education.forEach(e => { html += `<div class="rp-bullet">${e}</div>`; });
-  }
+      if (education.length) {
+        html += `<div class="rp-section">Education</div><hr class="rp-thin" />`;
+        education.forEach(e => { html += `<div class="rp-bullet">${e}</div>`; });
+      }
 
-  document.getElementById('resume-preview-content').innerHTML = html;
-}
+      document.getElementById('resume-preview-content').innerHTML = html;
+    }
 
-// ── Download PDF ───────────────────────────────────────────────────────────
-async function downloadResume() {
-  const btn = document.getElementById('gen-btn');
-  const btn2 = document.getElementById('gen-btn2');
-  [btn, btn2].forEach(b => { if(b) { b.disabled=true; b.textContent='⏳ Generating PDF...'; }});
-  try {
-    const token = localStorage.getItem('skillforge_token');
-    const resp = await fetch(`${API_BASE}/api/resume/generate`, {
-      method:'POST',
-      headers:{ Authorization:`Bearer ${token}`, 'Content-Type':'application/json' },
-      body: JSON.stringify(buildPayload()),
-    });
-    if (!resp.ok) { const err = await resp.json(); throw new Error(err.detail||'Generation failed'); }
-    const blob = await resp.blob();
-    const disp = resp.headers.get('Content-Disposition')||'';
-    const match = disp.match(/filename="(.+?)"/);
-    const filename = match ? match[1] : 'resume.pdf';
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href=url; a.download=filename; document.body.appendChild(a); a.click();
-    document.body.removeChild(a); URL.revokeObjectURL(url);
-    document.getElementById('gen-result').innerHTML =
-      `<div class="alert alert-success">✅ <strong>${filename}</strong> downloaded successfully!</div>`;
-  } catch(e) {
-    document.getElementById('gen-result').innerHTML =
-      `<div class="alert alert-error">❌ ${e.message}</div>`;
-  }
-  [btn, btn2].forEach(b => { if(b) { b.disabled=false; b.textContent=b.id==='gen-btn2'?'📥 Download PDF':'📥 Download PDF'; }});
-}
-</script>
+    // ── Download PDF ───────────────────────────────────────────────────────────
+    async function downloadResume() {
+      const btn = document.getElementById('gen-btn');
+      const btn2 = document.getElementById('gen-btn2');
+      [btn, btn2].forEach(b => { if (b) { b.disabled = true; b.textContent = '⏳ Generating PDF...'; } });
+      try {
+        const token = localStorage.getItem('skillforge_token');
+        const resp = await fetch(`${API_BASE}/api/resume/generate`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify(buildPayload()),
+        });
+        if (!resp.ok) { const err = await resp.json(); throw new Error(err.detail || 'Generation failed'); }
+        const blob = await resp.blob();
+        const disp = resp.headers.get('Content-Disposition') || '';
+        const match = disp.match(/filename="(.+?)"/);
+        const filename = match ? match[1] : 'resume.pdf';
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = filename; document.body.appendChild(a); a.click();
+        document.body.removeChild(a); URL.revokeObjectURL(url);
+        document.getElementById('gen-result').innerHTML =
+          `<div class="alert alert-success">✅ <strong>${filename}</strong> downloaded successfully!</div>`;
+      } catch (e) {
+        document.getElementById('gen-result').innerHTML =
+          `<div class="alert alert-error">❌ ${e.message}</div>`;
+      }
+      [btn, btn2].forEach(b => { if (b) { b.disabled = false; b.textContent = b.id === 'gen-btn2' ? '📥 Download PDF' : '📥 Download PDF'; } });
+    }
+  </script>
 </body>
+
 </html>

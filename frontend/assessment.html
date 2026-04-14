@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,389 +8,527 @@
   <meta name="description" content="Adaptive AI-powered skill assessment — difficulty adjusts based on your answers." />
   <link rel="stylesheet" href="assets/style.css" />
   <style>
-    .difficulty-badge { display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:0.75rem;font-weight:700;letter-spacing:.05em; }
-    .diff-easy { background:rgba(16,185,129,.15);color:#10b981; }
-    .diff-medium { background:rgba(245,158,11,.15);color:#f59e0b; }
-    .diff-hard { background:rgba(239,68,68,.15);color:#ef4444; }
-    .mcq-option { width:100%;text-align:left;padding:13px 18px;border:1.5px solid var(--border);border-radius:10px;background:transparent;color:var(--text-primary);cursor:pointer;margin-bottom:10px;font-size:0.95rem;transition:all .2s; }
-    .mcq-option:hover { border-color:var(--accent-primary);background:rgba(99,102,241,.08); }
-    .mcq-option.selected { border-color:var(--accent-primary);background:rgba(99,102,241,.15);font-weight:600; }
-    .mcq-option.correct { border-color:#10b981!important;background:rgba(16,185,129,.15)!important; }
-    .mcq-option.wrong { border-color:#ef4444!important;background:rgba(239,68,68,.1)!important; }
-    .adaptive-bar { height:8px;border-radius:4px;background:var(--border);overflow:hidden; }
-    .adaptive-fill { height:100%;border-radius:4px;transition:width .5s ease;background:linear-gradient(90deg,var(--accent-primary),var(--accent-secondary)); }
-    .feedback-box { padding:14px 18px;border-radius:10px;margin-top:16px;font-size:0.9rem;animation:fadeIn .3s ease; }
-    .feedback-correct { background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);color:#10b981; }
-    .feedback-wrong { background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);color:#ef4444; }
-    @keyframes fadeIn { from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)} }
-    .skill-result-card { background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:16px;padding:20px;text-align:center; }
-    .mode-toggle { display:flex;gap:8px;margin-bottom:24px;justify-content:center; }
-    .mode-btn { padding:10px 24px;border-radius:50px;border:1.5px solid var(--border);background:transparent;color:var(--text-secondary);cursor:pointer;font-size:.9rem;transition:all .2s; }
-    .mode-btn.active { border-color:var(--accent-primary);background:rgba(99,102,241,.15);color:var(--accent-primary);font-weight:700; }
+    .difficulty-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: .05em;
+    }
+
+    .diff-easy {
+      background: rgba(16, 185, 129, .15);
+      color: #10b981;
+    }
+
+    .diff-medium {
+      background: rgba(245, 158, 11, .15);
+      color: #f59e0b;
+    }
+
+    .diff-hard {
+      background: rgba(239, 68, 68, .15);
+      color: #ef4444;
+    }
+
+    .mcq-option {
+      width: 100%;
+      text-align: left;
+      padding: 13px 18px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      background: transparent;
+      color: var(--text-primary);
+      cursor: pointer;
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+      transition: all .2s;
+    }
+
+    .mcq-option:hover {
+      border-color: var(--accent-primary);
+      background: rgba(99, 102, 241, .08);
+    }
+
+    .mcq-option.selected {
+      border-color: var(--accent-primary);
+      background: rgba(99, 102, 241, .15);
+      font-weight: 600;
+    }
+
+    .mcq-option.correct {
+      border-color: #10b981 !important;
+      background: rgba(16, 185, 129, .15) !important;
+    }
+
+    .mcq-option.wrong {
+      border-color: #ef4444 !important;
+      background: rgba(239, 68, 68, .1) !important;
+    }
+
+    .adaptive-bar {
+      height: 8px;
+      border-radius: 4px;
+      background: var(--border);
+      overflow: hidden;
+    }
+
+    .adaptive-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width .5s ease;
+      background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    }
+
+    .feedback-box {
+      padding: 14px 18px;
+      border-radius: 10px;
+      margin-top: 16px;
+      font-size: 0.9rem;
+      animation: fadeIn .3s ease;
+    }
+
+    .feedback-correct {
+      background: rgba(16, 185, 129, .12);
+      border: 1px solid rgba(16, 185, 129, .3);
+      color: #10b981;
+    }
+
+    .feedback-wrong {
+      background: rgba(239, 68, 68, .1);
+      border: 1px solid rgba(239, 68, 68, .25);
+      color: #ef4444;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(4px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    .skill-result-card {
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .mode-toggle {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      justify-content: center;
+    }
+
+    .mode-btn {
+      padding: 10px 24px;
+      border-radius: 50px;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: .9rem;
+      transition: all .2s;
+    }
+
+    .mode-btn.active {
+      border-color: var(--accent-primary);
+      background: rgba(99, 102, 241, .15);
+      color: var(--accent-primary);
+      font-weight: 700;
+    }
   </style>
 </head>
+
 <body>
-<div class="bg-orbs"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
-
-<nav class="navbar">
-  <div class="logo">⚡ SkillForge AI</div>
-  <div class="nav-links">
-    <a class="nav-link" href="/">Home</a>
-    <a class="nav-link" href="/dashboard">Dashboard</a>
-    <a class="nav-link active" href="/assessment">Assessment</a>
-    <a class="nav-link" href="/roadmap">Roadmap</a>
-    <a class="nav-link" href="/resume">Resume</a>
-  </div>
-  <button class="btn btn-secondary" onclick="logout()" style="padding:8px 16px;font-size:0.85rem">Sign Out</button>
-</nav>
-
-<div class="container" style="padding-top:36px;padding-bottom:60px;max-width:780px">
-
-  <div style="text-align:center;margin-bottom:32px">
-    <h1 style="font-size:2rem;font-weight:800;margin-bottom:8px">🧠 Adaptive Skill Assessment</h1>
-    <p style="color:var(--text-secondary)">Difficulty adapts in real-time: answer correctly → harder questions. AI-powered weighted scoring.</p>
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
   </div>
 
-  <div id="alert-area" style="margin-bottom:16px"></div>
+  <nav class="navbar">
+    <div class="logo">⚡ SkillForge AI</div>
+    <div class="nav-links">
+      <a class="nav-link" href="/">Home</a>
+      <a class="nav-link" href="/dashboard">Dashboard</a>
+      <a class="nav-link active" href="/assessment">Assessment</a>
+      <a class="nav-link" href="/roadmap">Roadmap</a>
+      <a class="nav-link" href="/resume">Resume</a>
+    </div>
+    <button class="btn btn-secondary" onclick="logout()" style="padding:8px 16px;font-size:0.85rem">Sign Out</button>
+  </nav>
 
-  <!-- Start screen -->
-  <div id="start-screen" class="card" style="text-align:center;padding:48px">
-    <div style="font-size:3rem;margin-bottom:16px">🎯</div>
-    <h2 id="start-role-label" style="margin-bottom:8px">Ready to begin?</h2>
-    <p style="color:var(--text-secondary);margin-bottom:8px">
-      Questions are tagged by skill, difficulty level, and weight.<br/>
-      Adaptive mode selects harder questions as you perform well.
-    </p>
-    <div style="display:flex;gap:12px;justify-content:center;align-items:center;margin:20px 0 8px;flex-wrap:wrap">
-      <div style="display:flex;align-items:center;gap:6px;font-size:.85rem;color:var(--text-secondary)">
-        <span style="width:10px;height:10px;border-radius:50%;background:#10b981;display:inline-block"></span> Easy → warm up
+  <div class="container" style="padding-top:36px;padding-bottom:60px;max-width:780px">
+
+    <div style="text-align:center;margin-bottom:32px">
+      <h1 style="font-size:2rem;font-weight:800;margin-bottom:8px">🧠 Adaptive Skill Assessment</h1>
+      <p style="color:var(--text-secondary)">Difficulty adapts in real-time: answer correctly → harder questions.
+        AI-powered weighted scoring.</p>
+    </div>
+
+    <div id="alert-area" style="margin-bottom:16px"></div>
+
+    <!-- Start screen -->
+    <div id="start-screen" class="card" style="text-align:center;padding:48px">
+      <div style="font-size:3rem;margin-bottom:16px">🎯</div>
+      <h2 id="start-role-label" style="margin-bottom:8px">Ready to begin?</h2>
+      <p style="color:var(--text-secondary);margin-bottom:8px">
+        Questions are tagged by skill, difficulty level, and weight.<br />
+        Adaptive mode selects harder questions as you perform well.
+      </p>
+      <div style="display:flex;gap:12px;justify-content:center;align-items:center;margin:20px 0 8px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:6px;font-size:.85rem;color:var(--text-secondary)">
+          <span style="width:10px;height:10px;border-radius:50%;background:#10b981;display:inline-block"></span> Easy →
+          warm up
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:.85rem;color:var(--text-secondary)">
+          <span style="width:10px;height:10px;border-radius:50%;background:#f59e0b;display:inline-block"></span> Medium
+          → core
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:.85rem;color:var(--text-secondary)">
+          <span style="width:10px;height:10px;border-radius:50%;background:#ef4444;display:inline-block"></span> Hard →
+          advanced
+        </div>
       </div>
-      <div style="display:flex;align-items:center;gap:6px;font-size:.85rem;color:var(--text-secondary)">
-        <span style="width:10px;height:10px;border-radius:50%;background:#f59e0b;display:inline-block"></span> Medium → core
+      <div class="mode-toggle" style="margin-top:20px">
+        <button class="mode-btn active" id="btn-adaptive" onclick="setMode('adaptive')">🤖 Adaptive Mode</button>
+        <button class="mode-btn" id="btn-batch" onclick="setMode('batch')">📋 Practice Mode (all questions)</button>
       </div>
-      <div style="display:flex;align-items:center;gap:6px;font-size:.85rem;color:var(--text-secondary)">
-        <span style="width:10px;height:10px;border-radius:50%;background:#ef4444;display:inline-block"></span> Hard → advanced
+      <button class="btn btn-primary" onclick="startAssessment()"
+        style="margin-top:8px;padding:14px 36px;font-size:1rem">🚀 Start Assessment</button>
+    </div>
+
+    <!-- Adaptive quiz screen -->
+    <div id="quiz-screen" style="display:none">
+      <!-- Progress header -->
+      <div
+        style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+        <span style="color:var(--text-secondary);font-size:.9rem" id="q-counter">Question 1 of ?</span>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span id="q-skill-tag" class="skill-tag"></span>
+          <span id="q-diff-badge" class="difficulty-badge diff-medium">MEDIUM</span>
+        </div>
+      </div>
+      <div class="adaptive-bar" style="margin-bottom:24px">
+        <div class="adaptive-fill" id="q-progress" style="width:0%"></div>
+      </div>
+
+      <!-- Question card -->
+      <div class="card" id="question-card">
+        <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+          <span id="q-type-label"
+            style="font-size:.75rem;color:var(--text-muted);background:rgba(255,255,255,.05);padding:3px 10px;border-radius:20px"></span>
+          <span id="q-weight-label"
+            style="font-size:.75rem;color:var(--text-muted);background:rgba(255,255,255,.05);padding:3px 10px;border-radius:20px"></span>
+        </div>
+        <p id="q-prompt" style="font-size:1.1rem;font-weight:600;margin-bottom:20px;line-height:1.6"></p>
+        <div id="q-options"></div>
+        <div id="feedback-area"></div>
+        <div style="display:flex;justify-content:space-between;margin-top:20px">
+          <div></div>
+          <button class="btn btn-primary" id="next-btn" onclick="submitAdaptiveAnswer()" style="min-width:140px">Submit
+            Answer →</button>
+        </div>
       </div>
     </div>
-    <div class="mode-toggle" style="margin-top:20px">
-      <button class="mode-btn active" id="btn-adaptive" onclick="setMode('adaptive')">🤖 Adaptive Mode</button>
-      <button class="mode-btn" id="btn-batch" onclick="setMode('batch')">📋 Practice Mode (all questions)</button>
+
+    <!-- Batch quiz screen (practice mode) -->
+    <div id="batch-quiz-screen" style="display:none">
+      <div
+        style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+        <span style="color:var(--text-secondary);font-size:.9rem" id="bq-counter">Question 1 of N</span>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span id="bq-skill-tag" class="skill-tag"></span>
+          <span id="bq-diff-tag" class="difficulty-badge diff-medium"></span>
+        </div>
+      </div>
+      <div class="adaptive-bar" style="margin-bottom:24px">
+        <div class="adaptive-fill" id="bq-progress" style="width:0%"></div>
+      </div>
+      <div class="card">
+        <div style="display:flex;gap:8px;margin-bottom:8px">
+          <span id="bq-type-label"
+            style="font-size:.75rem;color:var(--text-muted);background:rgba(255,255,255,.05);padding:3px 10px;border-radius:20px"></span>
+          <span id="bq-weight-label"
+            style="font-size:.75rem;color:var(--text-muted);background:rgba(255,255,255,.05);padding:3px 10px;border-radius:20px"></span>
+        </div>
+        <p id="bq-prompt" style="font-size:1.1rem;font-weight:600;margin-bottom:20px;line-height:1.6"></p>
+        <div id="bq-options"></div>
+        <div style="display:flex;justify-content:space-between;margin-top:20px">
+          <button class="btn btn-secondary" id="bprev-btn" onclick="bPrevQuestion()">← Back</button>
+          <button class="btn btn-primary" id="bnext-btn" onclick="bNextQuestion()">Next →</button>
+        </div>
+      </div>
     </div>
-    <button class="btn btn-primary" onclick="startAssessment()" style="margin-top:8px;padding:14px 36px;font-size:1rem">🚀 Start Assessment</button>
+
+    <!-- Results screen -->
+    <div id="result-screen" style="display:none">
+      <div class="card" style="text-align:center;padding:40px;margin-bottom:24px">
+        <div style="font-size:3rem;margin-bottom:12px">🎉</div>
+        <h2 style="font-size:2rem;font-weight:800;margin-bottom:8px">Assessment Complete!</h2>
+        <div style="font-size:3rem;font-weight:900;color:var(--accent-primary);margin:12px 0" id="overall-score">—</div>
+        <p style="color:var(--text-secondary)">Overall Score</p>
+        <p style="color:var(--text-muted);font-size:.85rem;margin-top:8px" id="q-count-label"></p>
+      </div>
+
+      <div id="skill-results" class="grid-2" style="margin-bottom:24px"></div>
+
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <a href="/dashboard" class="btn btn-primary">📊 View Dashboard →</a>
+        <a href="/roadmap" class="btn btn-secondary">🗺️ See My Roadmap →</a>
+        <button class="btn btn-secondary" onclick="retakeAssessment()">🔄 Retake</button>
+      </div>
+    </div>
+
   </div>
 
-  <!-- Adaptive quiz screen -->
-  <div id="quiz-screen" style="display:none">
-    <!-- Progress header -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
-      <span style="color:var(--text-secondary);font-size:.9rem" id="q-counter">Question 1 of ?</span>
-      <div style="display:flex;gap:8px;align-items:center">
-        <span id="q-skill-tag" class="skill-tag"></span>
-        <span id="q-diff-badge" class="difficulty-badge diff-medium">MEDIUM</span>
-      </div>
-    </div>
-    <div class="adaptive-bar" style="margin-bottom:24px">
-      <div class="adaptive-fill" id="q-progress" style="width:0%"></div>
-    </div>
+  <footer>
+    <p>Made with love for Students of TEC</p>
+  </footer>
+  <script src="assets/app.js"></script>
+  <script>
+    // ── State ──────────────────────────────────────────────────────────────────
+    let mode = 'adaptive';
+    let currentQuestion = null;
+    let questionAnswered = false;
 
-    <!-- Question card -->
-    <div class="card" id="question-card">
-      <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap">
-        <span id="q-type-label" style="font-size:.75rem;color:var(--text-muted);background:rgba(255,255,255,.05);padding:3px 10px;border-radius:20px"></span>
-        <span id="q-weight-label" style="font-size:.75rem;color:var(--text-muted);background:rgba(255,255,255,.05);padding:3px 10px;border-radius:20px"></span>
-      </div>
-      <p id="q-prompt" style="font-size:1.1rem;font-weight:600;margin-bottom:20px;line-height:1.6"></p>
-      <div id="q-options"></div>
-      <div id="feedback-area"></div>
-      <div style="display:flex;justify-content:space-between;margin-top:20px">
-        <div></div>
-        <button class="btn btn-primary" id="next-btn" onclick="submitAdaptiveAnswer()" style="min-width:140px">Submit Answer →</button>
-      </div>
-    </div>
-  </div>
+    // Batch mode state
+    let batchQuestions = [];
+    let batchIndex = 0;
+    const batchAnswers = {};
 
-  <!-- Batch quiz screen (practice mode) -->
-  <div id="batch-quiz-screen" style="display:none">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
-      <span style="color:var(--text-secondary);font-size:.9rem" id="bq-counter">Question 1 of N</span>
-      <div style="display:flex;gap:8px;align-items:center">
-        <span id="bq-skill-tag" class="skill-tag"></span>
-        <span id="bq-diff-tag" class="difficulty-badge diff-medium"></span>
-      </div>
-    </div>
-    <div class="adaptive-bar" style="margin-bottom:24px">
-      <div class="adaptive-fill" id="bq-progress" style="width:0%"></div>
-    </div>
-    <div class="card">
-      <div style="display:flex;gap:8px;margin-bottom:8px">
-        <span id="bq-type-label" style="font-size:.75rem;color:var(--text-muted);background:rgba(255,255,255,.05);padding:3px 10px;border-radius:20px"></span>
-        <span id="bq-weight-label" style="font-size:.75rem;color:var(--text-muted);background:rgba(255,255,255,.05);padding:3px 10px;border-radius:20px"></span>
-      </div>
-      <p id="bq-prompt" style="font-size:1.1rem;font-weight:600;margin-bottom:20px;line-height:1.6"></p>
-      <div id="bq-options"></div>
-      <div style="display:flex;justify-content:space-between;margin-top:20px">
-        <button class="btn btn-secondary" id="bprev-btn" onclick="bPrevQuestion()">← Back</button>
-        <button class="btn btn-primary" id="bnext-btn" onclick="bNextQuestion()">Next →</button>
-      </div>
-    </div>
-  </div>
+    const DIFF_CLASS = { easy: 'diff-easy', medium: 'diff-medium', hard: 'diff-hard' };
+    const TYPE_LABELS = { single_mcq: 'Single correct', multi_mcq: 'Multiple correct — select all that apply', case_based: 'Case-based scenario' };
 
-  <!-- Results screen -->
-  <div id="result-screen" style="display:none">
-    <div class="card" style="text-align:center;padding:40px;margin-bottom:24px">
-      <div style="font-size:3rem;margin-bottom:12px">🎉</div>
-      <h2 style="font-size:2rem;font-weight:800;margin-bottom:8px">Assessment Complete!</h2>
-      <div style="font-size:3rem;font-weight:900;color:var(--accent-primary);margin:12px 0" id="overall-score">—</div>
-      <p style="color:var(--text-secondary)">Overall Score</p>
-      <p style="color:var(--text-muted);font-size:.85rem;margin-top:8px" id="q-count-label"></p>
-    </div>
+    function setMode(m) {
+      mode = m;
+      document.getElementById('btn-adaptive').classList.toggle('active', m === 'adaptive');
+      document.getElementById('btn-batch').classList.toggle('active', m === 'batch');
+    }
 
-    <div id="skill-results" class="grid-2" style="margin-bottom:24px"></div>
+    async function startAssessment() {
+      clearAlert();
+      if (mode === 'adaptive') await startAdaptive();
+      else await startBatch();
+    }
 
-    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-      <a href="/dashboard" class="btn btn-primary">📊 View Dashboard →</a>
-      <a href="/roadmap" class="btn btn-secondary">🗺️ See My Roadmap →</a>
-      <button class="btn btn-secondary" onclick="retakeAssessment()">🔄 Retake</button>
-    </div>
-  </div>
+    // ═══════════════════════════════════════════════════════════════════
+    // ADAPTIVE MODE
+    // ═══════════════════════════════════════════════════════════════════
 
-</div>
-
-<footer><p>Made with love for Students of TEC</p></footer>
-<script src="assets/app.js"></script>
-<script>
-// ── State ──────────────────────────────────────────────────────────────────
-let mode = 'adaptive';
-let currentQuestion = null;
-let questionAnswered = false;
-
-// Batch mode state
-let batchQuestions = [];
-let batchIndex = 0;
-const batchAnswers = {};
-
-const DIFF_CLASS = { easy: 'diff-easy', medium: 'diff-medium', hard: 'diff-hard' };
-const TYPE_LABELS = { single_mcq: 'Single correct', multi_mcq: 'Multiple correct — select all that apply', case_based: 'Case-based scenario' };
-
-function setMode(m) {
-  mode = m;
-  document.getElementById('btn-adaptive').classList.toggle('active', m === 'adaptive');
-  document.getElementById('btn-batch').classList.toggle('active', m === 'batch');
-}
-
-async function startAssessment() {
-  clearAlert();
-  if (mode === 'adaptive') await startAdaptive();
-  else await startBatch();
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// ADAPTIVE MODE
-// ═══════════════════════════════════════════════════════════════════
-
-async function startAdaptive() {
-  showAlert('info', '⏳ Starting adaptive assessment...');
-  try {
-    const data = await apiFetch('/api/assessment/adaptive/start', 'POST', {});
-    clearAlert();
-    if (data.done) { renderResults(data); return; }
-    document.getElementById('start-screen').style.display = 'none';
-    document.getElementById('quiz-screen').style.display = 'block';
-    renderAdaptiveQuestion(data);
-  } catch(e) {
-    showAlert('error', '❌ ' + (e.message || 'Could not start. Please log in and set a target role.'));
-  }
-}
-
-function renderAdaptiveQuestion(data) {
-  questionAnswered = false;
-  const q = data.question || data;
-  currentQuestion = q;
-  const prog = data.progress || {};
-
-  document.getElementById('q-counter').textContent =
-    `Question ${(prog.answered || 0) + 1} of ${prog.total || '?'}`;
-  document.getElementById('q-progress').style.width = (prog.percent || 0) + '%';
-  document.getElementById('q-skill-tag').textContent = q.skill || '';
-
-  const diff = q.difficulty || 'medium';
-  const diffBadge = document.getElementById('q-diff-badge');
-  diffBadge.textContent = diff.toUpperCase();
-  diffBadge.className = 'difficulty-badge ' + (DIFF_CLASS[diff] || 'diff-medium');
-
-  const typeMap = TYPE_LABELS;
-  document.getElementById('q-type-label').textContent = typeMap[q.type] || q.type;
-  document.getElementById('q-weight-label').textContent = `⚖️ Weight: ${q.weight || 1}x`;
-  document.getElementById('q-prompt').textContent = q.prompt;
-
-  const container = document.getElementById('q-options');
-  container.innerHTML = '';
-  const isMulti = q.type === 'multi_mcq';
-  const selected = [];
-
-  (q.options || []).forEach((opt, idx) => {
-    const btn = document.createElement('button');
-    btn.className = 'mcq-option';
-    btn.id = `opt-${idx}`;
-    btn.textContent = `${String.fromCharCode(65 + idx)}. ${opt}`;
-    btn.onclick = () => {
-      if (questionAnswered) return;
-      if (isMulti) {
-        const pos = selected.indexOf(idx);
-        if (pos === -1) { selected.push(idx); btn.classList.add('selected'); }
-        else { selected.splice(pos, 1); btn.classList.remove('selected'); }
-      } else {
-        container.querySelectorAll('.mcq-option').forEach(b => b.classList.remove('selected'));
-        selected.length = 0; selected.push(idx); btn.classList.add('selected');
+    async function startAdaptive() {
+      showAlert('info', '⏳ Starting adaptive assessment...');
+      try {
+        const data = await apiFetch('/api/assessment/adaptive/start', 'POST', {});
+        clearAlert();
+        if (data.done) { renderResults(data); return; }
+        document.getElementById('start-screen').style.display = 'none';
+        document.getElementById('quiz-screen').style.display = 'block';
+        renderAdaptiveQuestion(data);
+      } catch (e) {
+        showAlert('error', '❌ ' + (e.message || 'Could not start. Please log in and set a target role.'));
       }
-    };
-    container.appendChild(btn);
-  });
+    }
 
-  document.getElementById('next-btn').textContent = 'Submit Answer →';
-  document.getElementById('next-btn').disabled = false;
-  document.getElementById('feedback-area').innerHTML = '';
-  document.getElementById('next-btn').onclick = () => submitAdaptiveAnswer(q.id, selected, isMulti);
-}
+    function renderAdaptiveQuestion(data) {
+      questionAnswered = false;
+      const q = data.question || data;
+      currentQuestion = q;
+      const prog = data.progress || {};
 
-async function submitAdaptiveAnswer(qId, selected, isMulti) {
-  if (!qId) return;
-  const btn = document.getElementById('next-btn');
-  btn.disabled = true;
-  questionAnswered = true;
+      document.getElementById('q-counter').textContent =
+        `Question ${(prog.answered || 0) + 1} of ${prog.total || '?'}`;
+      document.getElementById('q-progress').style.width = (prog.percent || 0) + '%';
+      document.getElementById('q-skill-tag').textContent = q.skill || '';
 
-  try {
-    const result = await apiFetch('/api/assessment/adaptive/answer', 'POST', {
-      question_id: qId, selected: selected
-    });
+      const diff = q.difficulty || 'medium';
+      const diffBadge = document.getElementById('q-diff-badge');
+      diffBadge.textContent = diff.toUpperCase();
+      diffBadge.className = 'difficulty-badge ' + (DIFF_CLASS[diff] || 'diff-medium');
 
-    // Show feedback
-    const wasCorrect = result.correct;
-    const correctIdxs = result.correct_answers || [];
-    const opts = document.getElementById('q-options').querySelectorAll('.mcq-option');
-    opts.forEach((b, i) => {
-      b.onclick = null;
-      if (correctIdxs.includes(i)) b.classList.add('correct');
-      else if (selected.includes(i) && !correctIdxs.includes(i)) b.classList.add('wrong');
-    });
+      const typeMap = TYPE_LABELS;
+      document.getElementById('q-type-label').textContent = typeMap[q.type] || q.type;
+      document.getElementById('q-weight-label').textContent = `⚖️ Weight: ${q.weight || 1}x`;
+      document.getElementById('q-prompt').textContent = q.prompt;
 
-    document.getElementById('feedback-area').innerHTML = `
+      const container = document.getElementById('q-options');
+      container.innerHTML = '';
+      const isMulti = q.type === 'multi_mcq';
+      const selected = [];
+
+      (q.options || []).forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'mcq-option';
+        btn.id = `opt-${idx}`;
+        btn.textContent = `${String.fromCharCode(65 + idx)}. ${opt}`;
+        btn.onclick = () => {
+          if (questionAnswered) return;
+          if (isMulti) {
+            const pos = selected.indexOf(idx);
+            if (pos === -1) { selected.push(idx); btn.classList.add('selected'); }
+            else { selected.splice(pos, 1); btn.classList.remove('selected'); }
+          } else {
+            container.querySelectorAll('.mcq-option').forEach(b => b.classList.remove('selected'));
+            selected.length = 0; selected.push(idx); btn.classList.add('selected');
+          }
+        };
+        container.appendChild(btn);
+      });
+
+      document.getElementById('next-btn').textContent = 'Submit Answer →';
+      document.getElementById('next-btn').disabled = false;
+      document.getElementById('feedback-area').innerHTML = '';
+      document.getElementById('next-btn').onclick = () => submitAdaptiveAnswer(q.id, selected, isMulti);
+    }
+
+    async function submitAdaptiveAnswer(qId, selected, isMulti) {
+      if (!qId) return;
+      const btn = document.getElementById('next-btn');
+      btn.disabled = true;
+      questionAnswered = true;
+
+      try {
+        const result = await apiFetch('/api/assessment/adaptive/answer', 'POST', {
+          question_id: qId, selected: selected
+        });
+
+        // Show feedback
+        const wasCorrect = result.correct;
+        const correctIdxs = result.correct_answers || [];
+        const opts = document.getElementById('q-options').querySelectorAll('.mcq-option');
+        opts.forEach((b, i) => {
+          b.onclick = null;
+          if (correctIdxs.includes(i)) b.classList.add('correct');
+          else if (selected.includes(i) && !correctIdxs.includes(i)) b.classList.add('wrong');
+        });
+
+        document.getElementById('feedback-area').innerHTML = `
       <div class="feedback-box ${wasCorrect ? 'feedback-correct' : 'feedback-wrong'}">
         ${wasCorrect ? '✅ Correct! Well done.' : `❌ Incorrect. Correct answer${correctIdxs.length > 1 ? 's' : ''}: ${correctIdxs.map(i => String.fromCharCode(65 + i)).join(', ')}`}
         ${wasCorrect ? '<br/><span style="font-size:.8rem;opacity:.8">Difficulty may increase →</span>' : '<br/><span style="font-size:.8rem;opacity:.8">Difficulty may decrease →</span>'}
       </div>`;
 
-    if (result.done) {
-      btn.textContent = 'View Results →';
-      btn.disabled = false;
-      btn.onclick = () => renderResults(result);
-    } else if (result.next_question) {
-      btn.textContent = 'Next Question →';
-      btn.disabled = false;
-      btn.onclick = () => renderAdaptiveQuestion(result.next_question);
+        if (result.done) {
+          btn.textContent = 'View Results →';
+          btn.disabled = false;
+          btn.onclick = () => renderResults(result);
+        } else if (result.next_question) {
+          btn.textContent = 'Next Question →';
+          btn.disabled = false;
+          btn.onclick = () => renderAdaptiveQuestion(result.next_question);
+        }
+      } catch (e) {
+        showAlert('error', '❌ ' + e.message);
+        btn.disabled = false;
+      }
     }
-  } catch(e) {
-    showAlert('error', '❌ ' + e.message);
-    btn.disabled = false;
-  }
-}
 
-// ═══════════════════════════════════════════════════════════════════
-// BATCH (PRACTICE) MODE
-// ═══════════════════════════════════════════════════════════════════
+    // ═══════════════════════════════════════════════════════════════════
+    // BATCH (PRACTICE) MODE
+    // ═══════════════════════════════════════════════════════════════════
 
-async function startBatch() {
-  showAlert('info', '⏳ Loading questions...');
-  try {
-    const data = await apiFetch('/api/assessment/start');
-    batchQuestions = data.questions || [];
-    clearAlert();
-    if (!batchQuestions.length) { showAlert('error', '❌ No questions found.'); return; }
-    batchIndex = 0;
-    document.getElementById('start-screen').style.display = 'none';
-    document.getElementById('batch-quiz-screen').style.display = 'block';
-    renderBatchQuestion();
-  } catch(e) {
-    showAlert('error', '❌ ' + (e.message || 'Could not start. Please log in first.'));
-  }
-}
+    async function startBatch() {
+      showAlert('info', '⏳ Loading questions...');
+      try {
+        const data = await apiFetch('/api/assessment/start');
+        batchQuestions = data.questions || [];
+        clearAlert();
+        if (!batchQuestions.length) { showAlert('error', '❌ No questions found.'); return; }
+        batchIndex = 0;
+        document.getElementById('start-screen').style.display = 'none';
+        document.getElementById('batch-quiz-screen').style.display = 'block';
+        renderBatchQuestion();
+      } catch (e) {
+        showAlert('error', '❌ ' + (e.message || 'Could not start. Please log in first.'));
+      }
+    }
 
-function renderBatchQuestion() {
-  const q = batchQuestions[batchIndex];
-  const total = batchQuestions.length;
-  document.getElementById('bq-counter').textContent = `Question ${batchIndex + 1} of ${total}`;
-  document.getElementById('bq-progress').style.width = `${((batchIndex + 1) / total) * 100}%`;
-  document.getElementById('bq-skill-tag').textContent = q.skill || '';
+    function renderBatchQuestion() {
+      const q = batchQuestions[batchIndex];
+      const total = batchQuestions.length;
+      document.getElementById('bq-counter').textContent = `Question ${batchIndex + 1} of ${total}`;
+      document.getElementById('bq-progress').style.width = `${((batchIndex + 1) / total) * 100}%`;
+      document.getElementById('bq-skill-tag').textContent = q.skill || '';
 
-  const diff = q.difficulty || 'medium';
-  const tag = document.getElementById('bq-diff-tag');
-  tag.textContent = diff.toUpperCase();
-  tag.className = 'difficulty-badge ' + (DIFF_CLASS[diff] || 'diff-medium');
+      const diff = q.difficulty || 'medium';
+      const tag = document.getElementById('bq-diff-tag');
+      tag.textContent = diff.toUpperCase();
+      tag.className = 'difficulty-badge ' + (DIFF_CLASS[diff] || 'diff-medium');
 
-  document.getElementById('bq-type-label').textContent = TYPE_LABELS[q.type] || q.type;
-  document.getElementById('bq-weight-label').textContent = `⚖️ Weight: ${q.weight || 1}x`;
-  document.getElementById('bq-prompt').textContent = q.prompt;
+      document.getElementById('bq-type-label').textContent = TYPE_LABELS[q.type] || q.type;
+      document.getElementById('bq-weight-label').textContent = `⚖️ Weight: ${q.weight || 1}x`;
+      document.getElementById('bq-prompt').textContent = q.prompt;
 
-  const container = document.getElementById('bq-options');
-  container.innerHTML = '';
-  const isMulti = q.type === 'multi_mcq';
-  const sel = batchAnswers[q.id] || [];
+      const container = document.getElementById('bq-options');
+      container.innerHTML = '';
+      const isMulti = q.type === 'multi_mcq';
+      const sel = batchAnswers[q.id] || [];
 
-  (q.options || []).forEach((opt, idx) => {
-    const btn = document.createElement('button');
-    btn.className = 'mcq-option' + (sel.includes(idx) ? ' selected' : '');
-    btn.textContent = `${String.fromCharCode(65 + idx)}. ${opt}`;
-    btn.onclick = () => {
-      if (!batchAnswers[q.id]) batchAnswers[q.id] = [];
-      if (isMulti) {
-        const p = batchAnswers[q.id].indexOf(idx);
-        if (p === -1) batchAnswers[q.id].push(idx); else batchAnswers[q.id].splice(p, 1);
-      } else { batchAnswers[q.id] = [idx]; }
-      renderBatchQuestion();
-    };
-    container.appendChild(btn);
-  });
+      (q.options || []).forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'mcq-option' + (sel.includes(idx) ? ' selected' : '');
+        btn.textContent = `${String.fromCharCode(65 + idx)}. ${opt}`;
+        btn.onclick = () => {
+          if (!batchAnswers[q.id]) batchAnswers[q.id] = [];
+          if (isMulti) {
+            const p = batchAnswers[q.id].indexOf(idx);
+            if (p === -1) batchAnswers[q.id].push(idx); else batchAnswers[q.id].splice(p, 1);
+          } else { batchAnswers[q.id] = [idx]; }
+          renderBatchQuestion();
+        };
+        container.appendChild(btn);
+      });
 
-  document.getElementById('bprev-btn').disabled = batchIndex === 0;
-  document.getElementById('bnext-btn').textContent = batchIndex === total - 1 ? '✅ Submit All' : 'Next →';
-}
+      document.getElementById('bprev-btn').disabled = batchIndex === 0;
+      document.getElementById('bnext-btn').textContent = batchIndex === total - 1 ? '✅ Submit All' : 'Next →';
+    }
 
-function bPrevQuestion() { if (batchIndex > 0) { batchIndex--; renderBatchQuestion(); } }
+    function bPrevQuestion() { if (batchIndex > 0) { batchIndex--; renderBatchQuestion(); } }
 
-async function bNextQuestion() {
-  if (batchIndex < batchQuestions.length - 1) { batchIndex++; renderBatchQuestion(); }
-  else {
-    showAlert('info', '⏳ Scoring...');
-    try {
-      const result = await apiFetch('/api/assessment/evaluate', 'POST', batchAnswers);
-      clearAlert();
+    async function bNextQuestion() {
+      if (batchIndex < batchQuestions.length - 1) { batchIndex++; renderBatchQuestion(); }
+      else {
+        showAlert('info', '⏳ Scoring...');
+        try {
+          const result = await apiFetch('/api/assessment/evaluate', 'POST', batchAnswers);
+          clearAlert();
+          document.getElementById('batch-quiz-screen').style.display = 'none';
+          renderResults(result);
+        } catch (e) { showAlert('error', '❌ ' + e.message); }
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // RESULTS
+    // ═══════════════════════════════════════════════════════════════════
+
+    function renderResults(result) {
+      document.getElementById('quiz-screen').style.display = 'none';
       document.getElementById('batch-quiz-screen').style.display = 'none';
-      renderResults(result);
-    } catch(e) { showAlert('error', '❌ ' + e.message); }
-  }
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// RESULTS
-// ═══════════════════════════════════════════════════════════════════
-
-function renderResults(result) {
-  document.getElementById('quiz-screen').style.display = 'none';
-  document.getElementById('batch-quiz-screen').style.display = 'none';
-  document.getElementById('result-screen').style.display = 'block';
-  document.getElementById('overall-score').textContent = (result.overall_score || 0) + '%';
-  if (result.total_questions) {
-    document.getElementById('q-count-label').textContent =
-      `Answered ${result.total_questions} questions across ${Object.keys(result.skill_scores || {}).length} skills`;
-  }
-  const container = document.getElementById('skill-results');
-  const scores = result.skill_scores || {};
-  container.innerHTML = Object.entries(scores).map(([skill, data]) => {
-    const score = data.score;
-    const level = data.level;
-    const colorMap = { Advanced: '#10b981', Intermediate: '#f59e0b', Beginner: '#6366f1', Novice: '#ef4444' };
-    const col = colorMap[level] || '#6366f1';
-    return `<div class="skill-result-card">
+      document.getElementById('result-screen').style.display = 'block';
+      document.getElementById('overall-score').textContent = (result.overall_score || 0) + '%';
+      if (result.total_questions) {
+        document.getElementById('q-count-label').textContent =
+          `Answered ${result.total_questions} questions across ${Object.keys(result.skill_scores || {}).length} skills`;
+      }
+      const container = document.getElementById('skill-results');
+      const scores = result.skill_scores || {};
+      container.innerHTML = Object.entries(scores).map(([skill, data]) => {
+        const score = data.score;
+        const level = data.level;
+        const colorMap = { Advanced: '#10b981', Intermediate: '#f59e0b', Beginner: '#6366f1', Novice: '#ef4444' };
+        const col = colorMap[level] || '#6366f1';
+        return `<div class="skill-result-card">
       <div style="font-size:2rem;font-weight:900;color:${col}">${score}</div>
       <div style="font-weight:700;margin:6px 0;font-size:.95rem">${skill}</div>
       <span class="badge"style="background:${col}20;color:${col};padding:3px 12px;border-radius:20px;font-size:.78rem;font-weight:700">${level}</span>
@@ -399,23 +538,24 @@ function renderResults(result) {
         </div>
       </div>
     </div>`;
-  }).join('');
-}
+      }).join('');
+    }
 
-function retakeAssessment() {
-  document.getElementById('result-screen').style.display = 'none';
-  document.getElementById('start-screen').style.display = 'block';
-  currentQuestion = null; batchIndex = 0; Object.keys(batchAnswers).forEach(k => delete batchAnswers[k]);
-}
+    function retakeAssessment() {
+      document.getElementById('result-screen').style.display = 'none';
+      document.getElementById('start-screen').style.display = 'block';
+      currentQuestion = null; batchIndex = 0; Object.keys(batchAnswers).forEach(k => delete batchAnswers[k]);
+    }
 
-// ── Init ───────────────────────────────────────────────────────────────────
-(async () => {
-  const user = await getProfile();
-  if (user) {
-    document.getElementById('start-role-label').textContent =
-      `Assessment for: ${user.target_role || 'your target role'}`;
-  }
-})();
-</script>
+    // ── Init ───────────────────────────────────────────────────────────────────
+    (async () => {
+      const user = await getProfile();
+      if (user) {
+        document.getElementById('start-role-label').textContent =
+          `Assessment for: ${user.target_role || 'your target role'}`;
+      }
+    })();
+  </script>
 </body>
+
 </html>
