@@ -1,0 +1,178 @@
+{
+  "TCS": {
+    "Data Analyst": {
+      "SQL": "High",
+      "Excel": "High",
+      "Python": "Medium",
+      "Data Visualization": "Medium",
+      "Statistics": "Low"
+    },
+    "Java Backend Developer": {
+      "Java": "High",
+      "Spring Boot": "High",
+      "SQL": "Medium",
+      "REST APIs": "High",
+      "System Design": "Medium"
+    },
+    "AI Engineer": {
+      "Python": "High",
+      "Machine Learning": "High",
+      "Deep Learning": "Medium",
+      "Statistics": "Medium",
+      "Linear Algebra": "Low"
+    }
+  },
+  "Infosys": {
+    "Web Developer": {
+      "HTML": "High",
+      "CSS": "High",
+      "JavaScript": "High",
+      "React": "Medium",
+      "APIs": "Medium"
+    },
+    "Data Scientist": {
+      "Python": "High",
+      "Statistics": "High",
+      "Machine Learning": "High",
+      "Data Visualization": "Medium",
+      "SQL": "Medium"
+    },
+    "Cloud Engineer": {
+      "Cloud Platform": "High",
+      "Docker": "High",
+      "Kubernetes": "Medium",
+      "Linux": "Medium",
+      "Networking": "Low"
+    }
+  },
+  "Wipro": {
+    "Full Stack Developer": {
+      "JavaScript": "High",
+      "React": "High",
+      "Node.js": "High",
+      "SQL": "Medium",
+      "HTML": "Medium",
+      "CSS": "Medium"
+    },
+    "DevOps Engineer": {
+      "Docker": "High",
+      "Kubernetes": "High",
+      "CI/CD": "High",
+      "Linux": "High",
+      "Cloud Platform": "Medium"
+    }
+  },
+  "Accenture": {
+    "Data Analyst": {
+      "SQL": "High",
+      "Excel": "High",
+      "Data Visualization": "High",
+      "Python": "Low",
+      "Statistics": "Medium"
+    },
+    "Cybersecurity Analyst": {
+      "Networking": "High",
+      "Linux": "High",
+      "Security Tools": "High",
+      "Python": "Medium",
+      "Cryptography": "Medium"
+    }
+  },
+  "Cognizant": {
+    "Java Backend Developer": {
+      "Java": "High",
+      "Spring Boot": "High",
+      "SQL": "High",
+      "REST APIs": "Medium",
+      "System Design": "Low"
+    },
+    "Data Scientist": {
+      "Python": "High",
+      "Machine Learning": "High",
+      "Statistics": "High",
+      "Deep Learning": "Medium",
+      "SQL": "Low"
+    }
+  },
+  "Capgemini": {
+    "Full Stack Developer": {
+      "JavaScript": "High",
+      "React": "High",
+      "Node.js": "Medium",
+      "HTML": "High",
+      "CSS": "Medium",
+      "SQL": "Low"
+    },
+    "Cloud Engineer": {
+      "Cloud Platform": "High",
+      "Docker": "High",
+      "Kubernetes": "High",
+      "Linux": "Medium",
+      "CI/CD": "Medium"
+    }
+  },
+  "HCL": {
+    "AI Engineer": {
+      "Python": "High",
+      "Machine Learning": "High",
+      "Deep Learning": "High",
+      "Linear Algebra": "Medium",
+      "Statistics": "Medium"
+    },
+    "Mobile App Developer": {
+      "Java": "High",
+      "Kotlin": "High",
+      "React Native": "Medium",
+      "APIs": "High",
+      "UI/UX Design": "Low"
+    }
+  },
+  "Amazon": {
+    "Data Scientist": {
+      "Python": "High",
+      "Statistics": "High",
+      "Machine Learning": "High",
+      "SQL": "High",
+      "Data Visualization": "Medium"
+    },
+    "Cloud Engineer": {
+      "Cloud Platform": "High",
+      "Docker": "High",
+      "Kubernetes": "High",
+      "Linux": "High",
+      "Networking": "Medium"
+    }
+  },
+  "Google": {
+    "AI Engineer": {
+      "Python": "High",
+      "Machine Learning": "High",
+      "Deep Learning": "High",
+      "Linear Algebra": "High",
+      "Statistics": "High"
+    },
+    "Full Stack Developer": {
+      "JavaScript": "High",
+      "React": "High",
+      "Node.js": "High",
+      "SQL": "Medium",
+      "System Design": "High"
+    }
+  },
+  "Microsoft": {
+    "Cloud Engineer": {
+      "Cloud Platform": "High",
+      "Docker": "High",
+      "Kubernetes": "High",
+      "CI/CD": "High",
+      "Linux": "Medium"
+    },
+    "Java Backend Developer": {
+      "Java": "High",
+      "Spring Boot": "Medium",
+      "REST APIs": "High",
+      "SQL": "High",
+      "System Design": "High"
+    }
+  }
+}

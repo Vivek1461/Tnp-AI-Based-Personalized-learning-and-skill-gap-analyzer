@@ -1,0 +1,679 @@
+{
+  "Python": {
+    "beginner": {
+      "title": "Python Fundamentals",
+      "time_weeks": 2,
+      "concepts": ["Variables & data types", "Conditional logic & loops", "Functions & scope", "Lists, tuples, dicts, sets", "File I/O basics", "Error handling with try/except"],
+      "tasks": ["Write a calculator program", "Build a simple To-Do list CLI app", "Parse a CSV file and compute averages"],
+      "mini_project": "Command-line Student Grade Tracker — reads marks from CSV, computes stats, prints report",
+      "milestone": "Can write standalone Python scripts that read data, process it, and handle errors",
+      "resources": [
+        {"name": "Python for Everybody (Coursera — free audit)", "url": "https://www.coursera.org/specializations/python", "type": "course"},
+        {"name": "freeCodeCamp – Python for Beginners (YouTube)", "url": "https://www.youtube.com/watch?v=rfscVS0vtbw", "type": "video"},
+        {"name": "Official Python Docs – Tutorial", "url": "https://docs.python.org/3/tutorial/", "type": "docs"}
+      ]
+    },
+    "intermediate": {
+      "title": "OOP, Modules & Data Processing",
+      "time_weeks": 2,
+      "concepts": ["Classes & inheritance", "Decorators & generators", "List comprehensions", "Pandas & NumPy basics", "Virtual environments & pip", "Lambda, map, filter, zip"],
+      "tasks": ["Build a class-based Bank Account system", "Use Pandas to analyze a real dataset (Kaggle)", "Write unit tests with pytest"],
+      "mini_project": "Exploratory Data Analysis (EDA) on Titanic or Iris dataset using Pandas and Matplotlib",
+      "milestone": "Can analyse real datasets, write object-oriented Python, and use common data libraries",
+      "resources": [
+        {"name": "Real Python – Intermediate Guide", "url": "https://realpython.com/", "type": "article"},
+        {"name": "Corey Schafer – OOP Python (YouTube)", "url": "https://www.youtube.com/playlist?list=PL-osiE80TeTsqhIuOqKhwlXsIBIdSeYtc", "type": "video"},
+        {"name": "Kaggle – Pandas Course (Free)", "url": "https://www.kaggle.com/learn/pandas", "type": "course"}
+      ]
+    },
+    "advanced": {
+      "title": "Async, Testing, Performance & Packaging",
+      "time_weeks": 3,
+      "concepts": ["Async/await & concurrency", "Context managers", "Metaclasses & descriptors", "Profiling & optimization", "Packaging with setuptools", "Type hints & mypy"],
+      "tasks": ["Write an async web scraper with aiohttp", "Profile and optimize a slow function", "Publish a small package to TestPyPI"],
+      "mini_project": "Async REST API client that aggregates data from 3 public APIs concurrently",
+      "milestone": "Can write production-ready Python: typed, tested, async-capable, and optimized",
+      "resources": [
+        {"name": "Python Tricks (Book – Real Python)", "url": "https://realpython.com/products/python-tricks-book/", "type": "book"},
+        {"name": "Python Cookbook – O'Reilly", "url": "https://www.oreilly.com/library/view/python-cookbook-3rd/9781449357337/", "type": "book"},
+        {"name": "Arjan Codes – Clean Python (YouTube)", "url": "https://www.youtube.com/c/ArjanCodes", "type": "video"}
+      ]
+    },
+    "industry_ready": {
+      "title": "Production Python: CI/CD, APIs & Architecture",
+      "time_weeks": 3,
+      "concepts": ["FastAPI / Django REST", "Docker + Python apps", "GitHub Actions CI", "Logging & monitoring", "Design patterns in Python", "Security best practices"],
+      "tasks": ["Deploy a FastAPI service in Docker", "Set up GitHub Actions pipeline with tests", "Implement JWT auth in a REST API"],
+      "mini_project": "Full REST API microservice with FastAPI, PostgreSQL, Dockerized, with CI/CD pipeline",
+      "milestone": "Can design, build, test, and deploy Python-based services to production",
+      "resources": [
+        {"name": "FastAPI Official Docs", "url": "https://fastapi.tiangolo.com/", "type": "docs"},
+        {"name": "Full Stack FastAPI Template (GitHub)", "url": "https://github.com/tiangolo/full-stack-fastapi-template", "type": "docs"},
+        {"name": "TechWorld with Nana – Docker for Developers (YouTube)", "url": "https://www.youtube.com/watch?v=3c-iBn73dDE", "type": "video"}
+      ]
+    }
+  },
+  "SQL": {
+    "beginner": {
+      "title": "SQL Basics — SELECT, WHERE, JOINs",
+      "time_weeks": 1,
+      "concepts": ["SELECT, FROM, WHERE", "ORDER BY, LIMIT", "INNER JOIN, LEFT JOIN", "INSERT, UPDATE, DELETE", "Primary keys & foreign keys", "NULL handling"],
+      "tasks": ["Complete SQLZoo beginner track", "Write 10 queries on a sample sales database", "Create your own table and insert data"],
+      "mini_project": "Query a sample e-commerce database to answer 5 business questions (top products, revenue by region, etc.)",
+      "milestone": "Can write basic SELECT with filters and joins on real tables",
+      "resources": [
+        {"name": "SQLZoo – Interactive SQL", "url": "https://sqlzoo.net/", "type": "interactive"},
+        {"name": "freeCodeCamp – SQL for Beginners (YouTube)", "url": "https://www.youtube.com/watch?v=HXV3zeQKqGY", "type": "video"},
+        {"name": "W3Schools SQL Tutorial", "url": "https://www.w3schools.com/sql/", "type": "docs"}
+      ]
+    },
+    "intermediate": {
+      "title": "Aggregations, Subqueries & Performance",
+      "time_weeks": 1,
+      "concepts": ["GROUP BY & HAVING", "Aggregate functions (COUNT, SUM, AVG)", "Subqueries & CTEs (WITH)", "CASE WHEN statements", "String & date functions", "Indexes and performance basics"],
+      "tasks": ["Solve 20 HackerRank SQL challenges", "Write a report using GROUP BY + HAVING", "Rewrite a subquery as a CTE"],
+      "mini_project": "Monthly sales analytics report using CTEs and window functions on a mock retail dataset",
+      "milestone": "Can write complex analytical queries for business reporting tasks",
+      "resources": [
+        {"name": "Mode Analytics SQL Tutorial", "url": "https://mode.com/sql-tutorial/", "type": "interactive"},
+        {"name": "Khan Academy – SQL", "url": "https://www.khanacademy.org/computing/computer-programming/sql", "type": "course"},
+        {"name": "LeetCode SQL Problems", "url": "https://leetcode.com/problemset/database/", "type": "interactive"}
+      ]
+    },
+    "advanced": {
+      "title": "Window Functions, Normalization & Optimization",
+      "time_weeks": 2,
+      "concepts": ["ROW_NUMBER, RANK, DENSE_RANK", "LEAD, LAG, NTILE", "Database normalization (1NF–3NF)", "Query execution plans (EXPLAIN)", "Index types & strategies", "Partitioning"],
+      "tasks": ["Solve window function problems on LeetCode", "EXPLAIN a slow query and add an index", "Normalize a denormalized dataset to 3NF"],
+      "mini_project": "Customer Cohort Retention Analysis using window functions in PostgreSQL",
+      "milestone": "Can write advanced analytical SQL and diagnose/optimize slow queries",
+      "resources": [
+        {"name": "Use the Index, Luke (free book)", "url": "https://use-the-index-luke.com/", "type": "book"},
+        {"name": "PostgreSQL Docs – Window Functions", "url": "https://www.postgresql.org/docs/current/tutorial-window.html", "type": "docs"},
+        {"name": "Ankit Bansal – Advanced SQL (YouTube)", "url": "https://www.youtube.com/c/ankitbansal6", "type": "video"}
+      ]
+    },
+    "industry_ready": {
+      "title": "SQL in Production: DBT, Pipelines & Warehouses",
+      "time_weeks": 2,
+      "concepts": ["DBT (Data Build Tool) basics", "OLAP vs OLTP", "BigQuery / Snowflake / Redshift", "Stored procedures & triggers", "Data modeling for analytics", "SQL in Python (SQLAlchemy, psycopg2)"],
+      "tasks": ["Build a DBT model for a sample dataset", "Connect Python to PostgreSQL using SQLAlchemy", "Write a stored procedure for automated reporting"],
+      "mini_project": "End-to-end data pipeline: Python ingests CSV → PostgreSQL → DBT transforms → Tableau/Metabase dashboard",
+      "milestone": "Can design and manage databases for production data pipelines",
+      "resources": [
+        {"name": "DBT Fundamentals Course (free)", "url": "https://courses.getdbt.com/courses/fundamentals", "type": "course"},
+        {"name": "BigQuery Sandbox (free tier)", "url": "https://cloud.google.com/bigquery", "type": "docs"},
+        {"name": "SQLAlchemy Docs", "url": "https://docs.sqlalchemy.org/", "type": "docs"}
+      ]
+    }
+  },
+  "Machine Learning": {
+    "beginner": {
+      "title": "ML Concepts — Regression, Classification, Clustering",
+      "time_weeks": 3,
+      "concepts": ["Supervised vs unsupervised learning", "Linear & logistic regression", "Decision trees & KNN", "K-Means clustering", "Train/test split & evaluation metrics", "Scikit-learn basics"],
+      "tasks": ["Predict house prices with linear regression", "Classify Iris flowers with Decision Tree", "Cluster mall customers with K-Means"],
+      "mini_project": "Titanic survival prediction using Logistic Regression and scikit-learn with full EDA",
+      "milestone": "Can implement and evaluate basic ML algorithms on tabular datasets",
+      "resources": [
+        {"name": "Machine Learning by Andrew Ng (Coursera)", "url": "https://www.coursera.org/learn/machine-learning", "type": "course"},
+        {"name": "Google ML Crash Course (Free)", "url": "https://developers.google.com/machine-learning/crash-course", "type": "course"},
+        {"name": "StatQuest – ML Clearly Explained (YouTube)", "url": "https://www.youtube.com/c/joshstarmer", "type": "video"}
+      ]
+    },
+    "intermediate": {
+      "title": "Feature Engineering, Ensembles & Model Evaluation",
+      "time_weeks": 3,
+      "concepts": ["Feature engineering & selection", "One-hot encoding, scaling, imputation", "Cross-validation & GridSearchCV", "Random Forest & Gradient Boosting", "Confusion matrix, precision, recall, F1", "Pipelines with scikit-learn"],
+      "tasks": ["Build a full ML pipeline with preprocessing steps", "Tune hyperparameters with GridSearchCV", "Compare 5 models on the same dataset"],
+      "mini_project": "Customer Churn Predictor using XGBoost with feature importance analysis and SHAP values",
+      "milestone": "Can build production-style ML pipelines with proper evaluation and model selection",
+      "resources": [
+        {"name": "Hands-On Machine Learning (Géron) – free chapters", "url": "https://github.com/ageron/handson-ml3", "type": "book"},
+        {"name": "Kaggle ML Courses (Free)", "url": "https://www.kaggle.com/learn", "type": "interactive"},
+        {"name": "Krish Naik – ML Full Course (YouTube)", "url": "https://www.youtube.com/user/krishnaik06", "type": "video"}
+      ]
+    },
+    "advanced": {
+      "title": "Advanced Algorithms, Explainability & MLOps",
+      "time_weeks": 4,
+      "concepts": ["XGBoost, LightGBM, CatBoost", "SHAP & LIME for explainability", "Imbalanced data (SMOTE, class weights)", "Hyperparameter optimization (Optuna)", "Time series ML", "A/B testing models"],
+      "tasks": ["Implement SHAP for a black-box model", "Handle severe class imbalance with SMOTE", "Build a time series forecasting model"],
+      "mini_project": "End-to-end fraud detection system with XGBoost, SMOTE, SHAP explainability, and model card",
+      "milestone": "Can build and explain advanced ML models meeting data science interview standards",
+      "resources": [
+        {"name": "Full Stack Deep Learning (FSDL)", "url": "https://fullstackdeeplearning.com/", "type": "course"},
+        {"name": "Made With ML — ML Ops Basics", "url": "https://madewithml.com/", "type": "article"},
+        {"name": "SHAP Documentation", "url": "https://shap.readthedocs.io/", "type": "docs"}
+      ]
+    },
+    "industry_ready": {
+      "title": "MLOps: Deployment, Monitoring & Serving",
+      "time_weeks": 4,
+      "concepts": ["MLflow experiment tracking", "Model serialization (pickle, joblib, ONNX)", "FastAPI model serving", "Docker for ML models", "Model monitoring & drift detection", "Feature stores"],
+      "tasks": ["Track experiments with MLflow", "Serve a model as a REST API with FastAPI", "Containerize an ML model with Docker"],
+      "mini_project": "Production ML system: model trained, tracked with MLflow, served via FastAPI, containerized with Docker, with drift alert",
+      "milestone": "Can deploy ML models to production with monitoring — TNP/interview ready",
+      "resources": [
+        {"name": "MLflow Docs", "url": "https://mlflow.org/docs/latest/index.html", "type": "docs"},
+        {"name": "Chip Huyen – Designing ML Systems (book)", "url": "https://www.oreilly.com/library/view/designing-machine-learning/9781098107956/", "type": "book"},
+        {"name": "Abhishek Thakur – ML Deployment (YouTube)", "url": "https://www.youtube.com/c/AbhishekThakurAbhi", "type": "video"}
+      ]
+    }
+  },
+  "Data Structures & Algorithms": {
+    "beginner": {
+      "title": "Arrays, Strings, Linked Lists & Complexity",
+      "time_weeks": 2,
+      "concepts": ["Big-O notation", "Arrays & strings manipulation", "Singly & doubly linked lists", "Stack & Queue implementations", "Two-pointer technique", "Sliding window"],
+      "tasks": ["Reverse a linked list", "Solve 15 easy LeetCode array/string problems", "Implement a stack using arrays"],
+      "mini_project": "Solve 30 LeetCode Easy problems — track patterns (two pointers, hash maps)",
+      "milestone": "Can solve easy DSA problems and explain time/space complexity",
+      "resources": [
+        {"name": "NeetCode – DSA for Beginners (YouTube)", "url": "https://www.youtube.com/c/NeetCode", "type": "video"},
+        {"name": "CS50 – Algorithms (Harvard, Free)", "url": "https://cs50.harvard.edu/x/", "type": "course"},
+        {"name": "VisuAlgo – Algorithm Animations", "url": "https://visualgo.net/", "type": "interactive"}
+      ]
+    },
+    "intermediate": {
+      "title": "Trees, Graphs, Sorting & Recursion",
+      "time_weeks": 3,
+      "concepts": ["Binary trees & BSTs", "Tree traversals (DFS, BFS)", "Graph representations", "Sorting algorithms (merge, quick, heap)", "Recursion & backtracking", "Binary search variations"],
+      "tasks": ["Implement BFS and DFS from scratch", "Solve 20 LeetCode medium tree problems", "Implement quicksort and mergesort"],
+      "mini_project": "Build a pathfinder visualizer (BFS on a grid) — a popular interview topic demo",
+      "milestone": "Can solve medium-level DSA problems in interview settings",
+      "resources": [
+        {"name": "NeetCode Roadmap", "url": "https://neetcode.io/roadmap", "type": "interactive"},
+        {"name": "Abdul Bari – Algorithms (YouTube)", "url": "https://www.youtube.com/channel/UCZCFT11CWBi3MHNlGf019nw", "type": "video"},
+        {"name": "LeetCode – Explore Cards", "url": "https://leetcode.com/explore/", "type": "interactive"}
+      ]
+    },
+    "advanced": {
+      "title": "DP, Heaps, Tries & Advanced Graph Algorithms",
+      "time_weeks": 3,
+      "concepts": ["Dynamic programming patterns (0/1 knapsack, LCS, LIS)", "Heap & priority queue", "Trie data structure", "Dijkstra & Bellman-Ford", "Union-Find (Disjoint Set)", "Topological sort"],
+      "tasks": ["Solve 10 DP problems on LeetCode", "Implement Dijkstra for shortest path", "Build a Trie and implement autocomplete"],
+      "mini_project": "Word Search & Autocomplete system using a Trie with BFS suggestion ranking",
+      "milestone": "Can solve hard DSA problems and pass coding rounds at product companies",
+      "resources": [
+        {"name": "Aditya Verma – DP Series (YouTube)", "url": "https://www.youtube.com/channel/UC5WO7o71wvxMAnl77G5X7oQ", "type": "video"},
+        {"name": "Competitive Programmer's Handbook (free)", "url": "https://cses.fi/book/book.pdf", "type": "book"},
+        {"name": "LeetCode – Dynamic Programming Study Plan", "url": "https://leetcode.com/studyplan/dynamic-programming/", "type": "interactive"}
+      ]
+    },
+    "industry_ready": {
+      "title": "System Design DSA & Interview Mastery",
+      "time_weeks": 2,
+      "concepts": ["Consistent hashing", "LRU Cache implementation", "Rate limiter design", "Design patterns in OOP (used in SD)", "Mock interview strategies", "Problem-solving frameworks"],
+      "tasks": ["Implement LRU Cache (HashMap + Doubly Linked List)", "Do 5 mock coding interviews on Pramp", "Solve 50 LeetCode problems across patterns"],
+      "mini_project": "Design and implement a URL shortener backend (hashing + storage) from scratch",
+      "milestone": "Interview-ready: can solve problems under time pressure and communicate solutions clearly",
+      "resources": [
+        {"name": "Pramp – Free Mock Interviews", "url": "https://www.pramp.com/", "type": "interactive"},
+        {"name": "Grokking the Coding Interview (patterns)", "url": "https://www.designgurus.io/course/grokking-the-coding-interview", "type": "course"},
+        {"name": "NeetCode 150 Spreadsheet", "url": "https://neetcode.io/practice", "type": "interactive"}
+      ]
+    }
+  },
+  "Statistics": {
+    "beginner": {
+      "title": "Descriptive Stats, Probability & Distributions",
+      "time_weeks": 2,
+      "concepts": ["Mean, median, mode, variance, std dev", "Probability basics", "Normal, Binomial, Poisson distributions", "Histograms, box plots, scatter plots", "Percentiles & quartiles", "Correlation coefficient"],
+      "tasks": ["Compute descriptive stats for a dataset in Python", "Plot distributions with matplotlib", "Identify outliers using IQR method"],
+      "mini_project": "Statistical report on a real dataset (e.g., COVID data) with plots and written conclusions",
+      "milestone": "Can describe and visualize any dataset quantitatively with correct statistics",
+      "resources": [
+        {"name": "Khan Academy – Statistics & Probability", "url": "https://www.khanacademy.org/math/statistics-probability", "type": "course"},
+        {"name": "StatQuest – Statistics (YouTube)", "url": "https://www.youtube.com/c/joshstarmer", "type": "video"},
+        {"name": "Think Stats (free online book)", "url": "https://greenteapress.com/thinkstats2/html/index.html", "type": "book"}
+      ]
+    },
+    "intermediate": {
+      "title": "Hypothesis Testing & Statistical Inference",
+      "time_weeks": 2,
+      "concepts": ["Hypothesis testing (t-test, chi-square, ANOVA)", "p-values and significance levels", "Confidence intervals", "Type I & Type II errors", "Central limit theorem", "Sampling distributions"],
+      "tasks": ["Run a t-test comparing two groups in Python (scipy)", "Calculate confidence intervals for a dataset", "Design an A/B test experiment"],
+      "mini_project": "A/B Test Analysis: statistical test whether a new landing page significantly improves conversion",
+      "milestone": "Can design and interpret statistical tests for data-driven decisions",
+      "resources": [
+        {"name": "StatQuest – Hypothesis Testing (YouTube)", "url": "https://www.youtube.com/c/joshstarmer", "type": "video"},
+        {"name": "Scipy Stats Documentation", "url": "https://docs.scipy.org/doc/scipy/reference/stats.html", "type": "docs"},
+        {"name": "Seeing Theory (visual probability)", "url": "https://seeing-theory.brown.edu/", "type": "interactive"}
+      ]
+    },
+    "advanced": {
+      "title": "Bayesian Statistics & Regression Analysis",
+      "time_weeks": 2,
+      "concepts": ["Bayes' theorem & Bayesian inference", "Prior, posterior, likelihood", "Multiple linear regression", "Logistic regression (statistical view)", "Multicollinearity & VIF", "Residual analysis"],
+      "tasks": ["Build a Bayesian model with PyMC3", "Diagnose multicollinearity in a regression", "Interpret regression coefficients fully"],
+      "mini_project": "Sales forecasting using multiple regression with full statistical validation (R², p-values, residuals)",
+      "milestone": "Can perform advanced statistical modeling and interpret results in business context",
+      "resources": [
+        {"name": "Bayesian Methods for Hackers (Free book)", "url": "https://camdavidsonpilon.github.io/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers/", "type": "book"},
+        {"name": "StatsModels Documentation", "url": "https://www.statsmodels.org/dev/index.html", "type": "docs"}
+      ]
+    },
+    "industry_ready": {
+      "title": "Experimental Design & Applied Statistics",
+      "time_weeks": 2,
+      "concepts": ["Experimental design (RCT, factorial)", "Power analysis & sample size", "Non-parametric tests", "Time series statistics", "Causal inference basics", "Statistical communication"],
+      "tasks": ["Calculate required sample size for an A/B test", "Run a Mann-Whitney U test", "Write a stakeholder-readable stats report"],
+      "mini_project": "End-to-end A/B test: design, simulate, analyze, and present results with confidence intervals",
+      "milestone": "Can design experiments, analyze results, and communicate statistical findings to management",
+      "resources": [
+        {"name": "Trustworthy Online Controlled Experiments (book)", "url": "https://www.cambridge.org/core/books/trustworthy-online-controlled-experiments/D97B26382EB0EB2DC2019A7A7B518F59", "type": "book"},
+        {"name": "Udacity – A/B Testing Course (Free)", "url": "https://www.udacity.com/course/ab-testing--ud257", "type": "course"}
+      ]
+    }
+  },
+  "Deep Learning": {
+    "beginner": {
+      "title": "Neural Network Basics & Backpropagation",
+      "time_weeks": 2,
+      "concepts": ["Perceptron & activation functions", "Forward pass", "Backpropagation & chain rule", "Loss functions", "Gradient descent", "Keras/TensorFlow basics"],
+      "tasks": ["Build a 2-layer NN from scratch in NumPy", "Train an MNIST digit classifier with Keras", "Plot training/validation loss curves"],
+      "mini_project": "MNIST Handwritten Digit Classifier with a 3-layer dense neural network in TensorFlow/Keras",
+      "milestone": "Understands how neural networks learn and can train basic models",
+      "resources": [
+        {"name": "Neural Networks & Deep Learning (Coursera)", "url": "https://www.coursera.org/learn/neural-networks-deep-learning", "type": "course"},
+        {"name": "3Blue1Brown – Neural Networks (YouTube)", "url": "https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi", "type": "video"},
+        {"name": "TensorFlow Beginner Guide", "url": "https://www.tensorflow.org/tutorials/quickstart/beginner", "type": "docs"}
+      ]
+    },
+    "intermediate": {
+      "title": "CNNs, RNNs & Transfer Learning",
+      "time_weeks": 3,
+      "concepts": ["Convolutional Neural Networks (CNN)", "Pooling & feature maps", "Recurrent Neural Networks (RNN, LSTM)", "Transfer learning with pre-trained models", "Dropout & batch normalization", "Data augmentation"],
+      "tasks": ["Fine-tune ResNet50 on a custom image dataset", "Build a sentiment classifier using LSTM", "Apply dropout to reduce overfitting"],
+      "mini_project": "Image Classifier using Transfer Learning (MobileNet) fine-tuned on a 5-class custom dataset with >90% accuracy",
+      "milestone": "Can apply CNN/RNN architectures and leverage pre-trained models for real tasks",
+      "resources": [
+        {"name": "Fast.ai – Practical Deep Learning (Free)", "url": "https://course.fast.ai/", "type": "course"},
+        {"name": "TensorFlow Official Tutorials", "url": "https://www.tensorflow.org/tutorials", "type": "docs"},
+        {"name": "Andrej Karpathy – CS231n (YouTube)", "url": "https://www.youtube.com/playlist?list=PL3FW7Lu3i5JvHM8ljYj-zLfQRF3EO8sYv", "type": "video"}
+      ]
+    },
+    "advanced": {
+      "title": "Transformers, Attention & Generative Models",
+      "time_weeks": 5,
+      "concepts": ["Attention mechanism & self-attention", "Transformer architecture", "BERT, GPT fine-tuning basics", "Generative Adversarial Networks (GAN)", "Variational Autoencoders (VAE)", "Hugging Face Transformers"],
+      "tasks": ["Fine-tune BERT for text classification", "Generate images with a simple GAN", "Use Hugging Face pipeline for NLP tasks"],
+      "mini_project": "Text Classification system using fine-tuned DistilBERT for 5-class news classification",
+      "milestone": "Can work with state-of-the-art transformer models and generative architectures",
+      "resources": [
+        {"name": "Hugging Face Course (Free)", "url": "https://huggingface.co/course/chapter1/1", "type": "course"},
+        {"name": "Andrej Karpathy – makemore (YouTube)", "url": "https://www.youtube.com/playlist?list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ", "type": "video"},
+        {"name": "The Annotated Transformer", "url": "http://nlp.seas.harvard.edu/annotated-transformer/", "type": "docs"}
+      ]
+    },
+    "industry_ready": {
+      "title": "DL Deployment, Optimization & Production",
+      "time_weeks": 3,
+      "concepts": ["Model quantization & pruning", "ONNX export & inference", "TensorFlow Serving / TorchServe", "GPU optimization", "Model monitoring", "Edge deployment basics"],
+      "tasks": ["Export a PyTorch model to ONNX", "Serve a model with TF Serving", "Optimize inference time by 2x"],
+      "mini_project": "Deploy a fine-tuned BERT model as a REST API with FastAPI, ONNX runtime, containerized with Docker",
+      "milestone": "Can take a DL model from Notebook to production serving",
+      "resources": [
+        {"name": "ONNX Runtime Documentation", "url": "https://onnxruntime.ai/docs/", "type": "docs"},
+        {"name": "Full Stack Deep Learning (FSDL)", "url": "https://fullstackdeeplearning.com/", "type": "course"}
+      ]
+    }
+  },
+  "Data Visualization": {
+    "beginner": {
+      "title": "Chart Types & Matplotlib Basics",
+      "time_weeks": 1,
+      "concepts": ["Chart selection principles", "Matplotlib figures & axes", "Bar, line, scatter, histogram", "Titles, labels, legends", "Color & formatting basics", "Saving charts as images"],
+      "tasks": ["Reproduce 5 chart types from a dataset", "Customize colors and fonts in matplotlib", "Plot a time series with proper axis labels"],
+      "mini_project": "Visual report of a country's GDP/population data using 5 different chart types",
+      "milestone": "Can create clear, well-labeled charts for any dataset",
+      "resources": [
+        {"name": "Matplotlib Official Tutorial", "url": "https://matplotlib.org/stable/tutorials/index.html", "type": "docs"},
+        {"name": "Corey Schafer – Matplotlib (YouTube)", "url": "https://www.youtube.com/playlist?list=PL-osiE80TeTvipOqomVEeZ1HRrcEvtZB_", "type": "video"},
+        {"name": "Kaggle – Data Visualization (Free)", "url": "https://www.kaggle.com/learn/data-visualization", "type": "course"}
+      ]
+    },
+    "intermediate": {
+      "title": "Seaborn, Plotly & Interactive Dashboards",
+      "time_weeks": 1,
+      "concepts": ["Seaborn statistical plots", "Pair plots & heatmaps", "Plotly interactive charts", "Subplots & figure layouts", "Dash / Streamlit basics", "Telling a story with charts"],
+      "tasks": ["Build a correlation heatmap with seaborn", "Create an interactive scatter plot with Plotly", "Build a 2-page Streamlit app"],
+      "mini_project": "Streamlit dashboard showing sales analytics with interactive filters (date range, region, product)",
+      "milestone": "Can build interactive analytical dashboards deployable from Python",
+      "resources": [
+        {"name": "Plotly Documentation", "url": "https://plotly.com/python/", "type": "docs"},
+        {"name": "Streamlit Docs", "url": "https://docs.streamlit.io/", "type": "docs"},
+        {"name": "Rob Mulla – Seaborn (YouTube)", "url": "https://www.youtube.com/c/RobMulla", "type": "video"}
+      ]
+    },
+    "advanced": {
+      "title": "BI Tools & Storytelling with Data",
+      "time_weeks": 2,
+      "concepts": ["Tableau / Power BI basics", "Dashboard design principles", "KPI design & visual hierarchy", "Drill-down & filter actions", "Data storytelling framework", "Geo-spatial visualization"],
+      "tasks": ["Build a Tableau/Power BI dashboard from scratch", "Create a geo-map visualization", "Present a data story to a non-technical audience"],
+      "mini_project": "Executive KPI Dashboard in Tableau / Power BI with 3 pages: overview, drill-down, trends",
+      "milestone": "Can design and present BI dashboards that drive business decisions",
+      "resources": [
+        {"name": "Tableau Training (Free)", "url": "https://www.tableau.com/learn/training", "type": "course"},
+        {"name": "Power BI Docs & Learning", "url": "https://learn.microsoft.com/en-us/power-bi/", "type": "docs"},
+        {"name": "Storytelling with Data (book)", "url": "https://www.storytellingwithdata.com/", "type": "book"}
+      ]
+    },
+    "industry_ready": {
+      "title": "Production Dashboards & Data Products",
+      "time_weeks": 2,
+      "concepts": ["End-to-end BI pipeline", "Embedding dashboards in apps", "Real-time dashboards with Websockets", "REST API-backed viz", "Dashboard performance optimization", "Access control for BI"],
+      "tasks": ["Embed a Plotly chart into a FastAPI app", "Connect Power BI to a live SQL database", "Publish a Streamlit app to Streamlit Cloud"],
+      "mini_project": "Real-time analytics product: FastAPI backend + Plotly frontend updating every 30s from mock data",
+      "milestone": "Can build and ship production-grade data products as a Data Analyst / BI Engineer",
+      "resources": [
+        {"name": "Metabase Docs (Free BI Tool)", "url": "https://www.metabase.com/docs/latest/", "type": "docs"},
+        {"name": "Grafana Docs (Monitoring Dashboards)", "url": "https://grafana.com/docs/grafana/latest/", "type": "docs"}
+      ]
+    }
+  },
+  "Docker": {
+    "beginner": {
+      "title": "Containers vs VMs, Docker CLI & Dockerfile",
+      "time_weeks": 1,
+      "concepts": ["Containers vs virtual machines", "Docker architecture (daemon, client, registry)", "Pulling and running images", "Writing a Dockerfile", "COPY, RUN, CMD, EXPOSE instructions", "Building and tagging images"],
+      "tasks": ["Run an Nginx container locally", "Write a Dockerfile for a Python app", "Push an image to Docker Hub"],
+      "mini_project": "Containerize your Python/FastAPI project with a Dockerfile and run it locally",
+      "milestone": "Can containerize any application and run it consistently across environments",
+      "resources": [
+        {"name": "Docker Official Get Started", "url": "https://docs.docker.com/get-started/", "type": "docs"},
+        {"name": "TechWorld with Nana – Docker Tutorial (YouTube)", "url": "https://www.youtube.com/watch?v=3c-iBn73dDE", "type": "video"},
+        {"name": "Play with Docker (online sandbox)", "url": "https://labs.play-with-docker.com/", "type": "interactive"}
+      ]
+    },
+    "intermediate": {
+      "title": "Docker Compose, Networking & Volumes",
+      "time_weeks": 1,
+      "concepts": ["Docker Compose syntax", "Multi-container apps", "Container networking (bridge, host)", "Named volumes & bind mounts", "Environment variables & secrets", ".dockerignore & optimization"],
+      "tasks": ["Set up a Python + PostgreSQL app with Docker Compose", "Use named volumes for database persistence", "Add health checks to a compose service"],
+      "mini_project": "Full-stack app (FastAPI + PostgreSQL + Nginx) orchestrated with Docker Compose",
+      "milestone": "Can run multi-service development environments with Docker Compose",
+      "resources": [
+        {"name": "Docker Compose Docs", "url": "https://docs.docker.com/compose/", "type": "docs"},
+        {"name": "Docker Networking Guide", "url": "https://docs.docker.com/network/", "type": "docs"}
+      ]
+    },
+    "advanced": {
+      "title": "Multi-Stage Builds, Security & CI/CD",
+      "time_weeks": 2,
+      "concepts": ["Multi-stage Dockerfile builds", "Minimizing image size", "Non-root users & security", "Docker Scout & vulnerability scanning", "Docker in GitHub Actions CI", "Registry management"],
+      "tasks": ["Create a multi-stage build for a Python app", "Scan an image for vulnerabilities", "Add Docker build step to GitHub Actions"],
+      "mini_project": "Optimized Docker image with multi-stage build reducing size by 70%, with automated CI scanning",
+      "milestone": "Can build lean, secure Docker images and integrate them into CI/CD pipelines",
+      "resources": [
+        {"name": "Docker Best Practices", "url": "https://docs.docker.com/develop/develop-images/dockerfile_best-practices/", "type": "docs"},
+        {"name": "Docker Scout Docs", "url": "https://docs.docker.com/scout/", "type": "docs"}
+      ]
+    },
+    "industry_ready": {
+      "title": "Docker in Production & Kubernetes Intro",
+      "time_weeks": 2,
+      "concepts": ["Docker Swarm basics", "Kubernetes architecture overview", "Pushing to private registries (ECR, GCR)", "Production logging with Docker", "Container resource limits", "Observability with Prometheus"],
+      "tasks": ["Deploy a container to AWS ECS or GCP Cloud Run", "Set memory/CPU limits on containers", "Stream logs from a container to a central logger"],
+      "mini_project": "Deploy containerized ML API to GCP Cloud Run with auto-scaling and health checks",
+      "milestone": "Can deploy and manage containerized apps in production cloud environments",
+      "resources": [
+        {"name": "AWS ECS Getting Started", "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/getting-started.html", "type": "docs"},
+        {"name": "GCP Cloud Run Docs", "url": "https://cloud.google.com/run/docs", "type": "docs"}
+      ]
+    }
+  },
+  "REST APIs": {
+    "beginner": {
+      "title": "HTTP Methods, Status Codes & Postman",
+      "time_weeks": 1,
+      "concepts": ["HTTP verbs (GET, POST, PUT, DELETE, PATCH)", "Status codes (2xx, 4xx, 5xx)", "Request headers & body", "JSON request/response", "Postman for API testing", "Query params vs path params"],
+      "tasks": ["Test 5 public APIs with Postman", "Call a REST API from Python using requests", "Build a simple GET endpoint with Flask/FastAPI"],
+      "mini_project": "Simple REST API for a To-Do list (CRUD) using FastAPI with Postman test collection",
+      "milestone": "Understands REST principles and can consume/build basic APIs",
+      "resources": [
+        {"name": "REST API Tutorial", "url": "https://restfulapi.net/", "type": "docs"},
+        {"name": "Traversy Media – REST API Crash Course (YouTube)", "url": "https://www.youtube.com/watch?v=Q-BpqyOT3a8", "type": "video"},
+        {"name": "FastAPI Docs – First Steps", "url": "https://fastapi.tiangolo.com/tutorial/first-steps/", "type": "docs"}
+      ]
+    },
+    "intermediate": {
+      "title": "Auth (JWT, OAuth), Validation & Error Handling",
+      "time_weeks": 2,
+      "concepts": ["JWT authentication flow", "OAuth 2.0 concepts", "Request validation with Pydantic", "Global error handlers", "API versioning", "Rate limiting basics"],
+      "tasks": ["Add JWT auth to a FastAPI app", "Validate request body with Pydantic models", "Implement global exception handler"],
+      "mini_project": "Secure REST API with JWT auth, role-based access, input validation, and proper error responses",
+      "milestone": "Can build secure, well-structured REST APIs",
+      "resources": [
+        {"name": "FastAPI Security Guide", "url": "https://fastapi.tiangolo.com/tutorial/security/", "type": "docs"},
+        {"name": "OAuth 2.0 Simplified (book)", "url": "https://www.oauth.com/", "type": "docs"}
+      ]
+    },
+    "advanced": {
+      "title": "API Design Best Practices, OpenAPI & GraphQL",
+      "time_weeks": 2,
+      "concepts": ["RESTful resource naming", "HATEOAS", "OpenAPI / Swagger specs", "GraphQL basics", "Pagination strategies", "Caching (ETags, Cache-Control)"],
+      "tasks": ["Generate OpenAPI spec from FastAPI and document all endpoints", "Implement cursor-based pagination", "Build a simple GraphQL endpoint"],
+      "mini_project": "Fully documented REST API with OpenAPI spec, pagination, filtering, caching, and Postman collection",
+      "milestone": "Can design APIs that follow industry best practices and are easy to integrate",
+      "resources": [
+        {"name": "APIs You Won't Hate (book)", "url": "https://apisyouwonthate.com/", "type": "book"},
+        {"name": "OpenAPI Initiative", "url": "https://www.openapis.org/", "type": "docs"}
+      ]
+    },
+    "industry_ready": {
+      "title": "API Gateways, Microservices & Production",
+      "time_weeks": 2,
+      "concepts": ["API Gateway (Kong, AWS API GW)", "Microservices communication", "Service discovery", "Rate limiting at scale", "API monitoring & alerts", "Breaking change management"],
+      "tasks": ["Set up Kong API Gateway locally", "Build 2 microservices that communicate via REST", "Add Prometheus metrics to a FastAPI app"],
+      "mini_project": "Microservices system with 2 FastAPI services + Kong Gateway + Prometheus monitoring",
+      "milestone": "Can architect and deploy production API systems at scale",
+      "resources": [
+        {"name": "Kong Gateway Docs", "url": "https://docs.konghq.com/", "type": "docs"},
+        {"name": "Sam Newman – Building Microservices (book)", "url": "https://www.oreilly.com/library/view/building-microservices-2nd/9781492047834/", "type": "book"}
+      ]
+    }
+  },
+  "Excel": {
+    "beginner": {
+      "title": "Spreadsheet Basics, Formulas & VLOOKUP",
+      "time_weeks": 1,
+      "concepts": ["Spreadsheet navigation & formatting", "SUM, AVERAGE, COUNT, IF", "VLOOKUP & HLOOKUP", "Absolute vs relative references", "Data sorting & filtering", "Basic charts"],
+      "tasks": ["Build a budget tracker with formulas", "Use VLOOKUP on a sales dataset", "Create a bar chart from data"],
+      "mini_project": "Monthly Personal Finance Tracker with auto-categorization using IF/VLOOKUP and a summary dashboard",
+      "milestone": "Can use Excel for data entry, formulas, and basic analysis",
+      "resources": [
+        {"name": "Microsoft Excel Training (Free)", "url": "https://support.microsoft.com/en-us/office/excel-video-training-9bc05390-e94c-46af-a5b3-d7c22f6990bb", "type": "course"},
+        {"name": "ExcelJet – Formula Reference", "url": "https://exceljet.net/formulas", "type": "docs"}
+      ]
+    },
+    "intermediate": {
+      "title": "PivotTables, Advanced Formulas & Charts",
+      "time_weeks": 1,
+      "concepts": ["PivotTables & PivotCharts", "SUMIFS, COUNTIFS, AVERAGEIFS", "INDEX/MATCH (better than VLOOKUP)", "Conditional formatting", "Data validation", "Dynamic named ranges"],
+      "tasks": ["Analyse sales data with a PivotTable", "Build a dynamic report with INDEX/MATCH", "Apply conditional formatting to highlight KPIs"],
+      "mini_project": "Sales Performance Dashboard with PivotTables, KPI cards using conditional formatting, and drill-down charts",
+      "milestone": "Can build dynamic reports and dashboards in Excel for business users",
+      "resources": [
+        {"name": "Leila Gharani – Excel Pro (YouTube)", "url": "https://www.youtube.com/c/LeilaGharani", "type": "video"},
+        {"name": "Chandoo.org – Excel Tutorials", "url": "https://chandoo.org/wp/", "type": "article"}
+      ]
+    },
+    "advanced": {
+      "title": "Power Query, Power Pivot & Macros",
+      "time_weeks": 2,
+      "concepts": ["Power Query (ETL in Excel)", "Power Pivot for large datasets", "DAX formulas", "VBA macros basics", "Data model relationships", "What-If analysis tools"],
+      "tasks": ["Import & transform a CSV with Power Query", "Write a VBA macro to automate a report", "Build a DAX calculated column in Power Pivot"],
+      "mini_project": "Automated monthly report: Power Query fetches data → Power Pivot aggregates → VBA macro distributes via email",
+      "milestone": "Can automate and scale Excel-based reporting workflows",
+      "resources": [
+        {"name": "Power Query Docs", "url": "https://learn.microsoft.com/en-us/power-query/", "type": "docs"},
+        {"name": "Excel Campus – Power Query (YouTube)", "url": "https://www.youtube.com/c/ExcelCampus", "type": "video"}
+      ]
+    },
+    "industry_ready": {
+      "title": "Excel in Data Analytics Workflow",
+      "time_weeks": 1,
+      "concepts": ["Excel + Python (openpyxl, xlwings)", "Big data in Excel (data import strategies)", "Excel templates for business", "Dashboard best practices", "Excel vs Power BI decision", "Presenting data in Excel"],
+      "tasks": ["Generate an Excel report from Python using openpyxl", "Build a one-page executive summary", "Connect Excel to a SQL database"],
+      "mini_project": "Automated Python script that queries a database + generates a formatted Excel report with charts",
+      "milestone": "Can integrate Excel into broader data analytics workflows",
+      "resources": [
+        {"name": "openpyxl Docs", "url": "https://openpyxl.readthedocs.io/", "type": "docs"},
+        {"name": "xlwings Docs", "url": "https://www.xlwings.org/", "type": "docs"}
+      ]
+    }
+  },
+  "JavaScript": {
+    "beginner": {
+      "title": "JS Basics — Variables, Functions & DOM",
+      "time_weeks": 2,
+      "concepts": ["var, let, const", "Functions & arrow functions", "Arrays & objects", "DOM manipulation", "Events & event listeners", "Template literals"],
+      "tasks": ["Build a to-do list with DOM manipulation", "Create a form validator", "Build a color-picker tool"],
+      "mini_project": "Interactive Quiz App with score tracking and result display",
+      "milestone": "Can build interactive web pages with JavaScript",
+      "resources": [
+        {"name": "freeCodeCamp – JavaScript Algorithms (Free)", "url": "https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/", "type": "course"},
+        {"name": "Traversy Media – JS Crash Course (YouTube)", "url": "https://www.youtube.com/watch?v=hdI2bqOjy3c", "type": "video"},
+        {"name": "MDN – JavaScript Guide", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide", "type": "docs"}
+      ]
+    },
+    "intermediate": {
+      "title": "ES6+, Promises, Async/Await & Fetch API",
+      "time_weeks": 2,
+      "concepts": ["Destructuring & spread operator", "Promises & async/await", "Fetch API & REST calls", "Modules (import/export)", "Local storage & session storage", "Error handling in async code"],
+      "tasks": ["Fetch data from a public API and display it", "Build an async autocomplete search", "Use modules to organize a project"],
+      "mini_project": "Weather App that fetches live data from OpenWeatherMap API with async/await and error handling",
+      "milestone": "Can build asynchronous JS apps that consume REST APIs",
+      "resources": [
+        {"name": "JavaScript.info – Modern JS", "url": "https://javascript.info/", "type": "docs"},
+        {"name": "Traversy Media – Async JS (YouTube)", "url": "https://www.youtube.com/watch?v=PoRJizFvM7s", "type": "video"}
+      ]
+    },
+    "advanced": {
+      "title": "Design Patterns, Performance & Testing",
+      "time_weeks": 3,
+      "concepts": ["Closures & scope", "Prototype chain & classes", "Design patterns (Observer, Module)", "Performance optimization", "Jest unit testing", "TypeScript basics"],
+      "tasks": ["Implement observer pattern","Write unit tests with Jest", "Profile and optimize a slow JS function"],
+      "mini_project": "Tested, modular JavaScript library with JSDoc documentation and npm package setup",
+      "milestone": "Can write production-quality, testable JavaScript",
+      "resources": [
+        {"name": "You Don't Know JS (free book series)", "url": "https://github.com/getify/You-Dont-Know-JS", "type": "book"},
+        {"name": "Jest Documentation", "url": "https://jestjs.io/", "type": "docs"}
+      ]
+    },
+    "industry_ready": {
+      "title": "React / Node.js & Full Stack JS",
+      "time_weeks": 3,
+      "concepts": ["React components & hooks", "State management (Context, Redux)", "Node.js & Express", "REST API with Node", "Authentication in JS apps", "Deployment (Vercel, Netlify)"],
+      "tasks": ["Build a CRUD app with React + Node.js", "Add JWT auth to a Node.js API", "Deploy a React app to Vercel"],
+      "mini_project": "Full-stack Task Manager: React frontend + Node.js/Express backend + PostgreSQL + deployed",
+      "milestone": "Can build and deploy full-stack JavaScript applications",
+      "resources": [
+        {"name": "React Official Docs", "url": "https://react.dev/", "type": "docs"},
+        {"name": "The Odin Project (Full Stack JS)", "url": "https://www.theodinproject.com/", "type": "course"}
+      ]
+    }
+  },
+  "Linear Algebra": {
+    "beginner": {
+      "title": "Vectors, Matrices & Dot Products",
+      "time_weeks": 2,
+      "concepts": ["Scalars, vectors, matrices", "Matrix addition & scalar multiplication", "Matrix multiplication", "Dot product & its geometric meaning", "Transpose", "Identity matrix"],
+      "tasks": ["Implement matrix multiplication in NumPy", "Visualize vectors in 2D with matplotlib", "Solve a system of linear equations"],
+      "mini_project": "NumPy-based mini linear algebra library: add, multiply, transpose, determinant functions",
+      "milestone": "Understands and can compute key linear algebra operations needed for ML",
+      "resources": [
+        {"name": "Khan Academy – Linear Algebra", "url": "https://www.khanacademy.org/math/linear-algebra", "type": "course"},
+        {"name": "3Blue1Brown – Essence of Linear Algebra (YouTube)", "url": "https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab", "type": "video"}
+      ]
+    },
+    "intermediate": {
+      "title": "Eigenvalues, Eigenvectors & SVD",
+      "time_weeks": 2,
+      "concepts": ["Determinants", "Eigenvalues & eigenvectors", "Diagonalization", "Singular Value Decomposition (SVD)", "Rank & null space", "Orthogonality"],
+      "tasks": ["Compute eigenvalues of a matrix with NumPy", "Implement PCA from scratch using SVD", "Visualize SVD components"],
+      "mini_project": "PCA from scratch: implement using SVD on a real dataset and visualize top 2 principal components",
+      "milestone": "Can use eigendecomposition and SVD for ML applications like PCA",
+      "resources": [
+        {"name": "MIT 18.06 – Gilbert Strang (OpenCourseWare)", "url": "https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/", "type": "course"},
+        {"name": "NumPy Linear Algebra Docs", "url": "https://numpy.org/doc/stable/reference/routines.linalg.html", "type": "docs"}
+      ]
+    },
+    "advanced": {
+      "title": "PCA, Applications in ML & Deep Learning",
+      "time_weeks": 2,
+      "concepts": ["PCA for dimensionality reduction", "Linear regression as LA problem", "Gradient descent in matrix form", "Neural network weight matrices", "Attention mechanism as matrix ops", "Numerical stability"],
+      "tasks": ["Apply PCA to reduce MNIST from 784 to 50 dims", "Derive linear regression closed-form solution using LA", "Implement attention as matrix multiplication"],
+      "mini_project": "Dimensionality reduction study: compare PCA, t-SNE, UMAP on a high-dimensional dataset with visualization",
+      "milestone": "Understands how linear algebra powers modern ML/DL algorithms",
+      "resources": [
+        {"name": "Deep Learning Book – Chapter 2 (LA)", "url": "https://www.deeplearningbook.org/contents/linear_algebra.html", "type": "book"},
+        {"name": "Geometric Deep Learning (YouTube)", "url": "https://www.youtube.com/watch?v=w6Pw4MOzMuo", "type": "video"}
+      ]
+    },
+    "industry_ready": {
+      "title": "Applied LA in Production ML Systems",
+      "time_weeks": 1,
+      "concepts": ["Sparse matrices for large datasets", "GPU matrix operations (CUDA)", "Numerical precision issues", "Matrix factorization for recommendations", "Graph Laplacian", "Tensor operations"],
+      "tasks": ["Use scipy sparse for a large recommendation matrix", "Run matrix operations on GPU with CuPy", "Implement ALS for collaborative filtering"],
+      "mini_project": "Movie Recommendation System using Matrix Factorization (SVD/ALS) on MovieLens dataset",
+      "milestone": "Can apply linear algebra in real ML systems at scale",
+      "resources": [
+        {"name": "Scipy Sparse Matrix Docs", "url": "https://docs.scipy.org/doc/scipy/reference/sparse.html", "type": "docs"},
+        {"name": "Surprise – Recommendation Library", "url": "https://surpriselib.com/", "type": "docs"}
+      ]
+    }
+  },
+  "System Design": {
+    "beginner": {
+      "title": "Scalability Concepts, Load Balancing & Caching",
+      "time_weeks": 2,
+      "concepts": ["Vertical vs horizontal scaling", "Load balancers","CDNs", "Cache (Redis, Memcached)", "Latency vs throughput", "Client-server vs peer-to-peer"],
+      "tasks": ["Read and summarise System Design Primer", "Design a URL shortener on paper", "Explain CAP theorem with an example"],
+      "mini_project": "Design document: URL Shortener system design with components, scale estimates, and trade-offs",
+      "milestone": "Can discuss system scalability concepts in technical interviews",
+      "resources": [
+        {"name": "System Design Primer (GitHub)", "url": "https://github.com/donnemartin/system-design-primer", "type": "docs"},
+        {"name": "Gaurav Sen – System Design (YouTube)", "url": "https://www.youtube.com/c/GauravSensei", "type": "video"}
+      ]
+    },
+    "intermediate": {
+      "title": "Databases (SQL vs NoSQL) & Message Queues",
+      "time_weeks": 3,
+      "concepts": ["RDBMS vs NoSQL (MongoDB, Cassandra)", "Database sharding & replication", "Message queues (Kafka, RabbitMQ)", "Event-driven architecture", "API design patterns", "Microservices basics"],
+      "tasks": ["Design Twitter's timeline at scale", "Design a notification system", "Simulate a message queue with Python"],
+      "mini_project": "Design document: Distributed notification system (push/email/SMS) with Kafka, Redis, and PostgreSQL",
+      "milestone": "Can design medium-complexity distributed systems for interviews",
+      "resources": [
+        {"name": "Designing Data-Intensive Applications (DDIA)", "url": "https://dataintensive.net/", "type": "book"},
+        {"name": "ByteByteGo – System Design (YouTube)", "url": "https://www.youtube.com/c/ByteByteGo", "type": "video"}
+      ]
+    },
+    "advanced": {
+      "title": "Distributed Systems, CAP Theorem & CDNs",
+      "time_weeks": 4,
+      "concepts": ["CAP theorem & BASE properties", "Consensus (Raft, Paxos)", "Consistent hashing", "Distributed transactions (2PC, Saga)", "Observability (logs, traces, metrics)", "Chaos engineering"],
+      "tasks": ["Design Netflix-scale video streaming", "Implement consistent hashing in Python", "Design a distributed rate limiter"],
+      "mini_project": "Full system design: Design WhatsApp (messaging, storage, delivery guarantees, scale)  with detailed architecture diagram",
+      "milestone": "Can design large-scale distributed systems at FAANG interview level",
+      "resources": [
+        {"name": "MIT 6.824 – Distributed Systems (Free)", "url": "https://pdos.csail.mit.edu/6.824/", "type": "course"},
+        {"name": "Google SRE Book (Free)", "url": "https://sre.google/sre-book/table-of-contents/", "type": "book"}
+      ]
+    },
+    "industry_ready": {
+      "title": "Real-World Architecture & Interview Mastery",
+      "time_weeks": 2,
+      "concepts": ["Multi-region deployments", "Disaster recovery & SLAs", "Cost optimization on cloud", "Real architecture case studies", "FAANG system design interview format", "Whiteboard communication"],
+      "tasks": ["Complete 10 system design interview questions", "Draw an architecture diagram for a real app you use", "Mock a 45-min system design interview"],
+      "mini_project": "Architecture review: pick an existing open-source system, document its design, and propose 2 improvements",
+      "milestone": "Ready to handle system design rounds at any major tech company",
+      "resources": [
+        {"name": "Grokking Modern System Design (DesignGurus)", "url": "https://www.designgurus.io/course/grokking-the-system-design-interview", "type": "course"},
+        {"name": "Exponent – System Design Mock (YouTube)", "url": "https://www.youtube.com/c/ExponentTV", "type": "video"}
+      ]
+    }
+  }
+}

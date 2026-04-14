@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — SkillForge AI</title>
+  <meta name="description"
+    content="AI analytics dashboard: skill radar, gap severity, readiness score and recommended actions." />
+  <link rel="stylesheet" href="assets/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    .severity-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: .8rem;
+      font-weight: 700;
+      margin: 3px;
+    }
+
+    .sev-high {
+      background: rgba(239, 68, 68, .12);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, .25);
+    }
+
+    .sev-med {
+      background: rgba(245, 158, 11, .12);
+      color: #f59e0b;
+      border: 1px solid rgba(245, 158, 11, .25);
+    }
+
+    .sev-low {
+      background: rgba(16, 185, 129, .12);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, .25);
+    }
+
+    .action-card {
+      background: linear-gradient(135deg, rgba(99, 102, 241, .12), rgba(139, 92, 246, .08));
+      border: 1px solid rgba(99, 102, 241, .25);
+      border-radius: 16px;
+      padding: 20px 24px;
+    }
+
+    .readiness-circle {
+      position: relative;
+      width: 110px;
+      height: 110px;
+      flex-shrink: 0;
+    }
+
+    .readiness-text {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .weak-skill-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .weak-skill-row:last-child {
+      border-bottom: none;
+    }
+
+    .chart-container {
+      position: relative;
+      height: 280px;
+    }
+
+    .gap-item {
+      padding: 14px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, .03);
+      border: 1px solid var(--border);
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <nav class="navbar">
+    <div class="logo">⚡ SkillForge AI</div>
+    <div class="nav-links">
+      <a class="nav-link" href="/">Home</a>
+      <a class="nav-link active" href="/dashboard">Dashboard</a>
+      <a class="nav-link" href="/assessment">Assessment</a>
+      <a class="nav-link" href="/roadmap">Roadmap</a>
+      <a class="nav-link" href="/resume">Resume</a>
+    </div>
+    <button class="btn btn-secondary" onclick="logout()" style="padding:8px 16px;font-size:0.85rem">Sign Out</button>
+  </nav>
+
+  <div class="container" style="padding-top:36px">
+
+    <!-- Header -->
+    <div
+      style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:32px">
+      <div>
+        <h1 style="font-size:1.8rem;font-weight:800">My Analytics Dashboard</h1>
+        <p style="color:var(--text-secondary)" id="user-greeting">Loading profile...</p>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <select class="form-select" id="company-select" style="width:auto" onchange="onCompanyChange()">
+          <option value="">Select Company</option>
+        </select>
+        <select class="form-select" id="role-select-dash" style="width:auto">
+          <option value="">Select Role</option>
+        </select>
+        <button class="btn btn-primary" onclick="runGapAnalysis()">🔍 Analyze Gaps</button>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:20px">
+      <div class="card-title">Target Role Setting</div>
+      <div class="row-2" style="display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end;">
+        <div>
+          <label class="form-label">Set/Update your target role</label>
+          <select class="form-select" id="profile-target-role">
+            <option value="">Select role...</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" onclick="saveTargetRole()">Save Target Role</button>
+      </div>
+    </div>
+
+    <div id="alert-area"></div>
+
+    <!-- Stat Cards Row -->
+    <div class="grid-4" style="margin-bottom:28px">
+      <div class="stat-card" style="position:relative;overflow:hidden">
+        <div class="stat-number" id="stat-readiness" style="color:var(--accent-primary)">—</div>
+        <div class="stat-label">Readiness Score</div>
+        <div style="margin-top:8px">
+          <div class="progress-bar-wrap" style="height:6px">
+            <div class="progress-bar" id="readiness-bar"
+              style="width:0%;background:linear-gradient(90deg,var(--accent-primary),var(--accent-secondary))"></div>
+          </div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="stat-skills">—</div>
+        <div class="stat-label">Skills Assessed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="stat-gaps" style="color:#ef4444">—</div>
+        <div class="stat-label">Skill Gaps</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="stat-progress" style="color:#10b981">—</div>
+        <div class="stat-label">Roadmap Progress</div>
+      </div>
+    </div>
+
+    <!-- Recommended Action Banner -->
+    <div class="action-card" id="action-banner" style="margin-bottom:28px;display:none">
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+        <div style="font-size:2rem">🎯</div>
+        <div style="flex:1">
+          <div
+            style="font-size:.72rem;font-weight:700;letter-spacing:.1em;color:var(--accent-primary);text-transform:uppercase;margin-bottom:4px">
+            Recommended Next Action</div>
+          <div id="action-text" style="font-weight:600;font-size:1rem"></div>
+          <div id="action-sub" style="color:var(--text-secondary);font-size:.85rem;margin-top:3px"></div>
+        </div>
+        <a id="action-link" href="/roadmap" class="btn btn-primary" style="flex-shrink:0">Start Learning →</a>
+      </div>
+    </div>
+
+    <!-- Radar + Gap severity -->
+    <div class="grid-2" style="margin-bottom:28px">
+      <!-- Radar -->
+      <div class="card">
+        <div class="card-title">📡 Skill Radar</div>
+        <div class="chart-wrapper">
+          <canvas id="skill-radar" width="380" height="380"></canvas>
+        </div>
+        <p style="text-align:center;color:var(--text-muted);font-size:.78rem;margin-top:8px">
+          Blue = Current &nbsp;|&nbsp; Dashed = Required
+        </p>
+      </div>
+
+      <!-- Gap Severity Panel -->
+      <div class="card">
+        <div class="card-title">🔥 Gap Severity Analysis</div>
+        <div id="gap-severity" style="margin-bottom:16px">
+          <p style="color:var(--text-secondary);text-align:center;padding:30px 0;font-size:.9rem">Run gap analysis to
+            see severity breakdown</p>
+        </div>
+        <div id="top-weak-skills" style="display:none">
+          <div
+            style="font-size:.75rem;font-weight:700;color:var(--text-muted);letter-spacing:.07em;text-transform:uppercase;margin-bottom:10px">
+            Top Weak Skills</div>
+          <div id="weak-skill-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bar Chart: scores vs required -->
+    <div class="card" style="margin-bottom:28px" id="bar-chart-card" style="display:none">
+      <div class="card-title">📊 Skill Scores vs Required Levels</div>
+      <div class="chart-container">
+        <canvas id="skill-bar-chart"></canvas>
+      </div>
+    </div>
+
+    <!-- Assessment Score Bars -->
+    <div class="card" style="margin-bottom:28px">
+      <div class="card-title">🧠 Assessment Skill Scores</div>
+      <div id="score-bars">
+        <p style="color:var(--text-secondary)">No assessment results yet. <a href="/assessment">Take the assessment
+            →</a></p>
+      </div>
+    </div>
+
+    <!-- Resume Skills -->
+    <div class="card" style="margin-bottom:48px">
+      <div class="card-title">📄 Resume Skills Detected</div>
+      <div id="resume-skills">
+        <p style="color:var(--text-secondary)">No resume uploaded yet. <a href="/resume">Upload your resume →</a></p>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>Made with love for Students of TEC</p>
+  </footer>
+  <script src="assets/app.js"></script>
+  <script>
+    let radarChart = null;
+    let barChart = null;
+
+    async function loadProfileTargetRoleOptions(currentRole) {
+      const roleSel = document.getElementById('profile-target-role');
+      if (!roleSel) return;
+
+      roleSel.innerHTML = '<option value="">Select role...</option>';
+      try {
+        const data = await apiFetch('/api/career-paths');
+        const roles = Object.keys(data.roles || {});
+        roles.forEach((role) => {
+          const option = document.createElement('option');
+          option.value = role;
+          option.textContent = role;
+          roleSel.appendChild(option);
+        });
+        if (currentRole) {
+          roleSel.value = currentRole;
+        }
+      } catch {
+        // Keep fallback empty option only.
+      }
+    }
+
+    async function saveTargetRole() {
+      const roleSel = document.getElementById('profile-target-role');
+      const targetRole = roleSel?.value || '';
+      if (!targetRole) {
+        showAlert('error', 'Please select a target role first.');
+        return;
+      }
+      try {
+        const updated = await apiFetch('/api/update-profile', 'PUT', { target_role: targetRole });
+        showAlert('success', `Target role updated to ${updated.target_role}.`);
+        document.getElementById('user-greeting').textContent =
+          `Welcome back, ${updated.name} | Target: ${updated.target_role || 'Not set'}`;
+      } catch (e) {
+        showAlert('error', '❌ ' + (e.message || 'Could not update target role.'));
+      }
+    }
+
+    async function initDashboard() {
+      const user = await getProfile();
+      if (!user) { window.location.href = '/'; return; }
+
+      document.getElementById('user-greeting').textContent =
+        `Welcome back, ${user.name} | Target: ${user.target_role || 'Not set'}`;
+
+      await loadProfileTargetRoleOptions(user.target_role || '');
+
+      // Load companies
+      try {
+        const r = await apiFetch('/api/roles');
+        const sel = document.getElementById('company-select');
+        (r.companies || []).forEach(c => {
+          const o = document.createElement('option');
+          o.value = c; o.textContent = c; sel.appendChild(o);
+        });
+      } catch { }
+
+      // Load assessment results
+      try {
+        const res = await apiFetch('/api/assessment/result');
+        const scores = res.skill_scores || {};
+        renderScoreBars(scores);
+        renderRadar(scores, {});
+        document.getElementById('stat-skills').textContent = Object.keys(scores).length;
+      } catch { }
+
+      // Load resume skills
+      if (user.current_skills?.length > 0) renderResumeSkills(user.current_skills);
+
+      // Load progress
+      try {
+        const prog = await apiFetch('/api/progress');
+        const pct = prog.metrics?.overall_completion_pct || 0;
+        document.getElementById('stat-progress').textContent = pct + '%';
+      } catch { }
+    }
+
+    async function onCompanyChange() {
+      const company = document.getElementById('company-select').value;
+      if (!company) return;
+      const roleSel = document.getElementById('role-select-dash');
+      roleSel.innerHTML = '<option value="">Select Role</option>';
+      try {
+        const r = await apiFetch(`/api/roles/${encodeURIComponent(company)}`);
+        (r.roles || []).forEach(role => {
+          const o = document.createElement('option');
+          o.value = role; o.textContent = role; roleSel.appendChild(o);
+        });
+      } catch { }
+    }
+
+    async function runGapAnalysis() {
+      const company = document.getElementById('company-select').value;
+      const role = document.getElementById('role-select-dash').value;
+      let url = '/api/skill-gap/analyze';
+      const params = [];
+      if (company) params.push(`company=${encodeURIComponent(company)}`);
+      if (role) params.push(`role=${encodeURIComponent(role)}`);
+      if (params.length) url += '?' + params.join('&');
+
+      showAlert('info', '🔍 Analyzing skill gaps...');
+      try {
+        const data = await apiFetch(url);
+        const rPct = data.readiness_percent || 0;
+        document.getElementById('stat-readiness').textContent = rPct + '%';
+        document.getElementById('readiness-bar').style.width = rPct + '%';
+        document.getElementById('stat-gaps').textContent = (data.gaps || []).length;
+
+        // Build maps
+        const reqMap = {};
+        const scoreMap = {};
+        (data.skills || []).forEach(s => {
+          reqMap[s.skill] = s.required_level;
+          scoreMap[s.skill] = s.current_level;
+        });
+
+        renderGapSeverity(data.gaps || [], data.skills || []);
+        renderWeakSkills(data.gaps || []);
+        renderRadar(
+          Object.fromEntries(Object.entries(scoreMap).map(([k, v]) => [k, { score: v }])),
+          reqMap
+        );
+        renderBarChart(scoreMap, reqMap);
+        renderRecommendedAction(data.gaps || [], data.target_role);
+        clearAlert();
+      } catch (e) {
+        showAlert('error', '❌ ' + (e.message || 'Could not run gap analysis. Complete assessment first.'));
+      }
+    }
+
+    function renderGapSeverity(gaps, allSkills) {
+      const high = gaps.filter(g => g.priority === 'High');
+      const med = gaps.filter(g => g.priority === 'Medium');
+      const low = gaps.filter(g => g.priority === 'Low');
+      const metSkills = allSkills.filter(s => s.gap === 0);
+
+      document.getElementById('gap-severity').innerHTML = `
+    <div style="margin-bottom:16px">
+      <div style="display:flex;justify-content:space-between;font-size:.8rem;color:var(--text-muted);margin-bottom:8px">
+        <span>Critical Gaps</span><span style="color:#ef4444;font-weight:700">${high.length} skills</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap">
+        ${high.map(g => `<span class="severity-badge sev-high">🔴 ${g.skill}</span>`).join('') || '<span style="color:var(--text-muted);font-size:.85rem">None ✓</span>'}
+      </div>
+    </div>
+    <div style="margin-bottom:16px">
+      <div style="display:flex;justify-content:space-between;font-size:.8rem;color:var(--text-muted);margin-bottom:8px">
+        <span>Moderate Gaps</span><span style="color:#f59e0b;font-weight:700">${med.length} skills</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap">
+        ${med.map(g => `<span class="severity-badge sev-med">🟡 ${g.skill}</span>`).join('') || '<span style="color:var(--text-muted);font-size:.85rem">None ✓</span>'}
+      </div>
+    </div>
+    <div>
+      <div style="display:flex;justify-content:space-between;font-size:.8rem;color:var(--text-muted);margin-bottom:8px">
+        <span>Role-Ready Skills</span><span style="color:#10b981;font-weight:700">${metSkills.length} skills</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap">
+        ${metSkills.map(s => `<span class="severity-badge sev-low">✅ ${s.skill}</span>`).join('') || '<span style="color:var(--text-muted);font-size:.85rem">—</span>'}
+      </div>
+    </div>`;
+    }
+
+    function renderWeakSkills(gaps) {
+      if (!gaps.length) { document.getElementById('top-weak-skills').style.display = 'none'; return; }
+      const top = gaps.slice(0, 4);
+      document.getElementById('top-weak-skills').style.display = 'block';
+      document.getElementById('weak-skill-list').innerHTML = top.map(g => {
+        const cls = g.priority === 'High' ? '#ef4444' : g.priority === 'Medium' ? '#f59e0b' : '#10b981';
+        return `<div class="weak-skill-row">
+      <div style="width:10px;height:10px;border-radius:50%;background:${cls};flex-shrink:0"></div>
+      <div style="flex:1">
+        <div style="font-size:.9rem;font-weight:600">${g.skill}</div>
+        <div style="font-size:.78rem;color:var(--text-muted)">${g.reason}</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-size:.85rem;font-weight:700;color:${cls}">${g.current_level}/${g.required_level}</div>
+        <div style="font-size:.72rem;color:var(--text-muted)">Gap: ${g.gap}</div>
+      </div>
+    </div>`;
+      }).join('');
+    }
+
+    function renderRecommendedAction(gaps, role) {
+      if (!gaps.length) { document.getElementById('action-banner').style.display = 'none'; return; }
+      const topGap = gaps[0]; // already sorted High → Medium → Low
+      document.getElementById('action-banner').style.display = 'block';
+      document.getElementById('action-text').textContent =
+        `Focus on ${topGap.skill} — your highest priority gap for ${role}`;
+      document.getElementById('action-sub').textContent =
+        `Current: ${topGap.current_level}/100 → Required: ${topGap.required_level}/100 (Gap: ${topGap.gap} points)`;
+      document.getElementById('action-link').href = '/roadmap';
+    }
+
+    function renderScoreBars(skillScores) {
+      const el = document.getElementById('score-bars');
+      if (!Object.keys(skillScores).length) return;
+      el.innerHTML = Object.entries(skillScores).map(([skill, data]) => {
+        const score = data.score ?? data;
+        const level = data.level || '';
+        const cls = score >= 70 ? 'green' : score >= 40 ? 'amber' : 'red';
+        return `<div style="margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+        <span style="font-weight:600;font-size:.9rem">${skill}</span>
+        <span style="font-size:.8rem;color:var(--text-secondary)">${score}/100 &bull; <span class="badge badge-${cls === 'green' ? 'low' : cls === 'amber' ? 'medium' : 'high'}">${level}</span></span>
+      </div>
+      <div class="progress-bar-wrap"><div class="progress-bar ${cls}" style="width:${score}%"></div></div>
+    </div>`;
+      }).join('');
+    }
+
+    function renderResumeSkills(skills) {
+      document.getElementById('resume-skills').innerHTML =
+        '<div class="skills-row">' + skills.map(s => `<span class="skill-tag">${s}</span>`).join('') + '</div>';
+    }
+
+    function renderRadar(skillScores, requiredMap) {
+      const labels = Object.keys(skillScores);
+      if (!labels.length) return;
+      const current = labels.map(l => skillScores[l].score ?? skillScores[l] ?? 0);
+      const required = labels.map(l => requiredMap[l] ?? 70);
+      const ctx = document.getElementById('skill-radar').getContext('2d');
+      if (radarChart) radarChart.destroy();
+      radarChart = new Chart(ctx, {
+        type: 'radar',
+        data: {
+          labels,
+          datasets: [
+            { label: 'Your Skills', data: current, backgroundColor: 'rgba(99,102,241,0.2)', borderColor: 'rgba(99,102,241,0.8)', pointBackgroundColor: '#6366f1', borderWidth: 2 },
+            { label: 'Required', data: required, backgroundColor: 'rgba(139,92,246,0.1)', borderColor: 'rgba(139,92,246,0.5)', borderDash: [5, 5], borderWidth: 2, pointBackgroundColor: '#8b5cf6' },
+          ],
+        },
+        options: {
+          responsive: true,
+          scales: { r: { min: 0, max: 100, ticks: { color: '#64748b', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,.07)' }, pointLabels: { color: '#94a3b8', font: { size: 11 } }, angleLines: { color: 'rgba(255,255,255,.07)' } } },
+          plugins: { legend: { labels: { color: '#94a3b8' } } },
+        },
+      });
+    }
+
+    function renderBarChart(scoreMap, reqMap) {
+      const skills = Object.keys(scoreMap);
+      if (!skills.length) return;
+      const current = skills.map(s => scoreMap[s]);
+      const required = skills.map(s => reqMap[s] || 70);
+      const ctx = document.getElementById('skill-bar-chart').getContext('2d');
+      if (barChart) barChart.destroy();
+      barChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: skills,
+          datasets: [
+            { label: 'Your Score', data: current, backgroundColor: 'rgba(99,102,241,0.7)', borderRadius: 6, borderSkipped: false },
+            { label: 'Required', data: required, backgroundColor: 'rgba(139,92,246,0.3)', borderRadius: 6, borderSkipped: false, borderColor: 'rgba(139,92,246,0.7)', borderWidth: 1 },
+          ],
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          scales: {
+            y: { min: 0, max: 100, ticks: { color: '#64748b' }, grid: { color: 'rgba(255,255,255,.06)' } },
+            x: { ticks: { color: '#94a3b8', font: { size: 11 } }, grid: { display: false } },
+          },
+          plugins: { legend: { labels: { color: '#94a3b8' } }, tooltip: { mode: 'index', intersect: false } },
+        },
+      });
+      document.getElementById('bar-chart-card').style.display = 'block';
+    }
+
+    initDashboard();
+  </script>
+</body>
+
+</html>

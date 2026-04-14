@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TNP Admin Control Panel</title>
+    <link rel="stylesheet" href="assets/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --admin-accent: #0ea5e9;
+            --admin-bg: #0b1324;
+            --admin-card: rgba(15, 23, 42, 0.75);
+            --admin-border: rgba(14, 165, 233, 0.35);
+            --admin-danger: #ef4444;
+            --admin-ok: #10b981;
+        }
+
+        body {
+            background: radial-gradient(circle at 5% 10%, rgba(14, 165, 233, 0.18), transparent 32%),
+                radial-gradient(circle at 95% 92%, rgba(16, 185, 129, 0.15), transparent 32%),
+                var(--admin-bg);
+        }
+
+        .admin-wrap {
+            max-width: 1320px;
+            margin: 24px auto 40px;
+            padding: 0 20px;
+        }
+
+        .admin-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .admin-title h1 {
+            margin: 0;
+            font-size: clamp(1.5rem, 2.5vw, 2rem);
+            letter-spacing: 0.4px;
+        }
+
+        .admin-sub {
+            color: var(--text-secondary);
+            margin-bottom: 22px;
+        }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .admin-card {
+            background: var(--admin-card);
+            border: 1px solid var(--admin-border);
+            border-radius: 14px;
+            padding: 16px;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
+        }
+
+        .admin-card h2 {
+            margin: 0 0 14px;
+            font-size: 1.08rem;
+            color: #e2f3ff;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .row-2 {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .table-wrap {
+            max-height: 280px;
+            overflow: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: rgba(14, 165, 233, 0.13);
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        .mini {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+        }
+
+        .danger {
+            background: linear-gradient(135deg, #f43f5e, #dc2626);
+        }
+
+        .ok {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .token-pill {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(16, 185, 129, 0.17);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            color: #7ef3c6;
+            font-size: 0.8rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .hint-box {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px dashed rgba(14, 165, 233, 0.35);
+            border-radius: 10px;
+            padding: 8px;
+            margin-bottom: 8px;
+        }
+
+        .option-row {
+            display: grid;
+            grid-template-columns: 34px 1fr auto;
+            gap: 8px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+
+        .option-pill {
+            text-align: center;
+            font-weight: 700;
+            border-radius: 8px;
+            padding: 8px 0;
+            background: rgba(14, 165, 233, 0.2);
+            border: 1px solid rgba(14, 165, 233, 0.35);
+        }
+
+        @media (max-width: 1020px) {
+            .admin-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .row,
+            .row-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-wrap">
+        <div id="alert-area"></div>
+
+        <div class="admin-title">
+            <h1>TNP Admin Control Panel</h1>
+            <div>
+                <span id="admin-state" class="token-pill">Not authenticated</span>
+                <button id="admin-logout" class="btn btn-secondary">Logout</button>
+            </div>
+        </div>
+        <p class="admin-sub">Centralized controls for roles, assessments, roadmaps, and interventions. All actions
+            update live backend behavior.</p>
+
+        <section id="admin-login-card" class="admin-card">
+            <h2>Admin Authentication</h2>
+            <div class="row-2">
+                <div>
+                    <label class="form-label">Username</label>
+                    <input id="admin-username" class="form-input" placeholder="tnp_admin" />
+                </div>
+                <div>
+                    <label class="form-label">Password</label>
+                    <input id="admin-password" type="password" class="form-input" placeholder="admin123" />
+                </div>
+            </div>
+            <button id="admin-login-btn" class="btn btn-primary">Login as Admin</button>
+            <p class="mini" style="margin-top: 8px;">Default demo credentials: tnp_admin / admin123 (change with
+                ADMIN_USERNAME and ADMIN_PASSWORD env vars).</p>
+        </section>
+
+        <section id="admin-panels" class="hidden">
+            <div class="admin-grid">
+                <div class="admin-card">
+                    <h2>Role & Company Management</h2>
+                    <div class="row-2">
+                        <input id="role-company" class="form-input" placeholder="Company (e.g., Infosys)" />
+                        <input id="role-name" class="form-input" placeholder="Role (e.g., Data Analyst)" />
+                    </div>
+                    <label class="form-label">Simple Skill Input (one skill per line)</label>
+                    <div class="hint-box mini">Format: Skill | Weight | Minimum Score<br>Example: SQL | High | 75</div>
+                    <textarea id="role-skills-simple" class="form-input" rows="4"
+                        placeholder="SQL | High | 75&#10;Python | Medium | 65&#10;Statistics | Low | 55"></textarea>
+                    <button id="convert-role-skills-btn" class="btn btn-secondary" style="margin-top:8px;">Convert
+                        Simple Input to JSON</button>
+                    <label class="form-label">Skill Requirements JSON</label>
+                    <textarea id="role-skills" class="form-input" rows="6"
+                        placeholder='[{"skill":"SQL","weight":"High","minimum_score_required":70}]'></textarea>
+                    <div style="display:flex; gap:8px; margin-top:10px;">
+                        <button id="save-role-btn" class="btn btn-primary">Create Role</button>
+                        <button id="update-role-btn" class="btn btn-secondary">Update Selected</button>
+                        <button id="delete-role-btn" class="btn danger">Delete Selected</button>
+                    </div>
+                    <p class="mini" style="margin-top:8px;">These skills become the source for gap analysis and
+                        resume/roadmap targeting.</p>
+
+                    <div class="table-wrap" style="margin-top:12px;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th><input id="role-select-all" type="checkbox" title="Select all roles" /></th>
+                                    <th>Company</th>
+                                    <th>Role</th>
+                                    <th>Skills</th>
+                                </tr>
+                            </thead>
+                            <tbody id="roles-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="admin-card">
+                    <h2>Question Bank Control</h2>
+                    <div class="row-2">
+                        <input id="q-skill" class="form-input" placeholder="Skill" />
+                        <input id="q-weight" type="number" min="1" max="10" class="form-input" placeholder="Weight"
+                            value="2" />
+                    </div>
+                    <label class="form-label">Difficulty</label>
+                    <select id="q-difficulty" class="form-select" style="margin-bottom:8px;">
+                        <option>Easy</option>
+                        <option selected>Medium</option>
+                        <option>Hard</option>
+                        <option>Expert</option>
+                    </select>
+                    <label class="form-label">Question</label>
+                    <textarea id="q-text" class="form-input" rows="3" placeholder="Question text"></textarea>
+                    <label class="form-label" style="margin-top:8px;">Options</label>
+                    <div id="q-options-list"></div>
+                    <button id="q-add-option-btn" class="btn btn-secondary" style="margin-top:4px;">Add Option</button>
+                    <label class="form-label" style="margin-top:8px;">Correct Option</label>
+                    <select id="q-correct-select" class="form-select">
+                        <option value="">Select correct option</option>
+                    </select>
+                    <div style="display:flex; gap:8px; margin-top:10px;">
+                        <button id="save-q-btn" class="btn btn-primary">Add Question</button>
+                        <button id="update-q-btn" class="btn btn-secondary">Update Selected</button>
+                        <button id="delete-q-btn" class="btn danger">Delete Selected</button>
+                    </div>
+
+                    <div class="table-wrap" style="margin-top:12px; max-height:260px;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th><input id="question-select-all" type="checkbox" title="Select all questions" />
+                                    </th>
+                                    <th>Skill</th>
+                                    <th>Type</th>
+                                    <th>Difficulty</th>
+                                    <th>Weight</th>
+                                </tr>
+                            </thead>
+                            <tbody id="questions-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-grid">
+                <div class="admin-card">
+                    <h2>Roadmap Editor & Intervention</h2>
+                    <div class="row-2">
+                        <input id="override-role" class="form-input" placeholder="Role for roadmap override" />
+                        <input id="override-weeks" type="number" min="1" max="52" class="form-input" value="8"
+                            placeholder="Timeline weeks" />
+                    </div>
+                    <label class="form-label">Simple Role Steps Input (one step per line)</label>
+                    <div class="hint-box mini">Format: Skill | Priority | Start Stage | Weeks | Task1;Task2<br>Example:
+                        SQL | High | beginner | 2 | Practice joins;Solve 30 queries</div>
+                    <textarea id="override-steps-simple" class="form-input" rows="3"
+                        placeholder="SQL | High | beginner | 2 | Practice joins;Solve 30 queries"></textarea>
+                    <button id="convert-override-steps-btn" class="btn btn-secondary" style="margin-top:8px;">Convert
+                        Simple Steps to JSON</button>
+                    <label class="form-label">Role Custom Steps JSON</label>
+                    <textarea id="override-steps" class="form-input" rows="4"
+                        placeholder='[{"skill":"SQL","priority":"High","start_from_stage":"beginner","stages":[]}]'></textarea>
+                    <label class="form-label">Simple Role Resources Input (one resource per line)</label>
+                    <div class="hint-box mini">Format: Title | URL<br>Example: SQL Full Course | https://youtube.com/...
+                    </div>
+                    <textarea id="override-resources-simple" class="form-input" rows="2"
+                        placeholder="SQL Full Course | https://youtube.com/...&#10;SQL Docs | https://www.w3schools.com/sql/"></textarea>
+                    <button id="convert-override-resources-btn" class="btn btn-secondary"
+                        style="margin-top:8px;">Convert Simple Resources to JSON</button>
+                    <label class="form-label">Role Custom Resources JSON</label>
+                    <textarea id="override-resources" class="form-input" rows="3"
+                        placeholder='[{"title":"SQL playlist","url":"https://youtube.com/..."}]'></textarea>
+                    <button id="save-override-btn" class="btn btn-primary" style="margin-top:8px;">Save Role Roadmap
+                        Override</button>
+
+                    <hr style="margin:16px 0; border-color: rgba(255,255,255,0.12);" />
+
+                    <div class="row-2">
+                        <input id="assign-student-id" class="form-input" placeholder="Student ID" />
+                        <input id="assign-role" class="form-input" placeholder="Assigned Role (optional)" />
+                    </div>
+                    <input id="assign-weeks" type="number" min="1" max="52" class="form-input" value="6"
+                        placeholder="Student timeline weeks" />
+                    <label class="form-label">Simple Student Steps Input (one step per line)</label>
+                    <div class="hint-box mini">Format: Skill | Priority | Start Stage | Weeks | Task1;Task2</div>
+                    <textarea id="assign-steps-simple" class="form-input" rows="3"
+                        placeholder="Python | High | beginner | 2 | Complete basics;Build mini project"></textarea>
+                    <button id="convert-assign-steps-btn" class="btn btn-secondary" style="margin-top:8px;">Convert
+                        Simple Steps to JSON</button>
+                    <label class="form-label">Student Custom Steps JSON</label>
+                    <textarea id="assign-steps" class="form-input" rows="4"
+                        placeholder='[{"skill":"Python","priority":"High","stages":[]}]'></textarea>
+                    <label class="form-label">Simple Student Resources Input (one resource per line)</label>
+                    <div class="hint-box mini">Format: Title | URL</div>
+                    <textarea id="assign-resources-simple" class="form-input" rows="2"
+                        placeholder="Numpy Docs | https://numpy.org/doc&#10;Python Playlist | https://youtube.com/..."></textarea>
+                    <button id="convert-assign-resources-btn" class="btn btn-secondary" style="margin-top:8px;">Convert
+                        Simple Resources to JSON</button>
+                    <label class="form-label">Recommended Resources JSON</label>
+                    <textarea id="assign-resources" class="form-input" rows="3"
+                        placeholder='[{"title":"Numpy docs","url":"https://numpy.org/doc"}]'></textarea>
+                    <button id="assign-roadmap-btn" class="btn ok" style="margin-top:8px;">Assign Custom
+                        Roadmap</button>
+                </div>
+
+                <div class="admin-card">
+                    <h2>Custom Assignment Panel</h2>
+                    <input id="test-name" class="form-input" placeholder="Custom test name" />
+                    <div class="row-2" style="margin-top:8px;">
+                        <input id="test-role-id" class="form-input" placeholder="Role ID (optional)" />
+                        <input id="test-student-id" class="form-input" placeholder="Student ID (optional)" />
+                    </div>
+                    <input id="test-question-ids" class="form-input" style="margin-top:8px;"
+                        placeholder="Question IDs (comma-separated)" />
+                    <button id="create-test-btn" class="btn btn-primary" style="margin-top:8px;">Create Custom
+                        Test</button>
+
+                    <div class="table-wrap" style="margin-top:12px; max-height:190px;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Test</th>
+                                    <th>Role</th>
+                                    <th>Student</th>
+                                    <th>Questions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tests-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-grid">
+                <div class="admin-card">
+                    <h2>Student Analytics Dashboard</h2>
+                    <div class="row" id="metrics-cards"></div>
+                    <canvas id="roleReadinessChart" height="130"></canvas>
+                    <h3 style="margin:12px 0 6px;">Most Common Weak Skills</h3>
+                    <div id="weak-skills"></div>
+                </div>
+
+                <div class="admin-card">
+                    <h2>Per-Student Readiness</h2>
+                    <div class="table-wrap" style="max-height:360px;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Role</th>
+                                    <th>Readiness</th>
+                                    <th>Progress</th>
+                                </tr>
+                            </thead>
+                            <tbody id="students-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>Made with love for Students of TEC</p>
+    </footer>
+
+    <script>
+        const API_BASE = window.location.origin && window.location.origin !== 'null'
+            ? window.location.origin
+            : 'http://127.0.0.1:8000';
+        const ADMIN_TOKEN_KEY = 'tnp_admin_token';
+
+        let selectedRoleIds = new Set();
+        let selectedQuestionIds = new Set();
+        let roleLookup = {};
+        let questionLookup = {};
+        let roleChart = null;
+        let questionOptions = [];
+
+        function alertBox(type, message) {
+            const el = document.getElementById('alert-area');
+            el.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+        }
+
+        function getToken() {
+            return localStorage.getItem(ADMIN_TOKEN_KEY);
+        }
+
+        async function adminFetch(path, method = 'GET', body = null, skipAuth = false) {
+            const token = getToken();
+            const headers = { 'Content-Type': 'application/json' };
+            if (!skipAuth && token) headers.Authorization = `Bearer ${token}`;
+
+            const res = await fetch(`${API_BASE}${path}`, {
+                method,
+                headers,
+                body: body ? JSON.stringify(body) : null,
+            });
+
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) throw new Error(data.detail || `HTTP ${res.status}`);
+            return data;
+        }
+
+        function parseJSONInput(id, fallback = []) {
+            const raw = document.getElementById(id).value.trim();
+            if (!raw) return fallback;
+            return JSON.parse(raw);
+        }
+
+        function parseSimpleLines(raw) {
+            return raw
+                .split('\n')
+                .map((line) => line.trim())
+                .filter((line) => line && !line.startsWith('#'));
+        }
+
+        function parseSimpleRoleSkills(raw) {
+            const lines = parseSimpleLines(raw);
+            if (!lines.length) return [];
+
+            return lines.map((line, idx) => {
+                const parts = line.split('|').map((x) => x.trim());
+                if (parts.length < 3) {
+                    throw new Error(`Invalid role skill format on line ${idx + 1}. Use: Skill | Weight | Minimum Score`);
+                }
+                const skill = parts[0];
+                const weight = (parts[1] || 'Medium').charAt(0).toUpperCase() + (parts[1] || 'Medium').slice(1).toLowerCase();
+                const minimum = Number(parts[2]);
+                if (!skill || !['High', 'Medium', 'Low'].includes(weight) || Number.isNaN(minimum)) {
+                    throw new Error(`Invalid values on line ${idx + 1}. Weight must be High/Medium/Low and score must be number.`);
+                }
+                return {
+                    skill,
+                    weight,
+                    minimum_score_required: minimum,
+                };
+            });
+        }
+
+        function parseSimpleResources(raw) {
+            const lines = parseSimpleLines(raw);
+            if (!lines.length) return [];
+
+            return lines.map((line, idx) => {
+                const parts = line.split('|').map((x) => x.trim());
+                if (parts.length < 2) {
+                    throw new Error(`Invalid resource format on line ${idx + 1}. Use: Title | URL`);
+                }
+                return {
+                    title: parts[0],
+                    url: parts[1],
+                };
+            });
+        }
+
+        function parseSimpleRoadmapSteps(raw) {
+            const lines = parseSimpleLines(raw);
+            if (!lines.length) return [];
+
+            return lines.map((line, idx) => {
+                const parts = line.split('|').map((x) => x.trim());
+                if (parts.length < 5) {
+                    throw new Error(`Invalid step format on line ${idx + 1}. Use: Skill | Priority | Start Stage | Weeks | Task1;Task2`);
+                }
+
+                const skill = parts[0];
+                const priority = (parts[1] || 'High').charAt(0).toUpperCase() + (parts[1] || 'High').slice(1).toLowerCase();
+                const startStage = (parts[2] || 'beginner').toLowerCase();
+                const weeks = Number(parts[3]);
+                const tasks = parts[4].split(';').map((x) => x.trim()).filter(Boolean);
+
+                if (!skill || !['High', 'Medium', 'Low'].includes(priority) || Number.isNaN(weeks)) {
+                    throw new Error(`Invalid values on line ${idx + 1}.`);
+                }
+
+                return {
+                    skill,
+                    priority,
+                    start_from_stage: startStage,
+                    stages: [
+                        {
+                            stage: startStage,
+                            title: `${skill} ${startStage.charAt(0).toUpperCase() + startStage.slice(1)}`,
+                            time_weeks: weeks,
+                            tasks,
+                            concepts: [],
+                            resources: [],
+                            milestone: `Complete ${skill} ${startStage} tasks`,
+                        }
+                    ],
+                    total_weeks: weeks,
+                };
+            });
+        }
+
+        function convertSimpleToJson(simpleId, targetId, parser, successMessage) {
+            const raw = document.getElementById(simpleId).value;
+            const parsed = parser(raw);
+            document.getElementById(targetId).value = JSON.stringify(parsed, null, 2);
+            alertBox('success', successMessage);
+        }
+
+        function optionLabel(index) {
+            let n = index;
+            let label = '';
+            while (n >= 0) {
+                label = String.fromCharCode(65 + (n % 26)) + label;
+                n = Math.floor(n / 26) - 1;
+            }
+            return label;
+        }
+
+        function syncCorrectOptionChoices(selectedIndex = null) {
+            const select = document.getElementById('q-correct-select');
+            select.innerHTML = '<option value="">Select correct option</option>';
+            questionOptions.forEach((opt, idx) => {
+                const label = optionLabel(idx);
+                const o = document.createElement('option');
+                o.value = String(idx);
+                o.textContent = `${label}: ${opt || '(empty option)'}`;
+                if (selectedIndex !== null && idx === selectedIndex) {
+                    o.selected = true;
+                }
+                select.appendChild(o);
+            });
+        }
+
+        function renderOptionBuilder(selectedIndex = null) {
+            const list = document.getElementById('q-options-list');
+            list.innerHTML = '';
+
+            questionOptions.forEach((opt, idx) => {
+                const row = document.createElement('div');
+                row.className = 'option-row';
+                row.innerHTML = `
+          <div class="option-pill">${optionLabel(idx)}</div>
+          <input class="form-input" data-option-index="${idx}" value="${String(opt).replace(/"/g, '&quot;')}" placeholder="Option ${optionLabel(idx)} text" />
+          <button class="btn danger" data-remove-option="${idx}" type="button">Remove</button>
+        `;
+                list.appendChild(row);
+            });
+
+            list.querySelectorAll('input[data-option-index]').forEach((input) => {
+                input.addEventListener('input', (e) => {
+                    const idx = Number(e.target.getAttribute('data-option-index'));
+                    questionOptions[idx] = e.target.value;
+                    syncCorrectOptionChoices();
+                });
+            });
+
+            list.querySelectorAll('button[data-remove-option]').forEach((btn) => {
+                btn.addEventListener('click', (e) => {
+                    const idx = Number(e.target.getAttribute('data-remove-option'));
+                    questionOptions.splice(idx, 1);
+                    renderOptionBuilder();
+                });
+            });
+
+            syncCorrectOptionChoices(selectedIndex);
+        }
+
+        function addOption(initialValue = '') {
+            questionOptions.push(initialValue);
+            renderOptionBuilder();
+        }
+
+        function resetQuestionBuilder() {
+            questionOptions = ['', '', '', ''];
+            renderOptionBuilder();
+            document.getElementById('q-correct-select').value = '';
+        }
+
+        function requireSingleSelection(setObj, label) {
+            if (setObj.size === 0) {
+                throw new Error(`Select at least one ${label} first.`);
+            }
+            if (setObj.size > 1) {
+                throw new Error(`Select exactly one ${label} for update.`);
+            }
+            return Array.from(setObj)[0];
+        }
+
+        function requireAtLeastOneSelection(setObj, label) {
+            if (setObj.size === 0) {
+                throw new Error(`Select at least one ${label} first.`);
+            }
+        }
+
+        async function loginAdmin() {
+            try {
+                const username = document.getElementById('admin-username').value.trim();
+                const password = document.getElementById('admin-password').value;
+                const data = await adminFetch('/api/admin/login', 'POST', { username, password }, true);
+                localStorage.setItem(ADMIN_TOKEN_KEY, data.access_token);
+                setAuthState(true, data.admin.name);
+                await refreshAll();
+                alertBox('success', 'Admin login successful. Control panel unlocked.');
+            } catch (err) {
+                alertBox('error', err.message);
+            }
+        }
+
+        function logoutAdmin() {
+            localStorage.removeItem(ADMIN_TOKEN_KEY);
+            setAuthState(false);
+            alertBox('success', 'Admin session ended.');
+        }
+
+        function setAuthState(isLoggedIn, name = '') {
+            document.getElementById('admin-login-card').classList.toggle('hidden', isLoggedIn);
+            document.getElementById('admin-panels').classList.toggle('hidden', !isLoggedIn);
+            document.getElementById('admin-state').textContent = isLoggedIn ? `Authenticated: ${name || 'Admin'}` : 'Not authenticated';
+        }
+
+        function renderRoles(roles) {
+            const body = document.getElementById('roles-body');
+            body.innerHTML = '';
+            selectedRoleIds = new Set();
+            roleLookup = {};
+            roles.forEach((role) => {
+                roleLookup[role.id] = role;
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+          <td><input type="checkbox" name="role-select" value="${role.id}"></td>
+          <td>${role.company}</td>
+          <td>${role.role}<div class="mini">${role.id}</div></td>
+          <td class="mini">${role.skills.map(s => `${s.skill} (${s.weight}:${s.minimum_score_required})`).join(', ')}</td>
+        `;
+                tr.querySelector('input').addEventListener('change', (e) => {
+                    if (e.target.checked) {
+                        selectedRoleIds.add(role.id);
+                        document.getElementById('role-company').value = role.company;
+                        document.getElementById('role-name').value = role.role;
+                        document.getElementById('role-skills').value = JSON.stringify(role.skills, null, 2);
+                    } else {
+                        selectedRoleIds.delete(role.id);
+                    }
+                });
+                body.appendChild(tr);
+            });
+
+            const selectAll = document.getElementById('role-select-all');
+            if (selectAll) {
+                selectAll.checked = false;
+                selectAll.onchange = () => {
+                    const checked = selectAll.checked;
+                    selectedRoleIds = new Set();
+                    body.querySelectorAll('input[name="role-select"]').forEach((el) => {
+                        el.checked = checked;
+                        if (checked) selectedRoleIds.add(el.value);
+                    });
+                };
+            }
+        }
+
+        function renderQuestions(questions) {
+            const body = document.getElementById('questions-body');
+            body.innerHTML = '';
+            selectedQuestionIds = new Set();
+            questionLookup = {};
+            questions.slice(0, 250).forEach((q) => {
+                questionLookup[q.id] = q;
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+          <td><input type="checkbox" name="question-select" value="${q.id}"></td>
+          <td>${q.skill}</td>
+          <td>${q.type}</td>
+          <td>${q.difficulty}</td>
+          <td>${q.weight}</td>
+        `;
+                tr.querySelector('input').addEventListener('change', (e) => {
+                    if (e.target.checked) {
+                        selectedQuestionIds.add(q.id);
+                        document.getElementById('q-skill').value = q.skill;
+                        const difficulty = (q.difficulty || 'medium').toLowerCase();
+                        document.getElementById('q-difficulty').value = difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
+                        document.getElementById('q-weight').value = q.weight || 1;
+                        document.getElementById('q-text').value = q.prompt || '';
+                        questionOptions = Array.isArray(q.options) ? [...q.options] : [];
+                        if (questionOptions.length === 0) questionOptions = ['', '', '', ''];
+                        const correct = Array.isArray(q.correct_answers) && q.correct_answers.length > 0 ? Number(q.correct_answers[0]) : null;
+                        renderOptionBuilder(Number.isNaN(correct) ? null : correct);
+                    } else {
+                        selectedQuestionIds.delete(q.id);
+                    }
+                });
+                body.appendChild(tr);
+            });
+
+            const selectAll = document.getElementById('question-select-all');
+            if (selectAll) {
+                selectAll.checked = false;
+                selectAll.onchange = () => {
+                    const checked = selectAll.checked;
+                    selectedQuestionIds = new Set();
+                    body.querySelectorAll('input[name="question-select"]').forEach((el) => {
+                        el.checked = checked;
+                        if (checked) selectedQuestionIds.add(el.value);
+                    });
+                };
+            }
+        }
+
+        function renderTests(tests) {
+            const body = document.getElementById('tests-body');
+            body.innerHTML = '';
+            tests.forEach((t) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+          <td>${t.name}<div class="mini">${t.id}</div></td>
+          <td>${t.role_id || '-'}</td>
+          <td>${t.student_id || '-'}</td>
+          <td class="mini">${(t.question_ids || []).length}</td>
+        `;
+                body.appendChild(tr);
+            });
+        }
+
+        function renderStudents(analytics) {
+            const students = analytics.students || [];
+            const agg = analytics.aggregates || {};
+
+            const metrics = document.getElementById('metrics-cards');
+            metrics.innerHTML = `
+        <div class="stat-card"><div class="stat-number">${agg.student_count || 0}</div><div class="stat-label">Students</div></div>
+        <div class="stat-card"><div class="stat-number">${agg.average_performance || 0}</div><div class="stat-label">Avg Performance</div></div>
+        <div class="stat-card"><div class="stat-number">${Object.keys(agg.role_wise_readiness || {}).length}</div><div class="stat-label">Active Roles</div></div>
+      `;
+
+            const weakSkills = document.getElementById('weak-skills');
+            weakSkills.innerHTML = (agg.most_common_weak_skills || []).map((w) =>
+                `<span class="skill-tag red" style="margin:3px;">${w.skill}: ${w.count}</span>`
+            ).join('') || '<span class="mini">No weak-skill pattern yet.</span>';
+
+            const body = document.getElementById('students-body');
+            body.innerHTML = '';
+            students.forEach((s) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${s.name}</td>
+          <td>${s.target_role || '-'}</td>
+          <td>${s.readiness_score || 0}%</td>
+          <td>${s.roadmap_progress?.overall_completion_pct || 0}%</td>
+        `;
+                body.appendChild(tr);
+            });
+
+            const roles = Object.keys(agg.role_wise_readiness || {});
+            const values = roles.map((k) => agg.role_wise_readiness[k]);
+            const ctx = document.getElementById('roleReadinessChart').getContext('2d');
+            if (roleChart) roleChart.destroy();
+            roleChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: roles,
+                    datasets: [{
+                        label: 'Role-wise readiness',
+                        data: values,
+                        borderWidth: 1,
+                        backgroundColor: 'rgba(14, 165, 233, 0.55)',
+                        borderColor: 'rgba(14, 165, 233, 0.95)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true, max: 100 } }
+                }
+            });
+        }
+
+        async function refreshAll() {
+            const [snapshot, questions, students] = await Promise.all([
+                adminFetch('/api/admin/snapshot'),
+                adminFetch('/api/admin/questions'),
+                adminFetch('/api/admin/students')
+            ]);
+            renderRoles(snapshot.roles || []);
+            renderTests(snapshot.custom_tests || []);
+            renderQuestions(questions.questions || []);
+            renderStudents(students);
+        }
+
+        async function createRole() {
+            const company = document.getElementById('role-company').value.trim();
+            const role = document.getElementById('role-name').value.trim();
+            if (!company || !role) {
+                throw new Error('Company and role are required.');
+            }
+            const payload = {
+                company,
+                role,
+                skills: parseJSONInput('role-skills', []),
+            };
+            await adminFetch('/api/admin/role', 'POST', payload);
+            await refreshAll();
+            alertBox('success', 'Role created and propagated to engines.');
+        }
+
+        async function updateRole() {
+            const selectedRoleId = requireSingleSelection(selectedRoleIds, 'role');
+            const payload = {
+                company: document.getElementById('role-company').value.trim(),
+                role: document.getElementById('role-name').value.trim(),
+                skills: parseJSONInput('role-skills', []),
+            };
+            await adminFetch(`/api/admin/role/${selectedRoleId}`, 'PUT', payload);
+            await refreshAll();
+            alertBox('success', 'Role updated.');
+        }
+
+        async function deleteRole() {
+            requireAtLeastOneSelection(selectedRoleIds, 'role');
+            const ids = Array.from(selectedRoleIds);
+            await Promise.all(ids.map((id) => adminFetch(`/api/admin/role/${id}`, 'DELETE')));
+            selectedRoleIds = new Set();
+            await refreshAll();
+            alertBox('success', `${ids.length} role(s) deleted.`);
+        }
+
+        function buildQuestionPayload() {
+            const options = questionOptions.map((x) => String(x || '').trim()).filter(Boolean);
+            const correctSelected = document.getElementById('q-correct-select').value;
+            const correctIndex = correctSelected === '' ? null : Number(correctSelected);
+
+            if (!document.getElementById('q-text').value.trim()) {
+                throw new Error('Question text is required.');
+            }
+            if (!document.getElementById('q-skill').value.trim()) {
+                throw new Error('Skill is required.');
+            }
+            if (options.length < 2) {
+                throw new Error('Please add at least two options.');
+            }
+            if (correctIndex === null || Number.isNaN(correctIndex)) {
+                throw new Error('Please select the correct option.');
+            }
+
+            return {
+                question: document.getElementById('q-text').value.trim(),
+                type: 'MCQ',
+                skill: document.getElementById('q-skill').value.trim(),
+                difficulty: document.getElementById('q-difficulty').value,
+                weight: Number(document.getElementById('q-weight').value || 1),
+                options,
+                correct_answers: [correctIndex],
+            };
+        }
+
+        async function createQuestion() {
+            await adminFetch('/api/admin/question', 'POST', buildQuestionPayload());
+            await refreshAll();
+            alertBox('success', 'Question added to active bank.');
+        }
+
+        async function updateQuestion() {
+            const selectedQuestionId = requireSingleSelection(selectedQuestionIds, 'question');
+            await adminFetch(`/api/admin/question/${selectedQuestionId}`, 'PUT', buildQuestionPayload());
+            await refreshAll();
+            alertBox('success', 'Question updated.');
+        }
+
+        async function deleteQuestion() {
+            requireAtLeastOneSelection(selectedQuestionIds, 'question');
+            const ids = Array.from(selectedQuestionIds);
+            await Promise.all(ids.map((id) => adminFetch(`/api/admin/question/${id}`, 'DELETE')));
+            selectedQuestionIds = new Set();
+            await refreshAll();
+            alertBox('success', `${ids.length} question(s) deleted.`);
+        }
+
+        async function createCustomTest() {
+            const payload = {
+                name: document.getElementById('test-name').value.trim(),
+                role_id: document.getElementById('test-role-id').value.trim() || null,
+                student_id: document.getElementById('test-student-id').value.trim() || null,
+                question_ids: document.getElementById('test-question-ids').value.split(',').map(x => x.trim()).filter(Boolean),
+            };
+            await adminFetch('/api/admin/tests', 'POST', payload);
+            await refreshAll();
+            alertBox('success', 'Custom test created and assignment registered.');
+        }
+
+        async function saveRoleOverride() {
+            const role = document.getElementById('override-role').value.trim();
+            if (!role) {
+                throw new Error('Role is required for roadmap override.');
+            }
+            const payload = {
+                role,
+                timeline_weeks: Number(document.getElementById('override-weeks').value || 8),
+                custom_steps: parseJSONInput('override-steps', []),
+                custom_resources: parseJSONInput('override-resources', []),
+            };
+            await adminFetch('/api/admin/roadmap-override', 'POST', payload);
+            await refreshAll();
+            alertBox('success', 'Role roadmap override saved.');
+        }
+
+        async function assignRoadmap() {
+            const studentId = document.getElementById('assign-student-id').value.trim();
+            if (!studentId) {
+                throw new Error('Student ID is required for assignment.');
+            }
+            const payload = {
+                student_id: studentId,
+                role: document.getElementById('assign-role').value.trim() || null,
+                timeline_weeks: Number(document.getElementById('assign-weeks').value || 6),
+                custom_steps: parseJSONInput('assign-steps', []),
+                custom_resources: parseJSONInput('assign-resources', []),
+                recommended_resources: parseJSONInput('assign-resources', []),
+            };
+            await adminFetch('/api/admin/assign-roadmap', 'POST', payload);
+            await refreshAll();
+            alertBox('success', 'Student roadmap assignment applied.');
+        }
+
+        function bind(id, fn) {
+            document.getElementById(id).addEventListener('click', async () => {
+                try {
+                    await fn();
+                } catch (err) {
+                    alertBox('error', err.message);
+                }
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            bind('admin-login-btn', loginAdmin);
+            bind('admin-logout', logoutAdmin);
+            bind('convert-role-skills-btn', async () => convertSimpleToJson(
+                'role-skills-simple',
+                'role-skills',
+                parseSimpleRoleSkills,
+                'Role skill simple input converted to JSON.'
+            ));
+            bind('save-role-btn', createRole);
+            bind('update-role-btn', updateRole);
+            bind('delete-role-btn', deleteRole);
+            bind('save-q-btn', createQuestion);
+            bind('update-q-btn', updateQuestion);
+            bind('delete-q-btn', deleteQuestion);
+            bind('q-add-option-btn', async () => addOption(''));
+            bind('create-test-btn', createCustomTest);
+            bind('convert-override-steps-btn', async () => convertSimpleToJson(
+                'override-steps-simple',
+                'override-steps',
+                parseSimpleRoadmapSteps,
+                'Role roadmap steps converted to JSON.'
+            ));
+            bind('convert-override-resources-btn', async () => convertSimpleToJson(
+                'override-resources-simple',
+                'override-resources',
+                parseSimpleResources,
+                'Role resources converted to JSON.'
+            ));
+            bind('convert-assign-steps-btn', async () => convertSimpleToJson(
+                'assign-steps-simple',
+                'assign-steps',
+                parseSimpleRoadmapSteps,
+                'Student roadmap steps converted to JSON.'
+            ));
+            bind('convert-assign-resources-btn', async () => convertSimpleToJson(
+                'assign-resources-simple',
+                'assign-resources',
+                parseSimpleResources,
+                'Student resources converted to JSON.'
+            ));
+            bind('save-override-btn', saveRoleOverride);
+            bind('assign-roadmap-btn', assignRoadmap);
+
+            if (getToken()) {
+                setAuthState(true, 'Admin');
+                try {
+                    await refreshAll();
+                } catch {
+                    logoutAdmin();
+                }
+            }
+
+            resetQuestionBuilder();
+        });
+    </script>
+</body>
+
+</html>

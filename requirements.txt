@@ -1,0 +1,21 @@
+fastapi==0.116.1
+uvicorn[standard]==0.35.0
+pydantic[email]==2.11.7
+email-validator==2.2.0
+pytest==8.3.5
+httpx==0.28.1
+python-multipart==0.0.20
+
+# Resume parsing
+pdfminer.six==20231228
+python-docx==1.1.2
+
+# PDF generation
+reportlab==4.2.5
+
+# Data processing
+numpy==2.2.4
+pandas==2.2.3
+
+# Optional NLP (graceful fallback if not installed)
+# spacy==3.7.4

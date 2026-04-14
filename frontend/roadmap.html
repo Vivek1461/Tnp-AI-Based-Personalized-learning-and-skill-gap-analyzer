@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Roadmap — SkillForge AI</title>
+  <meta name="description"
+    content="Master-level personalized learning roadmap with concepts, tasks, mini-projects, and milestones." />
+  <link rel="stylesheet" href="assets/style.css" />
+  <style>
+    .roadmap-item {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      margin-bottom: 16px;
+      overflow: hidden;
+      transition: border-color .2s;
+    }
+
+    .roadmap-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px;
+      cursor: pointer;
+      background: rgba(255, 255, 255, .03);
+      transition: background .2s;
+    }
+
+    .roadmap-header:hover {
+      background: rgba(255, 255, 255, .06);
+    }
+
+    .roadmap-body {
+      display: none;
+      padding: 8px 24px 20px;
+    }
+
+    .roadmap-body.open {
+      display: block;
+    }
+
+    .stage-card {
+      background: rgba(255, 255, 255, .03);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 14px;
+      transition: border-color .3s;
+    }
+
+    .stage-card.done {
+      border-color: var(--accent-green) !important;
+      opacity: .9;
+    }
+
+    .concept-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .concept-tag {
+      background: rgba(99, 102, 241, .12);
+      border: 1px solid rgba(99, 102, 241, .25);
+      color: #a5b4fc;
+      border-radius: 20px;
+      padding: 3px 12px;
+      font-size: .78rem;
+    }
+
+    .task-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: .85rem;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    .task-item::before {
+      content: '▸';
+      color: var(--accent-primary);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .milestone-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(16, 185, 129, .12);
+      border: 1px solid rgba(16, 185, 129, .3);
+      color: #10b981;
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: .82rem;
+      margin-top: 12px;
+    }
+
+    .mini-project-box {
+      background: rgba(245, 158, 11, .08);
+      border: 1px solid rgba(245, 158, 11, .25);
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-top: 12px;
+    }
+
+    .mini-project-label {
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      color: #f59e0b;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .resource-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: .82rem;
+      margin: 4px 4px 4px 0;
+      transition: all .2s;
+    }
+
+    .resource-link:hover {
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+      background: rgba(99, 102, 241, .08);
+    }
+
+    .progress-ring-wrap {
+      position: relative;
+      width: 54px;
+      height: 54px;
+      flex-shrink: 0;
+    }
+
+    .progress-ring-text {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .7rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .stage-level-badge {
+      padding: 3px 12px;
+      border-radius: 20px;
+      font-size: .72rem;
+      font-weight: 700;
+      text-transform: capitalize;
+    }
+
+    .level-beginner {
+      background: rgba(99, 102, 241, .12);
+      color: #a5b4fc;
+    }
+
+    .level-intermediate {
+      background: rgba(245, 158, 11, .12);
+      color: #f59e0b;
+    }
+
+    .level-advanced {
+      background: rgba(239, 68, 68, .12);
+      color: #ef4444;
+    }
+
+    .level-industry_ready {
+      background: rgba(16, 185, 129, .12);
+      color: #10b981;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+  </div>
+
+  <nav class="navbar">
+    <div class="logo">⚡ SkillForge AI</div>
+    <div class="nav-links">
+      <a class="nav-link" href="/">Home</a>
+      <a class="nav-link" href="/dashboard">Dashboard</a>
+      <a class="nav-link" href="/assessment">Assessment</a>
+      <a class="nav-link active" href="/roadmap">Roadmap</a>
+      <a class="nav-link" href="/resume">Resume</a>
+    </div>
+    <button class="btn btn-secondary" onclick="logout()" style="padding:8px 16px;font-size:0.85rem">Sign Out</button>
+  </nav>
+
+  <div class="container" style="padding-top:36px;padding-bottom:60px">
+
+    <div
+      style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:32px">
+      <div>
+        <h1 style="font-size:2rem;font-weight:800;margin-bottom:4px">🗺️ Master Learning Roadmap</h1>
+        <p style="color:var(--text-secondary)" id="roadmap-meta">Loading your personalized plan...</p>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+        <input class="form-input" id="company-input" placeholder="Company (e.g. TCS)" style="width:160px" />
+        <input class="form-input" id="role-input" placeholder="Role override" style="width:170px" />
+        <button class="btn btn-primary" onclick="loadRoadmap()">🔄 Refresh</button>
+      </div>
+    </div>
+
+    <div id="alert-area" style="margin-bottom:16px"></div>
+
+    <!-- Summary Stats -->
+    <div class="grid-4" style="margin-bottom:28px">
+      <div class="stat-card">
+        <div class="stat-number" id="stat-readiness2">—</div>
+        <div class="stat-label">Readiness %</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="stat-total-gaps">—</div>
+        <div class="stat-label">Skills to Improve</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="stat-total-weeks">—</div>
+        <div class="stat-label">Est. Total Weeks</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="stat-overall-pct">—</div>
+        <div class="stat-label">Overall Progress</div>
+      </div>
+    </div>
+
+    <div id="admin-suggestion-card" class="card" style="margin-bottom:18px;display:none;">
+      <div class="card-title">Preferred Suggestion by Admin</div>
+      <div id="admin-suggestion-content" style="font-size:.9rem;color:var(--text-secondary)"></div>
+    </div>
+
+    <!-- Roadmap Accordion -->
+    <div id="roadmap-list">
+      <div style="text-align:center;color:var(--text-secondary);padding:60px 0">
+        <div style="font-size:3rem;margin-bottom:12px">🗺️</div>
+        <p>Complete the assessment first, then load your personalized roadmap.</p>
+        <a href="/assessment" class="btn btn-primary" style="margin-top:16px;display:inline-flex">Take Assessment →</a>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>Made with love for Students of TEC</p>
+  </footer>
+  <script src="assets/app.js"></script>
+  <script>
+    const TYPE_ICON = { video: '▶️', course: '📚', book: '📖', docs: '📄', interactive: '🎮', article: '✍️' };
+    const LEVEL_LABEL = { beginner: 'Beginner', intermediate: 'Intermediate', advanced: 'Advanced', industry_ready: 'Industry Ready' };
+
+    async function loadRoadmap() {
+      const company = document.getElementById('company-input').value.trim();
+      const role = document.getElementById('role-input').value.trim();
+      let url = '/api/roadmap';
+      const params = [];
+      if (company) params.push(`company=${encodeURIComponent(company)}`);
+      if (role) params.push(`role=${encodeURIComponent(role)}`);
+      if (params.length) url += '?' + params.join('&');
+
+      showAlert('info', '⏳ Generating your master roadmap...');
+      try {
+        const data = await apiFetch(url);
+        clearAlert();
+
+        document.getElementById('roadmap-meta').textContent =
+          `${data.target_role}${data.company ? ' @ ' + data.company : ''} • ${data.readiness_percent}% ready • ${data.estimated_total_weeks} weeks to industry-ready`;
+        document.getElementById('stat-readiness2').textContent = data.readiness_percent + '%';
+        document.getElementById('stat-total-gaps').textContent = data.total_gap_count;
+        document.getElementById('stat-total-weeks').textContent = data.estimated_total_weeks;
+        renderAdminSuggestions(data.admin_preferred_suggestions);
+
+        let progressData = {};
+        let overallPct = '—';
+        try {
+          const prog = await apiFetch('/api/progress');
+          progressData = prog.progress || {};
+          overallPct = (prog.metrics?.overall_completion_pct || 0) + '%';
+        } catch { }
+        document.getElementById('stat-overall-pct').textContent = overallPct;
+
+        renderRoadmap(data.roadmap || [], progressData);
+      } catch (e) {
+        renderAdminSuggestions(null);
+        showAlert('error', '❌ ' + (e.message || 'Load failed. Complete assessment first.'));
+      }
+    }
+
+    function renderAdminSuggestions(suggestions) {
+      const card = document.getElementById('admin-suggestion-card');
+      const content = document.getElementById('admin-suggestion-content');
+      if (!card || !content) return;
+
+      if (!suggestions) {
+        card.style.display = 'none';
+        return;
+      }
+
+      const focusSkills = suggestions.preferred_focus_skills || [];
+      const customResources = suggestions.preferred_custom_resources || [];
+      const studentResources = suggestions.personalized_resources_for_student || [];
+
+      const focusHtml = focusSkills.length
+        ? `<div style="margin-bottom:10px"><strong style="color:var(--text-primary)">Role/Company Focus Skills:</strong><div class="skills-row" style="margin-top:6px;">${focusSkills.map((x) => `<span class="skill-tag">${x.skill} (${x.weight}, ${x.required_score})</span>`).join('')}</div></div>`
+        : '';
+
+      const roleResourceHtml = customResources.length
+        ? `<div style="margin-bottom:10px"><strong style="color:var(--text-primary)">Role Preferred Resources:</strong><div style="margin-top:6px;">${customResources.map((r) => `<a class="resource-link" href="${r.url || '#'}" target="_blank" rel="noopener">🔗 ${r.title || r.name || 'Resource'}</a>`).join('')}</div></div>`
+        : '';
+
+      const studentResourceHtml = studentResources.length
+        ? `<div style="margin-bottom:4px"><strong style="color:var(--text-primary)">Personalized for You by Admin:</strong><div style="margin-top:6px;">${studentResources.map((r) => `<a class="resource-link" href="${r.url || '#'}" target="_blank" rel="noopener">⭐ ${r.title || r.name || 'Resource'}</a>`).join('')}</div></div>`
+        : '';
+
+      if (!focusHtml && !roleResourceHtml && !studentResourceHtml) {
+        card.style.display = 'none';
+        return;
+      }
+
+      content.innerHTML = `${focusHtml}${roleResourceHtml}${studentResourceHtml}`;
+      card.style.display = 'block';
+    }
+
+    function renderRoadmap(roadmap, progressData) {
+      const el = document.getElementById('roadmap-list');
+      if (!roadmap.length) {
+        el.innerHTML = '<div class="alert alert-success">✅ No gaps! You meet the requirements.</div>';
+        return;
+      }
+
+      el.innerHTML = roadmap.map((item, i) => {
+        const skillProg = progressData[item.skill] || {};
+        const completedStages = Object.values(skillProg).filter(Boolean).length;
+        const totalStages = item.stages.length;
+        const pct = totalStages ? Math.round((completedStages / totalStages) * 100) : 0;
+        const r = 22, circ = 2 * Math.PI * r;
+        const dashOffset = circ - (pct / 100) * circ;
+
+        const stagesHtml = item.stages.map(stage => {
+          const isDone = skillProg[stage.stage] === true;
+          const levelClass = 'level-' + stage.stage;
+
+          const conceptsHtml = (stage.concepts || []).length
+            ? `<div style="margin-top:12px">
+            <div style="font-size:.75rem;color:var(--text-muted);font-weight:600;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em">📖 Concepts to Learn</div>
+            <div class="concept-list">${stage.concepts.map(c => `<span class="concept-tag">${c}</span>`).join('')}</div>
+           </div>` : '';
+
+          const tasksHtml = (stage.tasks || []).length
+            ? `<div style="margin-top:12px">
+            <div style="font-size:.75rem;color:var(--text-muted);font-weight:600;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em">✅ Hands-on Tasks</div>
+            ${stage.tasks.map(t => `<div class="task-item">${t}</div>`).join('')}
+           </div>` : '';
+
+          const miniProjHtml = stage.mini_project
+            ? `<div class="mini-project-box">
+            <div class="mini-project-label">🏗️ Mini Project</div>
+            <div style="font-size:.85rem;color:var(--text-primary)">${stage.mini_project}</div>
+           </div>` : '';
+
+          const milestoneHtml = stage.milestone
+            ? `<div class="milestone-badge">🏆 Milestone: ${stage.milestone}</div>` : '';
+
+          const resourcesHtml = (stage.resources || []).map(r =>
+            `<a href="${r.url}" target="_blank" rel="noopener" class="resource-link">
+           ${TYPE_ICON[r.type] || '🔗'} ${r.name}
+         </a>`
+          ).join('');
+
+          return `
+        <div class="stage-card${isDone ? ' done' : ''}">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+            <div style="display:flex;align-items:center;gap:10px">
+              <span class="stage-level-badge ${levelClass}">${LEVEL_LABEL[stage.stage] || stage.stage}</span>
+              <strong style="font-size:.95rem">${stage.title}</strong>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="font-size:.8rem;color:var(--text-muted)">⏱ ~${stage.time_weeks} week${stage.time_weeks !== 1 ? 's' : ''}</span>
+              <button class="btn btn-${isDone ? 'secondary' : 'success'}" style="padding:5px 14px;font-size:.78rem"
+                onclick="toggleStage('${item.skill}','${stage.stage}',${isDone},this)" ${isDone ? 'disabled' : ''}>
+                ${isDone ? '✅ Done' : '☐ Mark Done'}
+              </button>
+            </div>
+          </div>
+          ${conceptsHtml}
+          ${tasksHtml}
+          ${miniProjHtml}
+          ${milestoneHtml}
+          ${resourcesHtml ? `<div style="margin-top:14px">
+            <div style="font-size:.75rem;color:var(--text-muted);font-weight:600;margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em">🔗 Resources</div>
+            <div>${resourcesHtml}</div>
+          </div>` : ''}
+        </div>`;
+        }).join('');
+
+        const priorityColors = { High: '#ef4444', Medium: '#f59e0b', Low: '#10b981' };
+        const pCol = priorityColors[item.priority] || '#6366f1';
+
+        return `
+      <div class="roadmap-item" id="rm-item-${i}">
+        <div class="roadmap-header" onclick="toggleAccordion(${i})">
+          <div style="display:flex;align-items:center;gap:14px">
+            <div class="progress-ring-wrap">
+              <svg width="54" height="54" viewBox="0 0 54 54" style="transform:rotate(-90deg)">
+                <circle cx="27" cy="27" r="${r}" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="5"/>
+                <circle cx="27" cy="27" r="${r}" fill="none" stroke="${pCol}" stroke-width="5"
+                  stroke-dasharray="${circ}" stroke-dashoffset="${dashOffset}"
+                  stroke-linecap="round" style="transition:stroke-dashoffset .5s"/>
+              </svg>
+              <div class="progress-ring-text">${pct}%</div>
+            </div>
+            <div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <span style="font-weight:800;font-size:1rem">${item.skill}</span>
+                <span style="background:${pCol}20;color:${pCol};padding:2px 10px;border-radius:20px;font-size:.72rem;font-weight:700">${item.priority}</span>
+              </div>
+              <div style="color:var(--text-muted);font-size:.82rem;margin-top:2px">
+                ${totalStages} stages • ~${item.total_weeks} weeks • Starting from <strong>${LEVEL_LABEL[item.start_from_stage] || item.start_from_stage}</strong>
+              </div>
+            </div>
+          </div>
+          <span id="arrow-${i}" style="color:var(--text-muted);font-size:1.1rem;transition:transform .3s">▼</span>
+        </div>
+        <div class="roadmap-body ${i === 0 ? 'open' : ''}" id="body-${i}">
+          ${stagesHtml}
+        </div>
+      </div>`;
+      }).join('');
+    }
+
+    function toggleAccordion(i) {
+      const body = document.getElementById(`body-${i}`);
+      const arrow = document.getElementById(`arrow-${i}`);
+      body.classList.toggle('open');
+      arrow.style.transform = body.classList.contains('open') ? 'rotate(180deg)' : '';
+    }
+
+    async function toggleStage(skill, stage, isDone, btn) {
+      if (isDone) return;
+      btn.disabled = true;
+      try {
+        await apiFetch('/api/progress/complete', 'POST', { skill, stage });
+        btn.textContent = '✅ Done';
+        btn.className = 'btn btn-secondary';
+        btn.disabled = true;
+        const card = btn.closest('.stage-card');
+        if (card) card.classList.add('done');
+        // Refresh progress metrics
+        const prog = await apiFetch('/api/progress');
+        document.getElementById('stat-overall-pct').textContent =
+          (prog.metrics?.overall_completion_pct || 0) + '%';
+        // Refresh the circular progress for this skill
+        await loadRoadmap();
+      } catch (e) {
+        showAlert('error', '❌ Could not save progress');
+        btn.disabled = false;
+      }
+    }
+
+    (async () => {
+      const user = await getProfile();
+      if (!user) return;
+      await loadRoadmap();
+    })();
+  </script>
+</body>
+
+</html>

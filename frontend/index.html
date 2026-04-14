@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SkillForge AI — Personalized Skill Gap Analyzer</title>
+  <meta name="description"
+    content="AI-powered skill gap analyzer for students targeting top companies. Upload your resume, take assessments, get roadmaps." />
+  <link rel="stylesheet" href="assets/style.css" />
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><text y='20' font-size='20'>🎯</text></svg>" />
+</head>
+
+<body>
+
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">⚡ SkillForge AI</div>
+    <div class="nav-links">
+      <a class="nav-link active" href="/">Home</a>
+      <a class="nav-link" href="/dashboard">Dashboard</a>
+      <a class="nav-link" href="/assessment">Assessment</a>
+      <a class="nav-link" href="/roadmap">Roadmap</a>
+      <a class="nav-link" href="/resume">Resume</a>
+    </div>
+    <div>
+      <button class="btn btn-primary" id="open-auth" style="padding: 8px 20px; font-size: 0.9rem;">Get Started</button>
+      <a class="btn btn-secondary" id="nav-dashboard" href="/dashboard"
+        style="padding: 8px 20px; font-size: 0.9rem; display:none;">Go to Dashboard</a>
+      <button class="btn btn-secondary" id="nav-logout"
+        style="padding: 8px 20px; font-size: 0.9rem; display:none;">Logout</button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div style="max-width: 800px;">
+      <div class="hero-badge">🚀 AI-Powered TNP Platform</div>
+      <h1>Bridge Your <span>Skill Gap</span><br />Land Your Dream Job</h1>
+      <p>Upload your resume, take intelligent assessments, and get a personalized learning roadmap tailored to your
+        target company and role.</p>
+      <div class="hero-cta">
+        <button class="btn btn-primary" id="hero-signup">
+          🎯 Start For Free
+        </button>
+        <a href="/dashboard" class="btn btn-primary" id="hero-dashboard" style="display:none;">📊 Continue to
+          Dashboard</a>
+        <a href="/dashboard" class="btn btn-secondary">📊 View Demo Dashboard</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Everything You Need to Get Placed</h2>
+        <p>From resume parsing to company-ready PDF generation — all in one platform</p>
+      </div>
+      <div class="grid-3">
+        <div class="card slide-up">
+          <div style="font-size:2rem;margin-bottom:12px">📄</div>
+          <div class="card-title">Resume Intelligence</div>
+          <p style="color:var(--text-secondary);font-size:0.9rem">Upload your PDF/DOCX resume. AI extracts and
+            normalizes 30+ skills automatically.</p>
+        </div>
+        <div class="card slide-up" style="animation-delay:0.1s">
+          <div style="font-size:2rem;margin-bottom:12px">🧠</div>
+          <div class="card-title">Smart Assessment</div>
+          <p style="color:var(--text-secondary);font-size:0.9rem">MCQ, multi-select, and case-based questions with
+            weighted scoring and skill-level detection.</p>
+        </div>
+        <div class="card slide-up" style="animation-delay:0.2s">
+          <div style="font-size:2rem;margin-bottom:12px">🏢</div>
+          <div class="card-title">Company Role Mapping</div>
+          <p style="color:var(--text-secondary);font-size:0.9rem">10+ companies (TCS, Google, Amazon, Infosys...) with
+            exact skill priorities for every role.</p>
+        </div>
+        <div class="card slide-up" style="animation-delay:0.3s">
+          <div style="font-size:2rem;margin-bottom:12px">🎯</div>
+          <div class="card-title">Explainable Gap Analysis</div>
+          <p style="color:var(--text-secondary);font-size:0.9rem">Every gap explains why — missing from resume, low
+            score, or below required level.</p>
+        </div>
+        <div class="card slide-up" style="animation-delay:0.4s">
+          <div style="font-size:2rem;margin-bottom:12px">🗺️</div>
+          <div class="card-title">Personalized Roadmap</div>
+          <p style="color:var(--text-secondary);font-size:0.9rem">Prioritized beginner→advanced learning paths with real
+            YouTube, Coursera & docs links.</p>
+        </div>
+        <div class="card slide-up" style="animation-delay:0.5s">
+          <div style="font-size:2rem;margin-bottom:12px">📝</div>
+          <div class="card-title">ATS Resume Generator</div>
+          <p style="color:var(--text-secondary);font-size:0.9rem">Generate company-tailored, ATS-friendly PDF resumes
+            highlighting the right skills.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="section"
+    style="background: rgba(99,102,241,0.03); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border)">
+    <div class="container">
+      <div class="section-header">
+        <h2>The System Flow</h2>
+        <p>7 connected stages from resume intake to interview-ready output</p>
+      </div>
+      <div
+        style="display:flex; gap:8px; align-items:center; justify-content:center; flex-wrap:wrap; font-size:0.9rem; color: var(--text-secondary)">
+        <span class="skill-tag" style="background:rgba(99,102,241,0.2)">📄 Resume Parser</span>
+        <span style="color:var(--text-muted)">→</span>
+        <span class="skill-tag" style="background:rgba(139,92,246,0.2)">🧠 Assessment</span>
+        <span style="color:var(--text-muted)">→</span>
+        <span class="skill-tag" style="background:rgba(6,182,212,0.2)">🏢 Role Mapper</span>
+        <span style="color:var(--text-muted)">→</span>
+        <span class="skill-tag" style="background:rgba(239,68,68,0.2)">🎯 Gap Analyzer</span>
+        <span style="color:var(--text-muted)">→</span>
+        <span class="skill-tag" style="background:rgba(245,158,11,0.2)">🗺️ Roadmap</span>
+        <span style="color:var(--text-muted)">→</span>
+        <span class="skill-tag" style="background:rgba(16,185,129,0.2)">📊 Progress</span>
+        <span style="color:var(--text-muted)">→</span>
+        <span class="skill-tag" style="background:rgba(99,102,241,0.2)">📝 Resume Gen</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section">
+    <div class="container" style="text-align:center">
+      <h2 style="font-size:2.2rem;font-weight:800;margin-bottom:16px">Ready to Close Your Skill Gap?</h2>
+      <p style="color:var(--text-secondary);margin-bottom:32px">Join thousands of students preparing for top tech
+        companies.</p>
+      <button class="btn btn-primary" onclick="openModal('register')">🚀 Create Free Account</button>
+    </div>
+  </section>
+
+  <footer>
+    <p>Made with love for Students of TEC</p>
+  </footer>
+
+  <!-- Auth Modal -->
+  <div class="modal-overlay" id="auth-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>⚡ SkillForge AI</h2>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-tabs">
+        <div class="modal-tab active" id="tab-login" onclick="switchTab('login')">Sign In</div>
+        <div class="modal-tab" id="tab-register" onclick="switchTab('register')">Register</div>
+      </div>
+
+      <div id="alert-area"></div>
+
+      <!-- Login Form -->
+      <div id="form-login">
+        <div class="form-group">
+          <label class="form-label">Student ID (Username)</label>
+          <input class="form-input" type="text" id="login-username" placeholder="22CS101" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input class="form-input" type="password" id="login-password" placeholder="••••••••" />
+        </div>
+        <button type="button" id="login-submit" class="btn btn-primary" style="width:100%" onclick="handleLogin()">Sign
+          In</button>
+      </div>
+
+      <!-- Register Form -->
+      <div id="form-register" style="display:none">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input class="form-input" type="text" id="reg-name" placeholder="Rahul Sharma" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input class="form-input" type="email" id="reg-email" placeholder="student@example.com" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">College Student ID (Used as Username)</label>
+          <input class="form-input" type="text" id="reg-student-id" placeholder="22CS101" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input class="form-input" type="password" id="reg-password" placeholder="min 6 characters" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Target Role</label>
+          <select class="form-select" id="reg-role">
+            <option value="">Select role...</option>
+            <option>AI Engineer</option>
+            <option>Data Scientist</option>
+            <option>Data Analyst</option>
+            <option>Web Developer</option>
+            <option>Full Stack Developer</option>
+            <option>Java Backend Developer</option>
+            <option>Cloud Engineer</option>
+            <option>DevOps Engineer</option>
+            <option>Cybersecurity Analyst</option>
+            <option>Mobile App Developer</option>
+          </select>
+        </div>
+        <button type="button" id="register-submit" class="btn btn-primary" style="width:100%"
+          onclick="handleRegister()">Create Account</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/app.js"></script>
+</body>
+
+</html>

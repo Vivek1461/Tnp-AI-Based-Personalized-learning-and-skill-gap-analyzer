@@ -1,0 +1,24 @@
+{
+  "users": [
+    {
+      "id": "f26344e2-5e9a-46e1-b7d9-c534e615a7b5",
+      "student_id": "STUDENT1",
+      "username": "STUDENT1",
+      "name": "Student One",
+      "email": "student1@example.com",
+      "password": "76ba7547adec3eeb03f4567d564c85de$d853bb2e4d2f628e774168350df3788f36f1e3abb29a89293ca9ddd879ccd273",
+      "education_level": "Undergraduate",
+      "current_skills": [
+        "Python",
+        "Basic Math"
+      ],
+      "target_role": "AI Engineer",
+      "learning_goals": [
+        "Become ML Engineer"
+      ]
+    }
+  ],
+  "sessions": {
+    "8fa4ded03f0d4a3483ca435d64e1fd64": "f26344e2-5e9a-46e1-b7d9-c534e615a7b5"
+  }
+}
